@@ -6,10 +6,12 @@ public:
     TokenizerTest();
     void run();
 
+protected:
+    void printFailure(bool pass, const char* testName);
+
 private:
     void testWhitespace();
     void testComment();
-    void printFailure(bool pass, const char* testName);
     void testStartEndDefinition();
     void testStartEndArray();
     void testStartEndNamedModule();

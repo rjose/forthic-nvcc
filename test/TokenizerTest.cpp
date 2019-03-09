@@ -17,6 +17,13 @@ void TokenizerTest::run() {
     testWhitespace();
     testComment();
     testStartEndDefinition();
+    testStartEndArray();
+    testStartEndNamedModule();
+    testAnonymousModule();
+    testTripleQuote();
+    testTripleQuoteString();
+    testString();
+    testWord();
 }
 
 
@@ -103,8 +110,8 @@ void TokenizerTest::testTripleQuote() {
 
     string input2 = "\"\"\"Now\"\"\"";
     Tokenizer t2(input2);
-    printFailure(t2.IsTripleQuote(0, '\'') == false, "testTripleQuote 3");
-    printFailure(t2.IsTripleQuote(6, '\'') == false, "testTripleQuote 4");
+    printFailure(t2.IsTripleQuote(0, '"') == false, "testTripleQuote 3");
+    printFailure(t2.IsTripleQuote(6, '"') == false, "testTripleQuote 4");
 }
 
 

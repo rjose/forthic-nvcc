@@ -1,6 +1,8 @@
-LIB_OBJECTS       = Token.o Tokenizer.o
+LIB_OBJECTS       = Token.o Tokenizer.o Module.o Word.o StackItem.o \
+                    GlobalItemGetters.o VariableItem.o PushItemWord.o \
+                    Interpreter.o
 APP_OBJECTS       = main.o $(LIB_OBJECTS)
-TEST_OBJECTS      = ./test/TokenizerTest.o
+TEST_OBJECTS      = ./test/TokenizerTest.o ./test/ModuleTest.o
 TEST_APP_OBJECTS  = ./test/main_test.o $(TEST_OBJECTS) $(LIB_OBJECTS)
 
 all: clean app test
