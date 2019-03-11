@@ -16,11 +16,6 @@ void ModuleTest::run() {
 }
 
 
-void ModuleTest::printFailure(bool failed, const char* file, int line) {
-    if (failed)   printf("=> FAIL  %s:%d\n", file, line);
-}
-
-
 void ModuleTest::testEmptyModule() {
     Module empty_module("");
 

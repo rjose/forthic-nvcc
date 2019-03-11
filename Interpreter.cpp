@@ -1,9 +1,10 @@
+#include <sstream>
 #include "Interpreter.h"
 #include "Tokenizer.h"
-// #include "StackItems/StringItem.h"
-// #include "StackItems/StartArrayItem.h"
-// #include "Words/PushItemWord.h"
-// #include "Words/EndArrayWord.h"
+#include "StringItem.h"
+#include "PushItemWord.h"
+#include "StartArrayItem.h"
+#include "EndArrayWord.h"
 // #include "StackItems/ModuleItem.h"
 
 Interpreter::Interpreter() : is_compiling(false)
@@ -20,7 +21,6 @@ Interpreter::~Interpreter()
 
 void Interpreter::Run(string input)
 {
-/*
     Tokenizer tokenizer(input);
     Token tok = tokenizer.NextToken();
     while (tok.GetType() != TokenType::EOS)
@@ -28,7 +28,6 @@ void Interpreter::Run(string input)
         handle_token(tok);
         tok = tokenizer.NextToken();
     }
-*/
 }
 
 
@@ -37,20 +36,11 @@ void Interpreter::StackPush(shared_ptr<StackItem> item)
     param_stack.push(item);
 }
 
-/*
 shared_ptr<StackItem> Interpreter::StackPop()
 {
     shared_ptr<StackItem> result = param_stack.top();
     param_stack.pop();
     return result;
-}
-
-
-
-
-shared_ptr<Module> Interpreter::CurModule()
-{
-    return module_stack.back();
 }
 
 
@@ -70,6 +60,7 @@ void Interpreter::handle_token(Token token)
         handle_STRING(token);
         break;
 
+/*
     case TokenType::START_MODULE:
         handle_START_MODULE(token);
         break;
@@ -92,19 +83,52 @@ void Interpreter::handle_token(Token token)
     case TokenType::WORD:
         handle_WORD(token);
         break;
+        */
 
     default:
-        throw "Unknown token type";
+        ostringstream message;
+        message << "Unhandled token type: " << (int)(token.GetType());
+        throw message.str();
     }
 }
-
 
 void Interpreter::handle_STRING(Token tok)
 {
     StringItem* item = new StringItem(tok.GetText());
-    handle_Word(new PushItemWord("<string>", shared_ptr<StackItem>(item)));
+    auto word = shared_ptr<Word>(new PushItemWord("<string>", shared_ptr<StackItem>(item)));
+    handle_Word(word);
 }
 
+
+void Interpreter::handle_Word(shared_ptr<Word> word)
+{
+    if (false);
+    //if (is_compiling)  cur_definition->CompileWord(word);
+    else word->Execute(this);
+}
+
+
+void Interpreter::handle_START_ARRAY(Token token)
+{
+    StartArrayItem* item = new StartArrayItem();
+    auto word = shared_ptr<Word>(new PushItemWord("[", shared_ptr<StackItem>(item)));
+    handle_Word(word);
+}
+
+
+void Interpreter::handle_END_ARRAY(Token token)
+{
+    auto word = shared_ptr<Word>(new EndArrayWord("]"));
+    handle_Word(word);
+}
+
+
+/*
+
+shared_ptr<Module> Interpreter::CurModule()
+{
+    return module_stack.back();
+}
 
 void Interpreter::handle_START_MODULE(Token tok)
 {
@@ -127,19 +151,6 @@ void Interpreter::handle_START_MODULE(Token tok)
 void Interpreter::handle_END_MODULE(Token tok)
 {
     module_stack.pop_back();
-}
-
-
-void Interpreter::handle_START_ARRAY(Token token)
-{
-    StartArrayItem* item = new StartArrayItem();
-    handle_Word(new PushItemWord("[", shared_ptr<StackItem>(item)));
-}
-
-
-void Interpreter::handle_END_ARRAY(Token token)
-{
-    handle_Word(new EndArrayWord("]"));
 }
 
 
@@ -185,13 +196,6 @@ shared_ptr<Word> Interpreter::find_word(string name)
     if (result == nullptr)   result = global_module.FindWord(name);
 
     return result;
-}
-
-
-void Interpreter::handle_Word(shared_ptr<Word> word)
-{
-    if (is_compiling)  cur_definition->CompileWord(word);
-    else word->Execute(this);
 }
 
 

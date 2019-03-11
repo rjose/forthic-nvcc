@@ -1,13 +1,11 @@
 #pragma once
 #include <string>
+#include "Test.h"
 
-class ModuleTest {
+class ModuleTest : Test {
 public:
     ModuleTest();
     void run();
-
-protected:
-    void printFailure(bool pass, const char* file, int line);
 
 private:
     void testEmptyModule();
