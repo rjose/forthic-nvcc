@@ -2,3 +2,4 @@ app
 *.o
 *.swp
 .vscode
+test/test

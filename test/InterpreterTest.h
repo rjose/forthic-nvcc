@@ -9,4 +9,5 @@ public:
 private:
     void testPushString();
     void testPushEmptyArray();
+    void testPushArray();
 };

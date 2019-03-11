@@ -14,6 +14,7 @@ void InterpreterTest::run() {
     try {
         testPushString();
         testPushEmptyArray();
+        testPushArray();
     }
     catch (const char *message) {
         printf("EXCEPTION: %s\n", message);
@@ -38,6 +39,16 @@ void InterpreterTest::testPushEmptyArray() {
     printFailure(items.size() != 0, __FILE__, __LINE__);
 }
 
+void InterpreterTest::testPushArray() {
+    Interpreter interp;
+    interp.Run("[ 'One' 'Two' ]");
+    shared_ptr<StackItem> array_item = interp.StackPop();
+    vector<shared_ptr<StackItem>> items = ForthicGetArray(array_item.get());
+    printFailure(2 != (int)items.size(), __FILE__, __LINE__);
+    printFailure(string("One") != ForthicGetString(items[0].get()), __FILE__, __LINE__);
+    printFailure(string("Two") != ForthicGetString(items[1].get()), __FILE__, __LINE__);
+}
+
 
 /*
 namespace ForthicLibTests
@@ -45,25 +56,6 @@ namespace ForthicLibTests
     TEST_CLASS(InterpreterTest)
     {
     public:
-        TEST_METHOD(TestPushEmptyArray)
-        {
-            Interpreter interp;
-            interp.Run("[ ]");
-            shared_ptr<StackItem> array_item = interp.StackPop();
-            vector<shared_ptr<StackItem>> items = ForthicGetArray(array_item.get());
-            Assert::AreEqual(0, (int)items.size());
-        }
-
-        TEST_METHOD(TestPushArray)
-        {
-            Interpreter interp;
-            interp.Run("[ 'One' 'Two' ]");
-            shared_ptr<StackItem> array_item = interp.StackPop();
-            vector<shared_ptr<StackItem>> items = ForthicGetArray(array_item.get());
-            Assert::AreEqual(2, (int)items.size());
-            Assert::AreEqual(string("One"), ForthicGetString(items[0].get()));
-            Assert::AreEqual(string("Two"), ForthicGetString(items[1].get()));
-        }
 
         TEST_METHOD(TestPushModule)
         {
