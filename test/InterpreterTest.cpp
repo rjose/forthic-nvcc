@@ -16,6 +16,7 @@ void InterpreterTest::run() {
         testPushEmptyArray();
         testPushArray();
         testPushModule();
+        testCreateDefinition();
     }
     catch (const char *message) {
         printf("EXCEPTION: %s\n", message);
@@ -63,39 +64,15 @@ void InterpreterTest::testPushModule() {
 }
 
 
-/*
-namespace ForthicLibTests
-{
-    TEST_CLASS(InterpreterTest)
-    {
-    public:
+void InterpreterTest::testCreateDefinition() {
+    Interpreter interp;
+    interp.Run(": TACO 'taco' ;");
+    auto mod = interp.CurModule();
+    auto word = mod->FindWord("TACO");
+    printFailure(string("TACO") != word->GetName(), __FILE__, __LINE__);
 
-        TEST_METHOD(TestPushModule)
-        {
-            Interpreter interp;
-            interp.Run("{sample");
-            auto mod = interp.CurModule();
-            Assert::AreEqual(string("sample"), mod->GetName());
-
-            interp.Run("}");
-            mod = interp.CurModule();
-            Assert::AreEqual(string(""), mod->GetName());
-        }
-
-        TEST_METHOD(TestCreateDefinition)
-        {
-            Interpreter interp;
-            interp.Run(": TACO 'taco' ;");
-            auto mod = interp.CurModule();
-            auto word = mod->FindWord("TACO");
-            Assert::AreEqual(string("TACO"), word->GetName());
-
-            // Execute definition
-            interp.Run("TACO");
-            shared_ptr<StackItem> val = interp.StackPop();
-            Assert::AreEqual(string("taco"), ForthicGetString(val.get()));
-        }
-
-    };
+    // Execute definition
+    interp.Run("TACO");
+    shared_ptr<StackItem> val = interp.StackPop();
+    printFailure(string("taco") != ForthicGetString(val.get()), __FILE__, __LINE__);
 }
-*/

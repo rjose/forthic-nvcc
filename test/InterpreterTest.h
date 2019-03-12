@@ -11,4 +11,5 @@ private:
     void testPushEmptyArray();
     void testPushArray();
     void testPushModule();
+    void testCreateDefinition();
 };

@@ -5,7 +5,7 @@
 #include "PushItemWord.h"
 #include "StartArrayItem.h"
 #include "EndArrayWord.h"
-// #include "StackItems/ModuleItem.h"
+#include "ModuleItem.h"
 
 Interpreter::Interpreter() : is_compiling(false)
 {
@@ -80,8 +80,6 @@ void Interpreter::handle_token(Token token)
         handle_END_MODULE(token);
         break;
 
-/*
-
     case TokenType::START_DEFINITION:
         handle_START_DEFINITION(token);
         break;
@@ -90,13 +88,15 @@ void Interpreter::handle_token(Token token)
         handle_END_DEFINITION(token);
         break;
 
-    case TokenType::COMMENT:
-        break;
-
     case TokenType::WORD:
         handle_WORD(token);
         break;
-        */
+
+/*
+    case TokenType::COMMENT:
+        break;
+
+*/
 
     default:
         ostringstream message;
@@ -172,8 +172,6 @@ void Interpreter::module_stack_push(shared_ptr<Module> mod)
 }
 
 
-/*
-
 void Interpreter::handle_START_DEFINITION(Token tok)
 {
     if (is_compiling) throw "Can't have nested definitions";
@@ -197,7 +195,6 @@ void Interpreter::handle_WORD(Token tok)
     handle_Word(word);
 }
 
-
 shared_ptr<Word> Interpreter::find_word(string name)
 {
     shared_ptr<Word> result = nullptr;
@@ -212,16 +209,11 @@ shared_ptr<Word> Interpreter::find_word(string name)
     // Treat as registered module
     if (result == nullptr)   result = find_registered_module_word(name);
 
+    // TODO: Add global module
     // Check global module
-    if (result == nullptr)   result = global_module.FindWord(name);
+ //   if (result == nullptr)   result = global_module.FindWord(name);
 
     return result;
-}
-
-
-void Interpreter::handle_Word(Word* word)
-{
-    handle_Word(shared_ptr<Word>(word));
 }
 
 
@@ -229,7 +221,5 @@ shared_ptr<Word> Interpreter::find_registered_module_word(string name)
 {
     auto mod = find_module(name);
     if (mod == nullptr)  return nullptr;
-    else  return shared_ptr<Word>(new PushItemWord(mod->GetName(), new ModuleItem(mod)));
+    else  return shared_ptr<Word>(new PushItemWord(mod->GetName(), shared_ptr<ModuleItem>(new ModuleItem(mod))));
 }
-
-*/

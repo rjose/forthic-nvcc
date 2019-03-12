@@ -9,7 +9,7 @@
 #include "Token.h"
 #include "Word.h"
 #include "Module.h"
-// #include "DefinitionWord.h"
+#include "DefinitionWord.h"
 // #include "GlobalModule.h"
 
 using namespace std;
@@ -39,8 +39,9 @@ protected:
     void handle_END_ARRAY(Token token);
     void handle_START_MODULE(Token tok);
     void handle_END_MODULE(Token tok);
-
-//    void handle_WORD(Token tok);
+    void handle_START_DEFINITION(Token tok);
+    void handle_END_DEFINITION(Token tok);
+    void handle_WORD(Token tok);
 
     void handle_Word(shared_ptr<Word> word);
 
@@ -48,15 +49,13 @@ protected:
     void module_stack_push(shared_ptr<Module> mod);
     map<string, shared_ptr<Module>> registered_modules;
 
-/*
     shared_ptr<DefinitionWord> cur_definition;
-    GlobalModule global_module;
-
-    void handle_START_DEFINITION(Token tok);
-    void handle_END_DEFINITION(Token tok);
-
     shared_ptr<Word> find_word(string name);
     shared_ptr<Word> find_registered_module_word(string name);
+
+/*
+    GlobalModule global_module;
+
 */
 };
 

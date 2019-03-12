@@ -1,7 +1,7 @@
 LIB_OBJECTS       = Token.o Tokenizer.o Module.o Word.o StackItem.o \
                     GlobalItemGetters.o VariableItem.o PushItemWord.o \
                     StringItem.o StartArrayItem.o EndArrayWord.o \
-					ArrayItem.o Interpreter.o
+					ArrayItem.o DefinitionWord.o ModuleItem.o Interpreter.o
 APP_OBJECTS       = main.o $(LIB_OBJECTS)
 TEST_OBJECTS      = ./test/Test.o ./test/TokenizerTest.o ./test/ModuleTest.o \
                     ./test/InterpreterTest.o
