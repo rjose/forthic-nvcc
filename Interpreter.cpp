@@ -10,12 +10,18 @@
 Interpreter::Interpreter() : is_compiling(false)
 {
     // The first module in the module_stack is the initial local module
-    // module_stack.push_back(shared_ptr<Module>(new Module("")));
+    module_stack.push_back(shared_ptr<Module>(new Module("")));
 }
 
 
 Interpreter::~Interpreter()
 {
+}
+
+
+shared_ptr<Module> Interpreter::CurModule()
+{
+    return module_stack.back();
 }
 
 
@@ -43,6 +49,12 @@ shared_ptr<StackItem> Interpreter::StackPop()
     return result;
 }
 
+void Interpreter::RegisterModule(shared_ptr<Module> mod)
+{
+    registered_modules[mod->GetName()] = mod;
+    this->Run(mod->ForthicCode());
+}
+
 
 void Interpreter::handle_token(Token token)
 {
@@ -60,7 +72,6 @@ void Interpreter::handle_token(Token token)
         handle_STRING(token);
         break;
 
-/*
     case TokenType::START_MODULE:
         handle_START_MODULE(token);
         break;
@@ -68,6 +79,8 @@ void Interpreter::handle_token(Token token)
     case TokenType::END_MODULE:
         handle_END_MODULE(token);
         break;
+
+/*
 
     case TokenType::START_DEFINITION:
         handle_START_DEFINITION(token);
@@ -123,13 +136,6 @@ void Interpreter::handle_END_ARRAY(Token token)
 }
 
 
-/*
-
-shared_ptr<Module> Interpreter::CurModule()
-{
-    return module_stack.back();
-}
-
 void Interpreter::handle_START_MODULE(Token tok)
 {
     // If module has been registered, push it onto the module stack
@@ -153,6 +159,20 @@ void Interpreter::handle_END_MODULE(Token tok)
     module_stack.pop_back();
 }
 
+
+shared_ptr<Module> Interpreter::find_module(string name)
+{
+    if (registered_modules.find(name) == registered_modules.end()) return nullptr;
+    else return registered_modules[name];
+}
+
+void Interpreter::module_stack_push(shared_ptr<Module> mod)
+{
+    module_stack.push_back(mod);
+}
+
+
+/*
 
 void Interpreter::handle_START_DEFINITION(Token tok)
 {
@@ -205,12 +225,6 @@ void Interpreter::handle_Word(Word* word)
 }
 
 
-shared_ptr<Module> Interpreter::find_module(string name)
-{
-    if (registered_modules.find(name) == registered_modules.end()) return nullptr;
-    else return registered_modules[name];
-}
-
 shared_ptr<Word> Interpreter::find_registered_module_word(string name)
 {
     auto mod = find_module(name);
@@ -218,16 +232,4 @@ shared_ptr<Word> Interpreter::find_registered_module_word(string name)
     else  return shared_ptr<Word>(new PushItemWord(mod->GetName(), new ModuleItem(mod)));
 }
 
-
-void Interpreter::RegisterModule(shared_ptr<Module> mod)
-{
-    registered_modules[mod->GetName()] = mod;
-    this->Run(mod->ForthicCode());
-}
-
-
-void Interpreter::module_stack_push(shared_ptr<Module> mod)
-{
-    module_stack.push_back(mod);
-}
 */

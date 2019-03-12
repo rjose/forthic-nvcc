@@ -10,4 +10,5 @@ private:
     void testPushString();
     void testPushEmptyArray();
     void testPushArray();
+    void testPushModule();
 };

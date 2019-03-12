@@ -15,6 +15,7 @@ void InterpreterTest::run() {
         testPushString();
         testPushEmptyArray();
         testPushArray();
+        testPushModule();
     }
     catch (const char *message) {
         printf("EXCEPTION: %s\n", message);
@@ -47,6 +48,18 @@ void InterpreterTest::testPushArray() {
     printFailure(2 != (int)items.size(), __FILE__, __LINE__);
     printFailure(string("One") != ForthicGetString(items[0].get()), __FILE__, __LINE__);
     printFailure(string("Two") != ForthicGetString(items[1].get()), __FILE__, __LINE__);
+}
+
+
+void InterpreterTest::testPushModule() {
+    Interpreter interp;
+    interp.Run("{sample");
+    auto mod = interp.CurModule();
+    printFailure(string("sample") != mod->GetName(), __FILE__, __LINE__);
+
+    interp.Run("}");
+    mod = interp.CurModule();
+    printFailure(string("") != mod->GetName(), __FILE__, __LINE__);
 }
 
 
