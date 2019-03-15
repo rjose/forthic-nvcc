@@ -9,4 +9,6 @@ public:
 
 private:
     void testIntLiteral();
+    void testFloatLiteral();
+    void testUsingModules();
 };
