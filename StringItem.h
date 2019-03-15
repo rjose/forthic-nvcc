@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-#include "GlobalItemGetters.h"
+#include "BasicItemGetters.h"
 #include "StackItem.h"
 
 using namespace std;

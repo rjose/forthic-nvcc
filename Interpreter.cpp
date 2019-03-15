@@ -92,11 +92,8 @@ void Interpreter::handle_token(Token token)
         handle_WORD(token);
         break;
 
-/*
     case TokenType::COMMENT:
         break;
-
-*/
 
     default:
         ostringstream message;
@@ -209,9 +206,8 @@ shared_ptr<Word> Interpreter::find_word(string name)
     // Treat as registered module
     if (result == nullptr)   result = find_registered_module_word(name);
 
-    // TODO: Add global module
     // Check global module
- //   if (result == nullptr)   result = global_module.FindWord(name);
+    if (result == nullptr)   result = global_module.FindWord(name);
 
     return result;
 }

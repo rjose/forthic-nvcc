@@ -1,9 +1,7 @@
+#include <string>
 #include "InterpreterTest.h"
 #include "../Interpreter.h"
 #include "../StackItem.h"
-// #include "../StringItem.h"
-// #include "../ArrayItem.h"
-#include <string>
 
 using namespace std;
 
@@ -11,19 +9,11 @@ InterpreterTest::InterpreterTest() {
 }
 
 void InterpreterTest::run() {
-    try {
-        testPushString();
-        testPushEmptyArray();
-        testPushArray();
-        testPushModule();
-        testCreateDefinition();
-    }
-    catch (const char *message) {
-        printf("EXCEPTION: %s\n", message);
-    }
-    catch (string message) {
-        printf("EXCEPTION: %s\n", message.c_str());
-    }
+    testPushString();
+    testPushEmptyArray();
+    testPushArray();
+    testPushModule();
+    testCreateDefinition();
 }
 
 void InterpreterTest::testPushString() {

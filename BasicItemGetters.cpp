@@ -1,4 +1,4 @@
-#include "GlobalItemGetters.h"
+#include "BasicItemGetters.h"
 
 
 string ForthicGetString(StackItem *item)

@@ -1,5 +1,5 @@
 #pragma once
-#include "GlobalItemGetters.h"
+#include "BasicItemGetters.h"
 #include "StackItem.h"
 
 using namespace std;

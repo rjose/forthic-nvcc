@@ -2,7 +2,7 @@
 #include <memory>
 #include <string>
 
-#include "GlobalItemGetters.h"
+#include "BasicItemGetters.h"
 #include "StackItem.h"
 #include "Module.h"
 

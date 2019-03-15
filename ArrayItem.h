@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "GlobalItemGetters.h"
+#include "BasicItemGetters.h"
 #include "StackItem.h"
 
 using namespace std;

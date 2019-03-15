@@ -1,10 +1,11 @@
 LIB_OBJECTS       = Token.o Tokenizer.o Module.o Word.o StackItem.o \
-                    GlobalItemGetters.o VariableItem.o PushItemWord.o \
+                    BasicItemGetters.o VariableItem.o PushItemWord.o \
                     StringItem.o StartArrayItem.o EndArrayWord.o \
-					ArrayItem.o DefinitionWord.o ModuleItem.o Interpreter.o
+                    GlobalModule.o IntItem.o FloatItem.o \
+                    ArrayItem.o DefinitionWord.o ModuleItem.o Interpreter.o
 APP_OBJECTS       = main.o $(LIB_OBJECTS)
 TEST_OBJECTS      = ./test/Test.o ./test/TokenizerTest.o ./test/ModuleTest.o \
-                    ./test/InterpreterTest.o
+                    ./test/InterpreterTest.o ./test/GlobalModuleTest.o
 TEST_APP_OBJECTS  = ./test/main_test.o $(TEST_OBJECTS) $(LIB_OBJECTS)
 
 all: clean app test
