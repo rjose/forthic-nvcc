@@ -29,21 +29,21 @@ clean:
 	nvcc -std=c++11 -g -c -o $@ $<
 
 # Dependencies (generate with python3 dep.py)
-ArrayItem.o EndArrayWord.o EndArrayWord.o Interpreter.o StartArrayItem.o : ArrayItem.h
-BasicItemGetters.o : BasicItemGetters.h
-DefinitionWord.o : DefinitionWord.h
-EndArrayWord.o Interpreter.o : EndArrayWord.h
-FloatItem.o GlobalModule.o : FloatItem.h
-GlobalModule.o : GlobalModule.h
-DefinitionWord.o EndArrayWord.o GlobalModule.o Interpreter.o PushItemWord.o : Interpreter.h
-GlobalModule.o IntItem.o : IntItem.h
-GlobalModule.o Module.o : Module.h
-Interpreter.o ModuleItem.o : ModuleItem.h
-GlobalModule.o Interpreter.o Module.o PushItemWord.o : PushItemWord.h
-StackItem.o : StackItem.h
-EndArrayWord.o Interpreter.o StartArrayItem.o : StartArrayItem.h
-Interpreter.o StringItem.o : StringItem.h
-Token.o : Token.h
-Interpreter.o Tokenizer.o : Tokenizer.h
-VariableItem.o : VariableItem.h
-DefinitionWord.o EndArrayWord.o GlobalModule.o Interpreter.o Interpreter.o Module.o PushItemWord.o Word.o : Word.h
+ArrayItem.o EndArrayWord.o EndArrayWord.o Interpreter.o StartArrayItem.o  : ArrayItem.h
+BasicItemGetters.o ArrayItem.o ModuleItem.o StringItem.o VariableItem.o : BasicItemGetters.h
+DefinitionWord.o Interpreter.o : DefinitionWord.h
+EndArrayWord.o Interpreter.o  : EndArrayWord.h
+FloatItem.o GlobalModule.o  : FloatItem.h
+GlobalModule.o FloatItem.o IntItem.o Interpreter.o : GlobalModule.h
+DefinitionWord.o EndArrayWord.o GlobalModule.o Interpreter.o PushItemWord.o  : Interpreter.h
+GlobalModule.o IntItem.o  : IntItem.h
+GlobalModule.o Module.o FloatItem.o GlobalModule.o IntItem.o Interpreter.o Interpreter.o ModuleItem.o : Module.h
+Interpreter.o ModuleItem.o  : ModuleItem.h
+GlobalModule.o Interpreter.o Module.o PushItemWord.o  : PushItemWord.h
+StackItem.o ArrayItem.o BasicItemGetters.o DefinitionWord.o EndArrayWord.o FloatItem.o IntItem.o Interpreter.o ModuleItem.o PushItemWord.o StartArrayItem.o StringItem.o VariableItem.o : StackItem.h
+EndArrayWord.o Interpreter.o StartArrayItem.o  : StartArrayItem.h
+Interpreter.o StringItem.o  : StringItem.h
+Token.o Interpreter.o Tokenizer.o : Token.h
+Interpreter.o Tokenizer.o  : Tokenizer.h
+VariableItem.o Module.o : VariableItem.h
+DefinitionWord.o EndArrayWord.o GlobalModule.o Interpreter.o Interpreter.o Module.o PushItemWord.o Word.o DefinitionWord.o EndArrayWord.o Interpreter.o Interpreter.o Module.o PushItemWord.o : Word.h
