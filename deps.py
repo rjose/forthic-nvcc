@@ -9,17 +9,15 @@ def cmd(string):
 
 
 def dot_h_files():
-    return cmd("ls *.h").split("\n")
-
-
-def dot_cpp_files():
-    return cmd("ls *.cpp").split("\n")
+    return cmd("ls *.h test/*.h").split("\n")
 
 
 def header_dependencies(header):
 
     def grep_header(extension):
-        return cmd("grep {0} *{1}".format(header, extension)).split("\n")
+        def filename(f):
+            return f.split("/")[-1]
+        return cmd("grep {0} *{1} test/*{1}".format(filename(header), extension)).split("\n")
 
     def dot_o(line, extension):
         base = line.split(extension)[0]
