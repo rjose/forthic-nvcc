@@ -1,7 +1,7 @@
-#include <cuda_runtime.h>
 #include <cstdio>
 #include "Interpreter.h"
 #include "CudaModule.h"
+#include "Dim3Item.h"
 
 
 // =============================================================================
@@ -29,6 +29,22 @@ public:
     }
 };
 
+// ( x y z -- dim3 )
+class Dim3Word : public Word
+{
+public:
+    Dim3Word(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        int z = AsInt(interp->StackPop());
+        int y = AsInt(interp->StackPop());
+        int x = AsInt(interp->StackPop());
+        dim3 res(x, y, z);
+
+        interp->StackPush(shared_ptr<Dim3Item>(new Dim3Item(res)));
+    }
+};
+
 
 // =============================================================================
 // CudaModule
@@ -36,5 +52,22 @@ public:
 CudaModule::CudaModule() : Module("cuda")
 {
     AddWord(shared_ptr<Word>(new HelloWord("HELLO")));
+    AddWord(shared_ptr<Word>(new Dim3Word("DIM3")));
+}
+
+// =============================================================================
+// StackItem Converters
+
+
+dim3 AsDim3(shared_ptr<StackItem> item)
+{
+    if (auto i = dynamic_cast<IGetDim3*>(item.get()))
+    {
+        return i->GetDim3();
+    }
+    else
+    {
+        throw "Item does not implement IGetInt";
+    }
 }
 

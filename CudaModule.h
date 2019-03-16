@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cuda_runtime.h>
 #include <memory>
 #include <string>
 #include <stack>
@@ -21,11 +22,10 @@ protected:
     // virtual shared_ptr<Word> treat_as_literal(string name);
 };
 
-/*
-class IGetFloat {
+
+class IGetDim3 {
 public:
-    virtual float GetFloat() = 0;
+    virtual dim3 GetDim3() = 0;
 };
 
-float ForthicGetFloat(StackItem *item);
-*/
+dim3 AsDim3(shared_ptr<StackItem> item);

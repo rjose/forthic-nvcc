@@ -117,8 +117,7 @@ void Interpreter::handle_STRING(Token tok)
 
 void Interpreter::handle_Word(shared_ptr<Word> word)
 {
-    if (false);
-    //if (is_compiling)  cur_definition->CompileWord(word);
+    if (is_compiling)  cur_definition->CompileWord(word);
     else word->Execute(this);
 }
 
