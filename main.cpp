@@ -11,7 +11,7 @@ int main() {
         Interpreter interp;
         interp.RegisterModule(shared_ptr<Module>(new CudaModule()));
         interp.Run("[ cuda ] USE-MODULES");
-        interp.Run("HELLO");
+        interp.Run("1 15 HELLO");
     }
     catch (const char *message) {
         printf("EXCEPTION: %s\n", message);

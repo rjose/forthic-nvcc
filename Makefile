@@ -33,6 +33,9 @@ clean:
 %.o:%.cpp %.h
 	nvcc -std=c++11 -g -c -o $@ $<
 
+%.o:%.cu %.h
+	nvcc -arch=sm_30 -std=c++11 -g -c -o $@ $<
+
 main.o:main.cpp
 	nvcc -std=c++11 -g -c -o $@ $<
 

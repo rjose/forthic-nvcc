@@ -29,7 +29,7 @@ def header_dependencies(header):
         lines = grep_header(extension)
         return [dot_o(l, extension) for l in lines]
 
-    dot_os = deps(".cpp") + deps(".h")
+    dot_os = deps(".cu") + deps(".cpp") + deps(".h")
 
     result = ""
     if dot_os:
