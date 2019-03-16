@@ -34,5 +34,5 @@ public:
     virtual float GetFloat() = 0;
 };
 
-int ForthicGetInt(StackItem *item);
-float ForthicGetFloat(StackItem *item);
+int   AsInt(shared_ptr<StackItem> item);
+float AsFloat(shared_ptr<StackItem> item);

@@ -1,5 +1,5 @@
  ArrayItem.o EndArrayWord.o EndArrayWord.o Interpreter.o StartArrayItem.o  : ArrayItem.h
- BasicItemGetters.o test/GlobalModuleTest.o ArrayItem.o ModuleItem.o StringItem.o VariableItem.o : BasicItemGetters.h
+ BasicConverters.o ArrayItem.o ModuleItem.o StringItem.o VariableItem.o : BasicConverters.h
 CudaModule.o main.o  : CudaModule.h
  DefinitionWord.o Interpreter.o : DefinitionWord.h
  EndArrayWord.o Interpreter.o  : EndArrayWord.h
@@ -10,7 +10,7 @@ CudaModule.o DefinitionWord.o EndArrayWord.o GlobalModule.o Interpreter.o PushIt
 CudaModule.o GlobalModule.o Module.o main.o main.o test/GlobalModuleTest.o test/ModuleTest.o CudaModule.o FloatItem.o GlobalModule.o IntItem.o Interpreter.o Interpreter.o ModuleItem.o : Module.h
  Interpreter.o ModuleItem.o  : ModuleItem.h
  GlobalModule.o Interpreter.o Module.o PushItemWord.o  : PushItemWord.h
- StackItem.o test/InterpreterTest.o ArrayItem.o BasicItemGetters.o DefinitionWord.o EndArrayWord.o FloatItem.o IntItem.o Interpreter.o ModuleItem.o PushItemWord.o StartArrayItem.o StringItem.o VariableItem.o : StackItem.h
+ StackItem.o test/InterpreterTest.o ArrayItem.o BasicConverters.o DefinitionWord.o EndArrayWord.o FloatItem.o IntItem.o Interpreter.o ModuleItem.o PushItemWord.o StartArrayItem.o StringItem.o VariableItem.o : StackItem.h
  EndArrayWord.o Interpreter.o StartArrayItem.o  : StartArrayItem.h
  Interpreter.o StringItem.o  : StringItem.h
  test/GlobalModuleTest.o test/main_test.o  : test/GlobalModuleTest.h

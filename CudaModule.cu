@@ -21,8 +21,9 @@ public:
     HelloWord(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
-        int threads_per_block = ForthicGetInt(interp->StackPop().get());
-        int num_blocks = ForthicGetInt(interp->StackPop().get()); 
+        int threads_per_block = AsInt(interp->StackPop());
+        int num_blocks = AsInt(interp->StackPop()); 
+
         helloFromGPU<<<num_blocks, threads_per_block>>>();
         cudaDeviceReset();
     }

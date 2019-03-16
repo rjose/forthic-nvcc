@@ -1,21 +1,16 @@
 #include "VariableItem.h"
+
 using namespace std;
 
-VariableItem::VariableItem() : value(nullptr)
-{
+shared_ptr<VariableItem> VariableItem::AsVariable() {
+    return shared_ptr<VariableItem>(this);
 }
 
-VariableItem::~VariableItem()
-{
-}
-
-shared_ptr<StackItem> VariableItem::GetValue()
-{
+shared_ptr<StackItem> VariableItem::GetValue() {
     return value;
 }
 
-void VariableItem::SetValue(shared_ptr<StackItem> new_value)
-{
+void VariableItem::SetValue(shared_ptr<StackItem> new_value) {
     value = new_value;
 }
 

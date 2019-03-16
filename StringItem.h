@@ -1,18 +1,18 @@
 #pragma once
 #include <string>
 
-#include "BasicItemGetters.h"
+#include "BasicConverters.h"
 #include "StackItem.h"
 
 using namespace std;
 
 
-class StringItem : public StackItem, public IGetString
+class StringItem : public StackItem, public IAsString
 {
 public:
-	StringItem(string s);
-	virtual ~StringItem();
-	string GetString();
+	StringItem(string s) : item_string(s) {};
+	virtual ~StringItem() {};
+	string AsString();
 
 protected:
 	string item_string;

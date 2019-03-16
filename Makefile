@@ -1,5 +1,5 @@
 LIB_OBJECTS       = Token.o Tokenizer.o Module.o Word.o StackItem.o \
-                    BasicItemGetters.o VariableItem.o PushItemWord.o \
+                    BasicConverters.o VariableItem.o PushItemWord.o \
                     StringItem.o StartArrayItem.o EndArrayWord.o \
                     GlobalModule.o IntItem.o FloatItem.o \
                     CudaModule.o \

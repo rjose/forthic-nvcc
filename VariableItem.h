@@ -1,16 +1,17 @@
 #pragma once
-#include "BasicItemGetters.h"
+#include "BasicConverters.h"
 #include "StackItem.h"
 
 using namespace std;
 
-class VariableItem : public StackItem, public IGetValue
+class VariableItem : public StackItem, public IAsVariable
 {
 public:
-    VariableItem();
-    virtual ~VariableItem();
+    VariableItem() : value(nullptr) {};
+    virtual ~VariableItem() {};
 
-    virtual shared_ptr<StackItem> GetValue();
+    shared_ptr<VariableItem> AsVariable();
+    shared_ptr<StackItem> GetValue();
     void SetValue(shared_ptr<StackItem> new_value);
 
 protected:

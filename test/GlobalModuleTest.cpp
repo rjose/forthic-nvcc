@@ -1,7 +1,7 @@
 #include <string>
 #include "GlobalModuleTest.h"
 #include "../Interpreter.h"
-#include "../BasicItemGetters.h"
+#include "../BasicConverters.h"
 #include "../GlobalModule.h"
 
 
@@ -20,15 +20,13 @@ void GlobalModuleTest::run() {
 void GlobalModuleTest::testIntLiteral() {
     Interpreter interp;
     interp.Run("27");
-    shared_ptr<StackItem> item = interp.StackPop();
-    printFailure(27 != ForthicGetInt(item.get()), __FILE__, __LINE__);
+    printFailure(27 != AsInt(interp.StackPop()), __FILE__, __LINE__);
 }
 
 void GlobalModuleTest::testFloatLiteral() {
     Interpreter interp;
     interp.Run("27.5");
-    shared_ptr<StackItem> item = interp.StackPop();
-    printFailure(27.5 != ForthicGetFloat(item.get()), __FILE__, __LINE__);
+    printFailure(27.5 != AsFloat(interp.StackPop()), __FILE__, __LINE__);
 }
 
 void GlobalModuleTest::testUsingModules() {

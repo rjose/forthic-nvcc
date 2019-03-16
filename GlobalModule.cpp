@@ -28,9 +28,9 @@ public:
     UseModulesWord(string name) : Word(name) {};
     virtual void Execute(Interpreter *interp) {
         auto item = interp->StackPop();
-        vector<shared_ptr<StackItem>> modules = ForthicGetArray(item.get());
+        vector<shared_ptr<StackItem>> modules = AsArray(item);
         for (int i = 0; i < modules.size(); i++) {
-            shared_ptr<Module> m = ForthicGetModule(modules[i].get());
+            shared_ptr<Module> m = AsModule(modules[i]);
             interp->CurModule()->UseModule(m);
         }
     }
@@ -85,9 +85,12 @@ shared_ptr<Word> GlobalModule::treat_as_literal(string name)
     return result;
 }
 
-int ForthicGetInt(StackItem *item)
+// =============================================================================
+// StackItem Converters
+
+int AsInt(shared_ptr<StackItem> item)
 {
-    if (auto i = dynamic_cast<IGetInt*>(item))
+    if (auto i = dynamic_cast<IGetInt*>(item.get()))
     {
         return i->GetInt();
     }
@@ -97,9 +100,9 @@ int ForthicGetInt(StackItem *item)
     }
 }
 
-float ForthicGetFloat(StackItem *item)
+float AsFloat(shared_ptr<StackItem> item)
 {
-    if (auto i = dynamic_cast<IGetFloat*>(item))
+    if (auto i = dynamic_cast<IGetFloat*>(item.get()))
     {
         return i->GetFloat();
     }
