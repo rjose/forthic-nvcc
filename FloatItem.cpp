@@ -10,7 +10,10 @@ FloatItem::~FloatItem()
 {
 }
 
-float FloatItem::GetFloat()
-{
+float FloatItem::GetFloat() {
     return value;
+}
+
+int FloatItem::GetInt() {
+    return int(value);
 }

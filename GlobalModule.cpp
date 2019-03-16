@@ -114,6 +114,43 @@ public:
 };
 
 
+// ( l r -- res )
+class ArithWord : public Word
+{
+public:
+    ArithWord(string name, string op) : Word(name), op(op) {};
+
+    virtual void Execute(Interpreter *interp) {
+        float r = AsFloat(interp->StackPop());
+        float l = AsFloat(interp->StackPop());
+
+        float res = 0.0;
+        if      (op == "+")   res = l + r;
+        else if (op == "-")   res = l - r;
+        else if (op == "*")   res = l * r;
+        else if (op == "/")   res = l / r;
+        else                  throw string("Unknown operation: ") + op;
+
+        interp->StackPush(shared_ptr<FloatItem>(new FloatItem(res)));
+    }
+protected:
+    string op;
+};
+
+
+// ( item -- )
+class PrintWord : public Word
+{
+public:
+    PrintWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        auto item = interp->StackPop();
+        printf("%s\n", item->StringRep().c_str());
+    }
+};
+
+
 
 // =============================================================================
 // GlobalModule
@@ -126,6 +163,11 @@ GlobalModule::GlobalModule() : Module("Forthic.global")
     AddWord(shared_ptr<Word>(new BangWord("!")));
     AddWord(shared_ptr<Word>(new AtWord("@")));
     AddWord(shared_ptr<Word>(new DotSWord(".s")));
+    AddWord(shared_ptr<Word>(new ArithWord("+", "+")));
+    AddWord(shared_ptr<Word>(new ArithWord("-", "-")));
+    AddWord(shared_ptr<Word>(new ArithWord("*", "*")));
+    AddWord(shared_ptr<Word>(new ArithWord("/", "/")));
+    AddWord(shared_ptr<Word>(new PrintWord("PRINT")));
 }
 
 
@@ -180,7 +222,7 @@ int AsInt(shared_ptr<StackItem> item)
     }
     else
     {
-        throw "Item does not implement IGetInt";
+        throw item->StringRep() + " does not implement IGetInt";
     }
 }
 
@@ -192,6 +234,6 @@ float AsFloat(shared_ptr<StackItem> item)
     }
     else
     {
-        throw "Item does not implement IGetFloat";
+        throw item->StringRep() + " does not implement IGetFloat";
     }
 }

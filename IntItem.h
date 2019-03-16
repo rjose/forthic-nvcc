@@ -7,12 +7,13 @@
 using namespace std;
 
 
-class IntItem : public StackItem, public IGetInt
+class IntItem : public StackItem, public IGetInt, public IGetFloat
 {
 public:
-    IntItem(int value);
-    virtual ~IntItem();
+    IntItem(int value) : value(value) {};
+
     int GetInt();
+    float GetFloat();
 
     virtual string StringRep();
 

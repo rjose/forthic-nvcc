@@ -2,18 +2,12 @@
 #include "IntItem.h"
 
 
-IntItem::IntItem(int _value) : value(_value)
-{
-}
-
-
-IntItem::~IntItem()
-{
-}
-
-int IntItem::GetInt()
-{
+int IntItem::GetInt() {
     return value;
+}
+
+float IntItem::GetFloat() {
+    return float(value);
 }
 
 string IntItem::StringRep() {
