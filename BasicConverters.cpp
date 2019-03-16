@@ -1,4 +1,5 @@
 #include "BasicConverters.h"
+#include "VariableItem.h"
 
 
 string AsString(shared_ptr<StackItem> item)
@@ -22,18 +23,6 @@ vector<shared_ptr<StackItem>> AsArray(shared_ptr<StackItem> item)
     else
     {
         throw "Item does not implement IAsArray";
-    }
-}
-
-shared_ptr<VariableItem> AsVariable(shared_ptr<StackItem> item)
-{
-    if (auto i = dynamic_cast<IAsVariable*>(item.get()))
-    {
-        return i->AsVariable();
-    }
-    else
-    {
-        throw "Item does not implement IAsVariable";
     }
 }
 

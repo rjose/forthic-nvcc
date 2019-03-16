@@ -14,6 +14,7 @@ void GlobalModuleTest::run() {
     testIntLiteral();
     testFloatLiteral();
     testUsingModules();
+    testVariables();
 }
 
 
@@ -38,7 +39,6 @@ void GlobalModuleTest::testUsingModules() {
     try {
         interp.Run("HI");
     }
-    // TODO: Catch an UnknownWordException
     catch(...) {
         run_failed = true;
     }
@@ -46,4 +46,13 @@ void GlobalModuleTest::testUsingModules() {
 
     // If we use USE-MODULES, we can find HI
     interp.Run("[ sample ] USE-MODULES  HI");
+}
+
+
+void GlobalModuleTest::testVariables() {
+    Interpreter interp;
+    interp.Run("[ 'x' ] VARIABLES");
+    interp.Run("21 x !");
+    interp.Run("x @");
+    printFailure(21 != AsInt(interp.StackPop()), __FILE__, __LINE__);
 }

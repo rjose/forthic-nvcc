@@ -49,6 +49,11 @@ shared_ptr<StackItem> Interpreter::StackPop()
     return result;
 }
 
+
+int Interpreter::StackSize() {
+    return param_stack.size();
+}
+
 void Interpreter::RegisterModule(shared_ptr<Module> mod)
 {
     registered_modules[mod->GetName()] = mod;

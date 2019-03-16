@@ -23,6 +23,7 @@ public:
 
     void StackPush(shared_ptr<StackItem> item);
     shared_ptr<StackItem> StackPop();
+    int StackSize();
 
     shared_ptr<Module> CurModule();
     void RegisterModule(shared_ptr<Module> mod);

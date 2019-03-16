@@ -58,7 +58,9 @@ void Module::AddWord(shared_ptr<Word> word) {
 
 
 void Module::EnsureVariable(string name) {
-    variables[name];
+    if (variables.find(name) == variables.end()) {
+        variables[name] = shared_ptr<VariableItem>(new VariableItem());
+    }
 }
 
 

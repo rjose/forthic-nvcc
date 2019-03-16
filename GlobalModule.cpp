@@ -13,11 +13,11 @@ class PopWord : public Word
 {
 public:
     PopWord(string name) : Word(name) {};
+
     virtual void Execute(Interpreter *interp) {
         interp->StackPop();
     }
 };
-
 
 
 // ( modules -- )
@@ -26,6 +26,7 @@ class UseModulesWord : public Word
 {
 public:
     UseModulesWord(string name) : Word(name) {};
+
     virtual void Execute(Interpreter *interp) {
         auto item = interp->StackPop();
         vector<shared_ptr<StackItem>> modules = AsArray(item);
@@ -37,11 +38,94 @@ public:
 };
 
 
+// ( names -- )
+// Creates variables in current module
+class VariablesWord : public Word
+{
+public:
+    VariablesWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        auto names = AsArray(interp->StackPop());
+
+        for (int i = 0; i < names.size(); i++) {
+            string name = AsString(names[i]);
+            interp->CurModule()->EnsureVariable(name);
+        }
+    }
+};
+
+
+// ( value variable -- )
+// Sets variable value
+class BangWord : public Word
+{
+public:
+    BangWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        auto variable_item = interp->StackPop();
+        VariableItem* variable = dynamic_cast<VariableItem*>(variable_item.get());
+        auto value = interp->StackPop();
+        variable->SetValue(value);
+    }
+};
+
+
+// ( variable -- value )
+// Gets variable value
+class AtWord : public Word
+{
+public:
+    AtWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        auto variable_item = interp->StackPop();
+        VariableItem* variable = dynamic_cast<VariableItem*>(variable_item.get());
+        interp->StackPush(variable->GetValue());
+    }
+};
+
+
+// ( -- )
+// Prints param stack
+class DotSWord : public Word
+{
+public:
+    DotSWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        stack<shared_ptr<StackItem>> temp_stack;
+
+        int stack_size = interp->StackSize();
+        for (int i=0; i < stack_size; i++) {
+            auto item = interp->StackPop();
+            printf("[%d] %s\n", i, item->StringRep().c_str());
+            temp_stack.push(item);
+        } 
+
+        // Push items back
+        for (int i=0; i < stack_size; i++) {
+            auto item = temp_stack.top();
+            temp_stack.pop();
+            interp->StackPush(item);
+        } 
+    }
+};
+
+
+
+// =============================================================================
+// GlobalModule
 
 GlobalModule::GlobalModule() : Module("Forthic.global")
 {
     AddWord(shared_ptr<Word>(new PopWord("POP")));
     AddWord(shared_ptr<Word>(new UseModulesWord("USE-MODULES")));
+    AddWord(shared_ptr<Word>(new VariablesWord("VARIABLES")));
+    AddWord(shared_ptr<Word>(new BangWord("!")));
+    AddWord(shared_ptr<Word>(new AtWord("@")));
+    AddWord(shared_ptr<Word>(new DotSWord(".s")));
 }
 
 
