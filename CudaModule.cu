@@ -156,13 +156,13 @@ public:
 protected:
     void printMemAsFloats(float* addr, int offset, int num) {
         for (int i=0; i < num ; i++) {
-            printf("%.4f\n", addr[offset+i]);
+            printf("%-8.4f ", addr[offset+i]);
         }
     }
 
     void printMemAsInts(int* addr, int offset, int num) {
         for (int i=0; i < num ; i++) {
-            printf("%df\n", addr[offset+i]);
+            printf("%-8d  ", addr[offset+i]);
         }
     }
 };

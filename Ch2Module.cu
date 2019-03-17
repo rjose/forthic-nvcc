@@ -16,8 +16,6 @@ __global__ void helloFromGPU() {
 */
 
 
-
-
 // =============================================================================
 // Words
 
@@ -71,6 +69,21 @@ public:
     }
 };
 
+// ( addr-A addr-B addr-C n -- )
+class HSumArraysWord : public Word
+{
+public:
+    HSumArraysWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        int N = AsInt(interp->StackPop());
+        auto C = AsFloatStar(interp->StackPop());
+        auto B = AsFloatStar(interp->StackPop());
+        auto A = AsFloatStar(interp->StackPop());
+
+        for (int idx = 0; idx < N; idx++)    C[idx] = A[idx] + B[idx];
+    }
+};
 
 // =============================================================================
 // Ch2Module
@@ -78,4 +91,5 @@ public:
 Ch2Module::Ch2Module() : Module("ch2") {
     AddWord(shared_ptr<Word>(new CheckResultWord("CHECK-RESULT")));
     AddWord(shared_ptr<Word>(new InitDataWord("INIT-DATA")));
+    AddWord(shared_ptr<Word>(new HSumArraysWord("H-SUM-ARRAYS")));
 }
