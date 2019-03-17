@@ -16,7 +16,7 @@ class CudaModule : public Module
 {
 public:
     CudaModule();
-    // virtual ~CudaModule();
+    virtual string ForthicCode();
 
 protected:
     // virtual shared_ptr<Word> treat_as_literal(string name);

@@ -122,6 +122,51 @@ public:
     }
 };
 
+// ( type -- )
+class SizeofWord : public Word
+{
+public:
+    SizeofWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        string type = AsString(interp->StackPop());
+        int result = 1;
+        if (type == "FLOAT")    result = sizeof(float);
+        interp->StackPush(shared_ptr<IntItem>(new IntItem(result)));
+    }
+};
+
+
+// ( address offset num type -- )
+class PrintMemWord : public Word
+{
+public:
+    PrintMemWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        string type = AsString(interp->StackPop());
+        int num = AsInt(interp->StackPop());
+        int offset = AsInt(interp->StackPop());
+        auto address = interp->StackPop();
+
+        if (type == "FLOAT")    printMemAsFloats(AsFloatStar(address), offset, num);
+        else                    printMemAsInts(AsIntStar(address), offset, num);
+    }
+
+protected:
+    void printMemAsFloats(float* addr, int offset, int num) {
+        for (int i=0; i < num ; i++) {
+            printf("%.4f\n", addr[offset+i]);
+        }
+    }
+
+    void printMemAsInts(int* addr, int offset, int num) {
+        for (int i=0; i < num ; i++) {
+            printf("%df\n", addr[offset+i]);
+        }
+    }
+};
+
 // =============================================================================
 // CudaModule
 
@@ -133,9 +178,20 @@ CudaModule::CudaModule() : Module("cuda")
     AddWord(shared_ptr<Word>(new ToCoordWord(">y", "y")));
     AddWord(shared_ptr<Word>(new ToCoordWord(">z", "z")));
     AddWord(shared_ptr<Word>(new CheckIndexWord("GPU-CHECK-INDEX")));
+    AddWord(shared_ptr<Word>(new SizeofWord("SIZEOF")));
     AddWord(shared_ptr<Word>(new MallocWord("MALLOC")));
     AddWord(shared_ptr<Word>(new FreeWord("FREE")));
+    AddWord(shared_ptr<Word>(new PrintMemWord("PRINT-MEM")));
 }
+
+string CudaModule::ForthicCode() {
+    string result(
+    ": FLOAT   'FLOAT' ; "
+    ": INT     'INT' ; "
+    );
+    return result;
+}
+
 
 // =============================================================================
 // StackItem Converters

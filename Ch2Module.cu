@@ -1,3 +1,4 @@
+#include <ctime>
 #include <cstdio>
 #include "Interpreter.h"
 #include "CudaModule.h"
@@ -49,9 +50,32 @@ public:
 };
 
 
+// ( addr num -- )
+class InitDataWord : public Word
+{
+public:
+    InitDataWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        int num = AsInt(interp->StackPop());
+        float* addr = AsFloatStar(interp->StackPop());
+
+        // generate different seed for random number
+        time_t t;
+        srand((unsigned) time(&t));
+        printf("%ld\n", t);
+
+        for (int i = 0; i < num; i++) {
+            addr[i] = (float)(rand() & 0xFF) / 10.0f;
+        }
+    }
+};
+
+
 // =============================================================================
 // Ch2Module
 
 Ch2Module::Ch2Module() : Module("ch2") {
     AddWord(shared_ptr<Word>(new CheckResultWord("CHECK-RESULT")));
+    AddWord(shared_ptr<Word>(new InitDataWord("INIT-DATA")));
 }

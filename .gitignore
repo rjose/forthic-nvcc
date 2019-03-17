@@ -3,3 +3,4 @@ app
 *.swp
 .vscode
 test/test
+tmp

@@ -1,8 +1,11 @@
+#include <unistd.h>
+
 #include "Interpreter.h"
 #include "GlobalModule.h"
 #include "PushItemWord.h"
 #include "FloatItem.h"
 #include "IntItem.h"
+#include "StringItem.h"
 
 // =============================================================================
 // Words
@@ -131,13 +134,20 @@ public:
         float l = AsFloat(interp->StackPop());
 
         float res = 0.0;
-        if      (op == "+")   res = l + r;
-        else if (op == "-")   res = l - r;
-        else if (op == "*")   res = l * r;
-        else if (op == "/")   res = l / r;
+        int int_res = 0;
+        if      (op == "+")    res = l + r;
+        else if (op == "-")    res = l - r;
+        else if (op == "*")    res = l * r;
+        else if (op == "/")    res = l / r;
+        else if (op == "<<")   int_res = (int)l << (int)r;
         else                  throw string("Unknown operation: ") + op;
 
-        interp->StackPush(shared_ptr<FloatItem>(new FloatItem(res)));
+        if (op == "<<") {
+            interp->StackPush(shared_ptr<IntItem>(new IntItem(int_res)));
+        }
+        else {
+            interp->StackPush(shared_ptr<FloatItem>(new FloatItem(res)));
+        }
     }
 protected:
     string op;
@@ -157,6 +167,57 @@ public:
 };
 
 
+// ( item -- )
+class StopWord : public Word
+{
+public:
+    StopWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        throw "STOP";
+    }
+};
+
+
+// ( ms -- )
+class MSleepWord : public Word
+{
+public:
+    MSleepWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        int msec = AsInt(interp->StackPop());
+        usleep(msec*1000);
+    }
+};
+
+// ( strings -- string )
+class ConcatWord : public Word
+{
+public:
+    ConcatWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        auto strings = AsArray(interp->StackPop());
+        string result;
+        for (int i=0; i < strings.size(); i++) {
+            result += AsString(strings[i]);
+        }
+        interp->StackPush(StringItem::New(result));
+    }
+};
+
+// ( -- "\n" )
+class EndlWord : public Word
+{
+public:
+    EndlWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        interp->StackPush(StringItem::New("\n"));
+    }
+};
+
 
 // =============================================================================
 // GlobalModule
@@ -173,12 +234,12 @@ GlobalModule::GlobalModule() : Module("Forthic.global")
     AddWord(shared_ptr<Word>(new ArithWord("-", "-")));
     AddWord(shared_ptr<Word>(new ArithWord("*", "*")));
     AddWord(shared_ptr<Word>(new ArithWord("/", "/")));
+    AddWord(shared_ptr<Word>(new ArithWord("<<", "<<")));
     AddWord(shared_ptr<Word>(new PrintWord("PRINT")));
-}
-
-
-GlobalModule::~GlobalModule()
-{
+    AddWord(shared_ptr<Word>(new StopWord("STOP")));
+    AddWord(shared_ptr<Word>(new MSleepWord("MSLEEP")));
+    AddWord(shared_ptr<Word>(new ConcatWord("CONCAT")));
+    AddWord(shared_ptr<Word>(new EndlWord("ENDL")));
 }
 
 

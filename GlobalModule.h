@@ -15,7 +15,6 @@ class GlobalModule : public Module
 {
 public:
     GlobalModule();
-    virtual ~GlobalModule();
 
 protected:
     virtual shared_ptr<Word> treat_as_literal(string name);

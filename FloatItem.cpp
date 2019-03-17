@@ -1,3 +1,4 @@
+#include <sstream>
 #include "FloatItem.h"
 
 
@@ -16,4 +17,11 @@ float FloatItem::GetFloat() {
 
 int FloatItem::GetInt() {
     return int(value);
+}
+
+
+string FloatItem::StringRep() {
+    stringstream builder;
+    builder << "FloatItem: " << value;
+    return builder.str();
 }
