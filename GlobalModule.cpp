@@ -98,6 +98,12 @@ public:
         stack<shared_ptr<StackItem>> temp_stack;
 
         int stack_size = interp->StackSize();
+
+        if (stack_size == 0) {
+            printf("[]\n");
+            return;
+        }
+
         for (int i=0; i < stack_size; i++) {
             auto item = interp->StackPop();
             printf("[%d] %s\n", i, item->StringRep().c_str());

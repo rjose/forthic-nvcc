@@ -3,6 +3,7 @@
 #include "CudaModule.h"
 #include "IntItem.h"
 #include "Dim3Item.h"
+#include "AddressItem.h"
 
 
 // =============================================================================
@@ -94,6 +95,33 @@ public:
     }
 };
 
+
+// ( num-bytes -- address )
+class MallocWord : public Word
+{
+public:
+    MallocWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        int num_bytes = AsInt(interp->StackPop());
+        void* ref = malloc(num_bytes);
+        interp->StackPush(shared_ptr<AddressItem>(new AddressItem(ref)));
+    }
+};
+
+
+// ( address -- )
+class FreeWord : public Word
+{
+public:
+    FreeWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        void* address = AsVoidStar(interp->StackPop());
+        free(address);
+    }
+};
+
 // =============================================================================
 // CudaModule
 
@@ -105,21 +133,46 @@ CudaModule::CudaModule() : Module("cuda")
     AddWord(shared_ptr<Word>(new ToCoordWord(">y", "y")));
     AddWord(shared_ptr<Word>(new ToCoordWord(">z", "z")));
     AddWord(shared_ptr<Word>(new CheckIndexWord("GPU-CHECK-INDEX")));
+    AddWord(shared_ptr<Word>(new MallocWord("MALLOC")));
+    AddWord(shared_ptr<Word>(new FreeWord("FREE")));
 }
 
 // =============================================================================
 // StackItem Converters
 
 
-dim3 AsDim3(shared_ptr<StackItem> item)
-{
-    if (auto i = dynamic_cast<IGetDim3*>(item.get()))
-    {
+dim3 AsDim3(shared_ptr<StackItem> item) {
+    if (auto i = dynamic_cast<IGetDim3*>(item.get())) {
         return i->GetDim3();
     }
-    else
-    {
+    else {
         throw "Item does not implement IGetInt";
     }
 }
 
+float* AsFloatStar(shared_ptr<StackItem> item) {
+    if (auto i = dynamic_cast<IGetAddress*>(item.get())) {
+        return i->GetFloatStar();
+    }
+    else {
+        throw item->StringRep() + ": does not implement IGetAddress";
+    }
+}
+
+int* AsIntStar(shared_ptr<StackItem> item) {
+    if (auto i = dynamic_cast<IGetAddress*>(item.get())) {
+        return i->GetIntStar();
+    }
+    else {
+        throw item->StringRep() + ": does not implement IGetAddress";
+    }
+}
+
+void* AsVoidStar(shared_ptr<StackItem> item) {
+    if (auto i = dynamic_cast<IGetAddress*>(item.get())) {
+        return i->GetVoidStar();
+    }
+    else {
+        throw item->StringRep() + ": does not implement IGetAddress";
+    }
+}
