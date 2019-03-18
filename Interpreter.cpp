@@ -44,6 +44,7 @@ void Interpreter::StackPush(shared_ptr<StackItem> item)
 
 shared_ptr<StackItem> Interpreter::StackPop()
 {
+    if (param_stack.size() == 0)   throw "Stack underflow";
     shared_ptr<StackItem> result = param_stack.top();
     param_stack.pop();
     return result;

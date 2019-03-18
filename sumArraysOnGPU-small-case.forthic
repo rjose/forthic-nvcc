@@ -3,14 +3,22 @@
 : NUM-ELEMS   1 5 << ;
 : NUM-BYTES   NUM-ELEMS FLOAT SIZEOF * ;
 
-[ "h_A" "h_B" "h_C" ] VARIABLES
+[ "h_A" "h_B" "h_C" "hostRef" "gpuRef" ] VARIABLES
+[ "d_A" "d_B" "d_C" ] VARIABLES
 
-: h_A!   NUM-BYTES MALLOC h_A !  h_A @ NUM-ELEMS INIT-DATA ;
-: h_B!   NUM-BYTES MALLOC h_B !  h_B @ NUM-ELEMS INIT-DATA ;
-: h_C!   NUM-BYTES MALLOC h_C ! ;
-: INIT   h_A! 1000 MSLEEP h_B! h_C! ;
-# : CLEAN  [ h_A h_B h_C ] "@ FREE" FOREACH ;
+: h_A!       NUM-BYTES MALLOC h_A !  h_A @ NUM-ELEMS INIT-DATA ;
+: h_B!       NUM-BYTES MALLOC h_B !  h_B @ NUM-ELEMS INIT-DATA ;
+: h_C!       NUM-BYTES MALLOC h_C ! ;
+: hostRef!   NUM-BYTES MALLOC hostRef !  hostRef @ 0 NUM-BYTES MEMSET ;
+: gpuRef!    NUM-BYTES MALLOC gpuRef !   gpuRef  @ 0 NUM-BYTES MEMSET ;
+: d_A!       FLOAT NUM-BYTES CUDA-MALLOC d_A ! ;
+: d_B!       FLOAT NUM-BYTES CUDA-MALLOC d_B ! ;
+: d_C!       FLOAT NUM-BYTES CUDA-MALLOC d_C ! ;
+: INIT-DEV   0 CUDA-SET-DEVICE ;
+: INIT-DATA  h_A! 1000 MSLEEP h_B! h_C! hostRef! gpuRef! d_A! d_B! d_C! ;
+: INIT       INIT-DEV INIT-DATA ;
 
+# Run code
 INIT
 
 h_A @  h_B @  h_C @ NUM-ELEMS  H-SUM-ARRAYS
@@ -31,54 +39,8 @@ h_B @ FREE
 h_C @ FREE
 
 # C Code ===============================================================================
-# void sumArraysOnHost(float *A, float *B, float *C, const int N)
-# {
-#     for (int idx = 0; idx < N; idx++)
-#         C[idx] = A[idx] + B[idx];
-# }
-# 
-# __global__ void sumArraysOnGPU(float *A, float *B, float *C, const int N)
-# {
-#     int i = threadIdx.x;
-# 
-#     if (i < N) C[i] = A[i] + B[i];
-# }
-# 
-# 
 # int main(int argc, char **argv)
 # {
-#     printf("%s Starting...\n", argv[0]);
-# 
-#     // set up device
-#     int dev = 0;
-#     CHECK(cudaSetDevice(dev));
-# 
-#     // set up data size of vectors
-#     int nElem = 1 << 5;
-#     printf("Vector size %d\n", nElem);
-# 
-#     // malloc host memory
-#     size_t nBytes = nElem * sizeof(float);
-# 
-#     float *h_A, *h_B, *hostRef, *gpuRef;
-#     h_A     = (float *)malloc(nBytes);
-#     h_B     = (float *)malloc(nBytes);
-#     hostRef = (float *)malloc(nBytes);
-#     gpuRef  = (float *)malloc(nBytes);
-# 
-#     // initialize data at host side
-#     initialData(h_A, nElem);
-#     initialData(h_B, nElem);
-# 
-#     memset(hostRef, 0, nBytes);
-#     memset(gpuRef,  0, nBytes);
-# 
-#     // malloc device global memory
-#     float *d_A, *d_B, *d_C;
-#     CHECK(cudaMalloc((float**)&d_A, nBytes));
-#     CHECK(cudaMalloc((float**)&d_B, nBytes));
-#     CHECK(cudaMalloc((float**)&d_C, nBytes));
-# 
 #     // transfer data from host to device
 #     CHECK(cudaMemcpy(d_A, h_A, nBytes, cudaMemcpyHostToDevice));
 #     CHECK(cudaMemcpy(d_B, h_B, nBytes, cudaMemcpyHostToDevice));

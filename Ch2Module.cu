@@ -9,11 +9,12 @@
 
 // =============================================================================
 // Kernels
-/*
-__global__ void helloFromGPU() {
-    printf("Hello from GPU!\n");
+
+__global__ void sumArraysOnGPU(float *A, float *B, float *C, const int N) {
+    int i = threadIdx.x;
+
+    if (i < N)   C[i] = A[i] + B[i];
 }
-*/
 
 
 // =============================================================================
@@ -61,7 +62,6 @@ public:
         // generate different seed for random number
         time_t t;
         srand((unsigned) time(&t));
-        printf("%ld\n", t);
 
         for (int i = 0; i < num; i++) {
             addr[i] = (float)(rand() & 0xFF) / 10.0f;

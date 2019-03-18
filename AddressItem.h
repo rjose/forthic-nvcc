@@ -11,6 +11,7 @@ class AddressItem : public StackItem, public IGetAddress
 {
 public:
     AddressItem(void* address) : address(address) {};
+    static shared_ptr<AddressItem> New(void* address);
 
     float* GetFloatStar();
     int* GetIntStar();
