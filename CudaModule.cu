@@ -98,47 +98,6 @@ public:
 };
 
 
-// ( num-bytes -- address )
-class MallocWord : public Word
-{
-public:
-    MallocWord(string name) : Word(name) {};
-
-    virtual void Execute(Interpreter *interp) {
-        int num_bytes = AsInt(interp->StackPop());
-        void* ref = malloc(num_bytes);
-        interp->StackPush(shared_ptr<AddressItem>(new AddressItem(ref)));
-    }
-};
-
-
-// ( address value num-bytes -- )
-class MemsetWord : public Word
-{
-public:
-    MemsetWord(string name) : Word(name) {};
-
-    virtual void Execute(Interpreter *interp) {
-        int num_bytes = AsInt(interp->StackPop());
-        int value = AsInt(interp->StackPop());
-        void* address = AsVoidStar(interp->StackPop());
-        memset(address, value, num_bytes);
-    }
-};
-
-
-// ( address -- )
-class FreeWord : public Word
-{
-public:
-    FreeWord(string name) : Word(name) {};
-
-    virtual void Execute(Interpreter *interp) {
-        void* address = AsVoidStar(interp->StackPop());
-        free(address);
-    }
-};
-
 // ( type -- )
 class SizeofWord : public Word
 {
@@ -202,7 +161,7 @@ public:
 };
 
 
-// ( type num-bytes -- addr )
+// ( num-bytes -- addr )
 class CudaMallocWord : public Word
 {
 public:
@@ -210,26 +169,76 @@ public:
 
     virtual void Execute(Interpreter *interp) {
         int num_bytes = AsInt(interp->StackPop());
-        string type = AsString(interp->StackPop());
 
-        if (type == "FLOAT") {
-            interp->StackPush(AddressItem::New(cuda_malloc_float(num_bytes)));
-        }
-        else   throw string("CUDA-MALLOC Unhandled type: " + type);
-    }
-
-protected:
-
-    void* cuda_malloc_float(int num_bytes) {
-        float *result;
-
-        auto res = cudaMalloc((float**)&result, num_bytes);
+        void *result;
+        auto res = cudaMalloc((void**)&result, num_bytes);
         if (res != cudaSuccess) {
             stringstream builder;
             builder << cudaGetErrorString(res) << " " << __FILE__ << ":" << __LINE__;
             throw builder.str();
         }
-        return (void*)result;
+        interp->StackPush(AddressItem::New(result));
+    }
+};
+
+
+// ( addr -- )
+class CudaFreeWord : public Word
+{
+public:
+    CudaFreeWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        void* addr = AsVoidStar(interp->StackPop());
+        auto res = cudaFree(addr);
+        if (res != cudaSuccess) {
+            stringstream builder;
+            builder << cudaGetErrorString(res) << " " << __FILE__ << ":" << __LINE__;
+            throw builder.str();
+        }
+    }
+};
+
+
+// ( dst src num-bytes -- )
+class CudaMemcpyHtDWord : public Word
+{
+public:
+    CudaMemcpyHtDWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        int num_bytes = AsInt(interp->StackPop());
+        void* src = AsFloatStar(interp->StackPop());
+        void* dst = AsFloatStar(interp->StackPop());
+
+        auto res = cudaMemcpy(dst, src, num_bytes, cudaMemcpyHostToDevice);
+        if (res != cudaSuccess) {
+            stringstream builder;
+            builder << cudaGetErrorString(res) << " " << __FILE__ << ":" << __LINE__;
+            throw builder.str();
+        }
+
+    }
+};
+
+
+// ( dst src num-bytes -- )
+class CudaMemcpyDtHWord : public Word
+{
+public:
+    CudaMemcpyDtHWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        int num_bytes = AsInt(interp->StackPop());
+        void* src = AsFloatStar(interp->StackPop());
+        void* dst = AsFloatStar(interp->StackPop());
+
+        auto res = cudaMemcpy(dst, src, num_bytes, cudaMemcpyDeviceToHost);
+        if (res != cudaSuccess) {
+            stringstream builder;
+            builder << cudaGetErrorString(res) << " " << __FILE__ << ":" << __LINE__;
+            throw builder.str();
+        }
     }
 };
 
@@ -247,12 +256,12 @@ CudaModule::CudaModule() : Module("cuda")
     AddWord(shared_ptr<Word>(new ToCoordWord(">z", "z")));
     AddWord(shared_ptr<Word>(new CheckIndexWord("GPU-CHECK-INDEX")));
     AddWord(shared_ptr<Word>(new SizeofWord("SIZEOF")));
-    AddWord(shared_ptr<Word>(new MallocWord("MALLOC")));
-    AddWord(shared_ptr<Word>(new MemsetWord("MEMSET")));
-    AddWord(shared_ptr<Word>(new FreeWord("FREE")));
     AddWord(shared_ptr<Word>(new PrintMemWord("PRINT-MEM")));
     AddWord(shared_ptr<Word>(new CudaSetDeviceWord("CUDA-SET-DEVICE")));
     AddWord(shared_ptr<Word>(new CudaMallocWord("CUDA-MALLOC")));
+    AddWord(shared_ptr<Word>(new CudaFreeWord("CUDA-FREE")));
+    AddWord(shared_ptr<Word>(new CudaMemcpyHtDWord("CUDA-MEMCPY-HtD")));
+    AddWord(shared_ptr<Word>(new CudaMemcpyDtHWord("CUDA-MEMCPY-DtH")));
 }
 
 string CudaModule::ForthicCode() {

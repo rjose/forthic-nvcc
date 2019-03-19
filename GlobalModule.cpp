@@ -1,4 +1,6 @@
 #include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "Interpreter.h"
 #include "GlobalModule.h"
@@ -6,6 +8,7 @@
 #include "FloatItem.h"
 #include "IntItem.h"
 #include "StringItem.h"
+#include "AddressItem.h"
 
 // =============================================================================
 // Words
@@ -219,6 +222,65 @@ public:
 };
 
 
+// ( items str -- )
+class ForeachWord : public Word
+{
+public:
+    ForeachWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        string str = AsString(interp->StackPop());
+        auto items = AsArray(interp->StackPop());
+        for (int i=0; i < items.size(); i++) {
+            interp->StackPush(items[i]);
+            interp->Run(str);
+        }
+    }
+};
+
+
+
+// ( num-bytes -- address )
+class MallocWord : public Word
+{
+public:
+    MallocWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        int num_bytes = AsInt(interp->StackPop());
+        void* ref = malloc(num_bytes);
+        interp->StackPush(shared_ptr<AddressItem>(new AddressItem(ref)));
+    }
+};
+
+
+// ( address value num-bytes -- )
+class MemsetWord : public Word
+{
+public:
+    MemsetWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        int num_bytes = AsInt(interp->StackPop());
+        int value = AsInt(interp->StackPop());
+        void* address = AsVoidStar(interp->StackPop());
+        memset(address, value, num_bytes);
+    }
+};
+
+
+// ( address -- )
+class FreeWord : public Word
+{
+public:
+    FreeWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        void* address = AsVoidStar(interp->StackPop());
+        free(address);
+    }
+};
+
 // =============================================================================
 // GlobalModule
 
@@ -240,6 +302,10 @@ GlobalModule::GlobalModule() : Module("Forthic.global")
     AddWord(shared_ptr<Word>(new MSleepWord("MSLEEP")));
     AddWord(shared_ptr<Word>(new ConcatWord("CONCAT")));
     AddWord(shared_ptr<Word>(new EndlWord("ENDL")));
+    AddWord(shared_ptr<Word>(new ForeachWord("FOREACH")));
+    AddWord(shared_ptr<Word>(new MallocWord("MALLOC")));
+    AddWord(shared_ptr<Word>(new MemsetWord("MEMSET")));
+    AddWord(shared_ptr<Word>(new FreeWord("FREE")));
 }
 
 

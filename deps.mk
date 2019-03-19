@@ -1,4 +1,4 @@
-CudaModule.o AddressItem.o  : AddressItem.h
+CudaModule.o AddressItem.o GlobalModule.o  : AddressItem.h
  ArrayItem.o EndArrayWord.o EndArrayWord.o Interpreter.o StartArrayItem.o  : ArrayItem.h
  BasicConverters.o test/GlobalModuleTest.o ArrayItem.o ModuleItem.o StringItem.o VariableItem.o : BasicConverters.h
 Ch2Module.o main.o  : Ch2Module.h
@@ -15,7 +15,7 @@ Ch2Module.o Ch2Module.o CudaModule.o GlobalModule.o Module.o main.o main.o main.
  GlobalModule.o Interpreter.o Module.o PushItemWord.o  : PushItemWord.h
  StackItem.o test/InterpreterTest.o AddressItem.o ArrayItem.o BasicConverters.o DefinitionWord.o Dim3Item.o EndArrayWord.o FloatItem.o IntItem.o Interpreter.o ModuleItem.o PushItemWord.o StartArrayItem.o StringItem.o VariableItem.o : StackItem.h
  EndArrayWord.o Interpreter.o StartArrayItem.o  : StartArrayItem.h
- Interpreter.o StringItem.o  : StringItem.h
+ GlobalModule.o Interpreter.o StringItem.o  : StringItem.h
  test/GlobalModuleTest.o test/main_test.o  : test/GlobalModuleTest.h
  test/InterpreterTest.o test/main_test.o  : test/InterpreterTest.h
  test/GlobalModuleTest.o test/ModuleTest.o test/main_test.o test/main_test.o  : test/ModuleTest.h
