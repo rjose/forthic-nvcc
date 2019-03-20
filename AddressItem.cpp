@@ -23,3 +23,9 @@ string AddressItem::StringRep() {
     builder << "AddressItem: " << (long int)(address);
     return builder.str();
 }
+
+string AddressItem::AsString() {
+    stringstream builder;
+    builder << (long int)(address);
+    return builder.str();
+}

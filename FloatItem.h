@@ -16,6 +16,7 @@ public:
     float GetFloat();
     int GetInt();
     virtual string StringRep();
+    virtual string AsString();
 
 protected:
     float value;

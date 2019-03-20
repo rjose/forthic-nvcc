@@ -18,6 +18,7 @@ public:
     void* GetVoidStar();
 
     virtual string StringRep();
+    virtual string AsString();
 
 protected:
     void* address;

@@ -21,7 +21,7 @@ string load_file(string filename) {
 
 int main(int c, char* argv[]) {
     try {
-        string filename = "sumArraysOnGPU-small-case.forthic";
+        string filename = "sumArraysOnGPU.forthic";
         if (c >= 2)   filename = argv[1];
 
         Interpreter interp;

@@ -6,6 +6,7 @@ using namespace std;
 class StartArrayItem : public StackItem
 {
 public:
-	StartArrayItem();
-	virtual ~StartArrayItem();
+    StartArrayItem();
+    virtual ~StartArrayItem();
+    virtual string AsString();
 };

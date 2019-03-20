@@ -11,3 +11,9 @@ string Dim3Item::StringRep() {
     builder << "Dim3Item: " << "(" << value.x << ", " << value.y << ", " << value.z << ")";
     return builder.str();
 }
+
+string Dim3Item::AsString() {
+    stringstream builder;
+    builder << "(" << value.x << ", " << value.y << ", " << value.z << ")";
+    return builder.str();
+}

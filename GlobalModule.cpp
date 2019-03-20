@@ -9,6 +9,7 @@
 #include "IntItem.h"
 #include "StringItem.h"
 #include "AddressItem.h"
+#include "TimePointItem.h"
 
 // =============================================================================
 // Words
@@ -165,7 +166,7 @@ public:
 
     virtual void Execute(Interpreter *interp) {
         auto item = interp->StackPop();
-        printf("%s\n", item->StringRep().c_str());
+        printf("%s\n", item->AsString().c_str());
     }
 };
 
@@ -204,7 +205,7 @@ public:
         auto strings = AsArray(interp->StackPop());
         string result;
         for (int i=0; i < strings.size(); i++) {
-            result += AsString(strings[i]);
+            result += strings[i]->AsString();
         }
         interp->StackPush(StringItem::New(result));
     }
@@ -281,6 +282,32 @@ public:
     }
 };
 
+// ( -- time_point )
+class NowWord : public Word
+{
+public:
+    NowWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        interp->StackPush(TimePointItem::New(high_resolution_clock::now()));
+    }
+};
+
+// ( l_time_point r_time_point -- ms )
+class SinceWord : public Word
+{
+public:
+    SinceWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        auto r_time_point = AsTimePoint(interp->StackPop());
+        auto l_time_point = AsTimePoint(interp->StackPop());
+        auto duration = r_time_point - l_time_point;
+        long long result = duration_cast<milliseconds>(duration).count();
+        interp->StackPush(IntItem::New(result));
+    }
+};
+
 // =============================================================================
 // GlobalModule
 
@@ -306,6 +333,8 @@ GlobalModule::GlobalModule() : Module("Forthic.global")
     AddWord(shared_ptr<Word>(new MallocWord("MALLOC")));
     AddWord(shared_ptr<Word>(new MemsetWord("MEMSET")));
     AddWord(shared_ptr<Word>(new FreeWord("FREE")));
+    AddWord(shared_ptr<Word>(new NowWord("NOW")));
+    AddWord(shared_ptr<Word>(new SinceWord("SINCE")));
 }
 
 
@@ -347,26 +376,29 @@ shared_ptr<Word> GlobalModule::treat_as_literal(string name)
 // =============================================================================
 // StackItem Converters
 
-int AsInt(shared_ptr<StackItem> item)
-{
-    if (auto i = dynamic_cast<IGetInt*>(item.get()))
-    {
+int AsInt(shared_ptr<StackItem> item) {
+    if (auto i = dynamic_cast<IGetInt*>(item.get())) {
         return i->GetInt();
     }
-    else
-    {
+    else {
         throw item->StringRep() + " does not implement IGetInt";
     }
 }
 
-float AsFloat(shared_ptr<StackItem> item)
-{
-    if (auto i = dynamic_cast<IGetFloat*>(item.get()))
-    {
+float AsFloat(shared_ptr<StackItem> item) {
+    if (auto i = dynamic_cast<IGetFloat*>(item.get())) {
         return i->GetFloat();
     }
-    else
-    {
+    else {
         throw item->StringRep() + " does not implement IGetFloat";
+    }
+}
+
+high_resolution_clock::time_point AsTimePoint(shared_ptr<StackItem> item) {
+    if (auto i = dynamic_cast<IGetTimePoint*>(item.get())) {
+        return i->GetTimePoint();
+    }
+    else {
+        throw item->StringRep() + " does not implement IGetTimePoint";
     }
 }

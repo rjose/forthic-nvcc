@@ -25,3 +25,9 @@ string FloatItem::StringRep() {
     builder << "FloatItem: " << value;
     return builder.str();
 }
+
+string FloatItem::AsString() {
+    stringstream builder;
+    builder << value;
+    return builder.str();
+}

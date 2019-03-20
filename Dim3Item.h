@@ -14,6 +14,7 @@ public:
     dim3 GetDim3();
 
     virtual string StringRep();
+    virtual string AsString();
 
 protected:
     dim3 value;

@@ -12,10 +12,10 @@ using namespace std;
 class ArrayItem : public StackItem, public IAsArray
 {
 public:
-	ArrayItem(vector<shared_ptr<StackItem>> items) : items(items) {};
-	virtual ~ArrayItem() {};
-	vector<shared_ptr<StackItem>> AsArray();
+    ArrayItem(vector<shared_ptr<StackItem>> items) : items(items) {};
+    vector<shared_ptr<StackItem>> AsArray();
+    virtual string AsString();
 
 protected:
-	vector<shared_ptr<StackItem>> items;
+    vector<shared_ptr<StackItem>> items;
 };

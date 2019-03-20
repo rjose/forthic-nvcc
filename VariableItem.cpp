@@ -17,3 +17,7 @@ string VariableItem::StringRep() {
     result += value_str;
     return result;
 }
+
+string VariableItem::AsString() {
+    return StringRep();
+}

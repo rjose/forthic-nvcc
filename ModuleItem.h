@@ -12,10 +12,11 @@ using namespace std;
 class ModuleItem : public StackItem, public IAsModule
 {
 public:
-	ModuleItem(shared_ptr<Module> mod) : mod(mod) {};
-	virtual ~ModuleItem() {};
-	shared_ptr<Module> AsModule();
+    ModuleItem(shared_ptr<Module> mod) : mod(mod) {};
+    virtual ~ModuleItem() {};
+    shared_ptr<Module> AsModule();
+    virtual string AsString();
 
 protected:
-	shared_ptr<Module> mod;
+    shared_ptr<Module> mod;
 };
