@@ -6,6 +6,8 @@
 #include "IntItem.h"
 #include "Dim3Item.h"
 #include "AddressItem.h"
+#include "StringItem.h"
+#include "CudaDevicePropItem.h"
 
 
 // =============================================================================
@@ -107,7 +109,8 @@ public:
     virtual void Execute(Interpreter *interp) {
         string type = AsString(interp->StackPop());
         int result = 1;
-        if (type == "FLOAT")    result = sizeof(float);
+        if      (type == "FLOAT")    result = sizeof(float);
+        else if (type == "INT")      result = sizeof(int);
         interp->StackPush(shared_ptr<IntItem>(new IntItem(result)));
     }
 };
@@ -143,6 +146,15 @@ protected:
     }
 };
 
+
+static void checkCudaCall(const cudaError_t res, const char* file, int line) {
+    if (res != cudaSuccess) {
+        stringstream builder;
+        builder << cudaGetErrorString(res) << " " << file << ":" << line;
+        throw builder.str();
+    }
+}
+
 // ( index -- )
 class CudaSetDeviceWord : public Word
 {
@@ -152,11 +164,20 @@ public:
     virtual void Execute(Interpreter *interp) {
         int index = AsInt(interp->StackPop());
         auto res = cudaSetDevice(index);
-        if (res != cudaSuccess) {
-            stringstream builder;
-            builder << cudaGetErrorString(res) << " " << __FILE__ << ":" << __LINE__;
-            throw builder.str();
-        }
+        checkCudaCall(res, __FILE__, __LINE__);
+    }
+};
+
+
+// ( -- )
+class CudaDeviceResetWord : public Word
+{
+public:
+    CudaDeviceResetWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        auto res = cudaDeviceReset();
+        checkCudaCall(res, __FILE__, __LINE__);
     }
 };
 
@@ -172,11 +193,7 @@ public:
 
         void *result;
         auto res = cudaMalloc((void**)&result, num_bytes);
-        if (res != cudaSuccess) {
-            stringstream builder;
-            builder << cudaGetErrorString(res) << " " << __FILE__ << ":" << __LINE__;
-            throw builder.str();
-        }
+        checkCudaCall(res, __FILE__, __LINE__);
         interp->StackPush(AddressItem::New(result));
     }
 };
@@ -191,11 +208,7 @@ public:
     virtual void Execute(Interpreter *interp) {
         void* addr = AsVoidStar(interp->StackPop());
         auto res = cudaFree(addr);
-        if (res != cudaSuccess) {
-            stringstream builder;
-            builder << cudaGetErrorString(res) << " " << __FILE__ << ":" << __LINE__;
-            throw builder.str();
-        }
+        checkCudaCall(res, __FILE__, __LINE__);
     }
 };
 
@@ -212,12 +225,7 @@ public:
         void* dst = AsFloatStar(interp->StackPop());
 
         auto res = cudaMemcpy(dst, src, num_bytes, cudaMemcpyHostToDevice);
-        if (res != cudaSuccess) {
-            stringstream builder;
-            builder << cudaGetErrorString(res) << " " << __FILE__ << ":" << __LINE__;
-            throw builder.str();
-        }
-
+        checkCudaCall(res, __FILE__, __LINE__);
     }
 };
 
@@ -234,10 +242,49 @@ public:
         void* dst = AsFloatStar(interp->StackPop());
 
         auto res = cudaMemcpy(dst, src, num_bytes, cudaMemcpyDeviceToHost);
-        if (res != cudaSuccess) {
-            stringstream builder;
-            builder << cudaGetErrorString(res) << " " << __FILE__ << ":" << __LINE__;
-            throw builder.str();
+        checkCudaCall(res, __FILE__, __LINE__);
+    }
+};
+
+
+// ( devIndex -- cudaDeviceProp )
+class CudaGetDevicePropertiesWord : public Word
+{
+public:
+    CudaGetDevicePropertiesWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        int devIndex = AsInt(interp->StackPop());
+
+        cudaDeviceProp deviceProp;
+        auto res = cudaGetDeviceProperties(&deviceProp, devIndex);
+        checkCudaCall(res, __FILE__, __LINE__);
+        interp->StackPush(CudaDevicePropItem::New(deviceProp));
+    }
+};
+
+
+// ( cudaDeviceProp field -- value )
+class DevPropWord : public Word
+{
+public:
+    DevPropWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        string field = AsString(interp->StackPop());
+        shared_ptr<StackItem> item = interp->StackPop();
+
+        if (auto devPropItem = dynamic_cast<CudaDevicePropItem*>(item.get())) {
+            const cudaDeviceProp& deviceProp = devPropItem->deviceProp();
+            if (field == "name") {
+                interp->StackPush(StringItem::New(string(deviceProp.name)));
+            }
+            else {
+                throw string("Unknown dev prop field: ") + field;
+            }
+        }
+        else {
+            throw "Item was not a CudaDevicePropItem";
         }
     }
 };
@@ -258,10 +305,13 @@ CudaModule::CudaModule() : Module("cuda")
     AddWord(shared_ptr<Word>(new SizeofWord("SIZEOF")));
     AddWord(shared_ptr<Word>(new PrintMemWord("PRINT-MEM")));
     AddWord(shared_ptr<Word>(new CudaSetDeviceWord("CUDA-SET-DEVICE")));
+    AddWord(shared_ptr<Word>(new CudaDeviceResetWord("CUDA-DEVICE-RESET")));
     AddWord(shared_ptr<Word>(new CudaMallocWord("CUDA-MALLOC")));
     AddWord(shared_ptr<Word>(new CudaFreeWord("CUDA-FREE")));
     AddWord(shared_ptr<Word>(new CudaMemcpyHtDWord("CUDA-MEMCPY-HtD")));
     AddWord(shared_ptr<Word>(new CudaMemcpyDtHWord("CUDA-MEMCPY-DtH")));
+    AddWord(shared_ptr<Word>(new CudaGetDevicePropertiesWord("CUDA-GET-DEVICE-PROPERTIES")));
+    AddWord(shared_ptr<Word>(new DevPropWord("DEV-PROP")));
 }
 
 string CudaModule::ForthicCode() {

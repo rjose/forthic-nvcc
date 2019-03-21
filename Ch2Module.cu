@@ -16,6 +16,16 @@ __global__ void sumArraysOnGPU(float *A, float *B, float *C, const int N) {
     if (i < N)   C[i] = A[i] + B[i];
 }
 
+__global__ void printThreadIndex(int *A, const int nx, const int ny)
+{
+    int ix = threadIdx.x + blockIdx.x * blockDim.x;
+    int iy = threadIdx.y + blockIdx.y * blockDim.y;
+    unsigned int idx = iy * nx + ix;
+
+    printf("thread_id (%d,%d) block_id (%d,%d) coordinate (%d,%d) global index"
+           " %2d ival %2d\n", threadIdx.x, threadIdx.y, blockIdx.x, blockIdx.y,
+           ix, iy, idx, A[idx]);
+}
 
 // =============================================================================
 // Words
@@ -100,6 +110,78 @@ public:
 };
 
 
+// ( addr size -- )
+class InitialIntWord : public Word
+{
+public:
+    InitialIntWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        int size = AsInt(interp->StackPop());
+        int* A = AsIntStar(interp->StackPop());
+        for (int i=0; i < size; i++) {
+            A[i] = i;
+        }
+    }
+};
+
+
+// ( addr-C nx ny -- )
+/*
+ * This example helps to visualize the relationship between thread/block IDs and
+ * offsets into data. For each CUDA thread, this example displays the
+ * intra-block thread ID, the inter-block block ID, the global coordinate of a
+ * thread, the calculated offset into input data, and the input data at that
+ * offset.
+ */
+class PrintIntMatrixWord : public Word
+{
+public:
+    PrintIntMatrixWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        int ny = AsInt(interp->StackPop());
+        int nx = AsInt(interp->StackPop());
+        int* C = AsIntStar(interp->StackPop());
+
+        int *ic = C;
+        printf("\nMatrix: (%d.%d)\n", nx, ny);
+
+        for (int iy = 0; iy < ny; iy++) {
+            for (int ix = 0; ix < nx; ix++) {
+                printf("%3d", ic[ix]);
+            }
+
+            ic += nx;  // Advance to next row
+            printf("\n");
+        }
+
+        printf("\n");
+        return;
+    }
+};
+
+
+// ( grid block addr-A nx ny -- )
+class PrintThreadIndexWord : public Word
+{
+public:
+    PrintThreadIndexWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        int ny = AsInt(interp->StackPop());
+        int nx = AsInt(interp->StackPop());
+        int* A = AsIntStar(interp->StackPop());
+        dim3 block = AsDim3(interp->StackPop());
+        dim3 grid = AsDim3(interp->StackPop());
+
+        printThreadIndex<<<grid, block>>>(A, nx, ny);
+    }
+};
+
+
+
+
 // =============================================================================
 // Ch2Module
 
@@ -108,4 +190,8 @@ Ch2Module::Ch2Module() : Module("ch2") {
     AddWord(shared_ptr<Word>(new InitDataWord("INIT-DATA")));
     AddWord(shared_ptr<Word>(new HSumArraysWord("H-SUM-ARRAYS")));
     AddWord(shared_ptr<Word>(new DSumArraysWord("D-SUM-ARRAYS")));
+
+    AddWord(shared_ptr<Word>(new InitialIntWord("INITIAL-INT")));
+    AddWord(shared_ptr<Word>(new PrintIntMatrixWord("PRINT-INT-MATRIX")));
+    AddWord(shared_ptr<Word>(new PrintThreadIndexWord("PRINT-THREAD-INDEX")));
 }
