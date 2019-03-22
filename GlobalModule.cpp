@@ -27,6 +27,22 @@ public:
 };
 
 
+// ( a b -- b a )
+// Swaps top two items
+class SwapWord : public Word
+{
+public:
+    SwapWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        auto b = interp->StackPop();
+        auto a = interp->StackPop();
+        interp->StackPush(b);
+        interp->StackPush(a);
+    }
+};
+
+
 // ( modules -- )
 // Adds modules to current module's using module list
 class UseModulesWord : public Word
@@ -314,6 +330,7 @@ public:
 GlobalModule::GlobalModule() : Module("Forthic.global")
 {
     AddWord(shared_ptr<Word>(new PopWord("POP")));
+    AddWord(shared_ptr<Word>(new SwapWord("SWAP")));
     AddWord(shared_ptr<Word>(new UseModulesWord("USE-MODULES")));
     AddWord(shared_ptr<Word>(new VariablesWord("VARIABLES")));
     AddWord(shared_ptr<Word>(new BangWord("!")));

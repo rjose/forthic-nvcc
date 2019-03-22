@@ -27,6 +27,27 @@ __global__ void printThreadIndex(int *A, const int nx, const int ny)
            ix, iy, idx, A[idx]);
 }
 
+__global__ void sumMatrixOnGPU2DBlock2DGrid(float *MatA, float *MatB, float *MatC, int nx, int ny)
+{
+    unsigned int ix = threadIdx.x + blockIdx.x * blockDim.x;
+    unsigned int iy = threadIdx.y + blockIdx.y * blockDim.y;
+    unsigned int idx = iy * nx + ix;
+
+    if (ix < nx && iy < ny)
+        MatC[idx] = MatA[idx] + MatB[idx];
+}
+
+// grid 2D block 1D
+__global__ void sumMatrixOnGPU1DBlock2DGrid(float *MatA, float *MatB, float *MatC, int nx, int ny)
+{
+    unsigned int ix = threadIdx.x + blockIdx.x * blockDim.x;
+    unsigned int iy = blockIdx.y;
+    unsigned int idx = iy * nx + ix;
+
+    if (ix < nx && iy < ny)
+        MatC[idx] = MatA[idx] + MatB[idx];
+}
+
 // =============================================================================
 // Words
 
@@ -180,6 +201,72 @@ public:
 };
 
 
+// ( addr-A addr-B addr-C nx ny -- )
+class HSumMatricesWord : public Word
+{
+public:
+    HSumMatricesWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        int ny = AsInt(interp->StackPop());
+        int nx = AsInt(interp->StackPop());
+        float* C = AsFloatStar(interp->StackPop());
+        float* B = AsFloatStar(interp->StackPop());
+        float* A = AsFloatStar(interp->StackPop());
+
+        float *ia = A;
+        float *ib = B;
+        float *ic = C;
+
+        for (int iy = 0; iy < ny; iy++) {
+            for (int ix = 0; ix < nx; ix++) {
+                ic[ix] = ia[ix] + ib[ix];
+            }
+            ia += nx; ib += nx; ic += nx;
+        }
+    }
+};
+
+
+// ( grid block  addr-A addr-B addr-C nx ny -- )
+class DSumMatricesWord : public Word
+{
+public:
+    DSumMatricesWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        int ny = AsInt(interp->StackPop());
+        int nx = AsInt(interp->StackPop());
+        float* C = AsFloatStar(interp->StackPop());
+        float* B = AsFloatStar(interp->StackPop());
+        float* A = AsFloatStar(interp->StackPop());
+        dim3 block = AsDim3(interp->StackPop());
+        dim3 grid = AsDim3(interp->StackPop());
+
+        sumMatrixOnGPU2DBlock2DGrid<<<grid, block>>>(A, B, C, nx, ny);
+    }
+};
+
+
+// ( grid block  addr-A addr-B addr-C nx ny -- )
+class DSumMatrices2DGrid1DBlockWord : public Word
+{
+public:
+    DSumMatrices2DGrid1DBlockWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        int ny = AsInt(interp->StackPop());
+        int nx = AsInt(interp->StackPop());
+        float* C = AsFloatStar(interp->StackPop());
+        float* B = AsFloatStar(interp->StackPop());
+        float* A = AsFloatStar(interp->StackPop());
+        dim3 block = AsDim3(interp->StackPop());
+        dim3 grid = AsDim3(interp->StackPop());
+
+        sumMatrixOnGPU1DBlock2DGrid<<<grid, block>>>(A, B, C, nx, ny);
+    }
+};
+
 
 
 // =============================================================================
@@ -194,4 +281,8 @@ Ch2Module::Ch2Module() : Module("ch2") {
     AddWord(shared_ptr<Word>(new InitialIntWord("INITIAL-INT")));
     AddWord(shared_ptr<Word>(new PrintIntMatrixWord("PRINT-INT-MATRIX")));
     AddWord(shared_ptr<Word>(new PrintThreadIndexWord("PRINT-THREAD-INDEX")));
+
+    AddWord(shared_ptr<Word>(new HSumMatricesWord("H-SUM-MATRICES")));
+    AddWord(shared_ptr<Word>(new DSumMatricesWord("D-SUM-MATRICES")));
+    AddWord(shared_ptr<Word>(new DSumMatrices2DGrid1DBlockWord("D-SUM-MATRICES-2DGRID-1DBLOCK")));
 }

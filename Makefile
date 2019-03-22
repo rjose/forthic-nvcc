@@ -22,7 +22,7 @@ runtest:
 
 .PHONY: runapp
 runapp: app
-	./app checkThreadIndex.forthic
+	./app sumMatrix2DGrid1DBlock.forthic
 
 test: $(TEST_APP_OBJECTS)
 	nvcc -o ./test/test $(TEST_APP_OBJECTS)
