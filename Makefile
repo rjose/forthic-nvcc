@@ -22,7 +22,7 @@ runtest:
 
 .PHONY: runapp
 runapp: app
-	./app sumMatrix2DGrid1DBlock.forthic
+	./app sumArraysOnGPU-managed.forthic
 
 test: $(TEST_APP_OBJECTS)
 	nvcc -o ./test/test $(TEST_APP_OBJECTS)

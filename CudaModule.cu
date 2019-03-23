@@ -29,21 +29,6 @@ __global__ void checkIndex() {
 // =============================================================================
 // Words
 
-// ( num_blocks thread_per_block -- )
-class HelloWord : public Word
-{
-public:
-    HelloWord(string name) : Word(name) {};
-
-    virtual void Execute(Interpreter *interp) {
-        int threads_per_block = AsInt(interp->StackPop());
-        int num_blocks = AsInt(interp->StackPop()); 
-
-        helloFromGPU<<<num_blocks, threads_per_block>>>();
-        cudaDeviceReset();
-    }
-};
-
 // ( x y z -- dim3 )
 class Dim3Word : public Word
 {
@@ -199,6 +184,23 @@ public:
 };
 
 
+// ( num-bytes -- addr )
+class CudaMallocManagedWord : public Word
+{
+public:
+    CudaMallocManagedWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        int num_bytes = AsInt(interp->StackPop());
+
+        void *result;
+        auto res = cudaMallocManaged((void**)&result, num_bytes);
+        checkCudaCall(res, __FILE__, __LINE__);
+        interp->StackPush(AddressItem::New(result));
+    }
+};
+
+
 // ( addr -- )
 class CudaFreeWord : public Word
 {
@@ -208,6 +210,19 @@ public:
     virtual void Execute(Interpreter *interp) {
         void* addr = AsVoidStar(interp->StackPop());
         auto res = cudaFree(addr);
+        checkCudaCall(res, __FILE__, __LINE__);
+    }
+};
+
+
+// ( -- )
+class CudaDeviceSynchronizeWord : public Word
+{
+public:
+    CudaDeviceSynchronizeWord(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        auto res = cudaDeviceSynchronize();
         checkCudaCall(res, __FILE__, __LINE__);
     }
 };
@@ -296,7 +311,6 @@ public:
 
 CudaModule::CudaModule() : Module("cuda")
 {
-    AddWord(shared_ptr<Word>(new HelloWord("HELLO")));
     AddWord(shared_ptr<Word>(new Dim3Word("DIM3")));
     AddWord(shared_ptr<Word>(new ToCoordWord(">x", "x")));
     AddWord(shared_ptr<Word>(new ToCoordWord(">y", "y")));
@@ -307,7 +321,9 @@ CudaModule::CudaModule() : Module("cuda")
     AddWord(shared_ptr<Word>(new CudaSetDeviceWord("CUDA-SET-DEVICE")));
     AddWord(shared_ptr<Word>(new CudaDeviceResetWord("CUDA-DEVICE-RESET")));
     AddWord(shared_ptr<Word>(new CudaMallocWord("CUDA-MALLOC")));
+    AddWord(shared_ptr<Word>(new CudaMallocManagedWord("CUDA-MALLOC-MANAGED")));
     AddWord(shared_ptr<Word>(new CudaFreeWord("CUDA-FREE")));
+    AddWord(shared_ptr<Word>(new CudaDeviceSynchronizeWord("CUDA-DEVICE-SYNCHRONIZE")));
     AddWord(shared_ptr<Word>(new CudaMemcpyHtDWord("CUDA-MEMCPY-HtD")));
     AddWord(shared_ptr<Word>(new CudaMemcpyDtHWord("CUDA-MEMCPY-DtH")));
     AddWord(shared_ptr<Word>(new CudaGetDevicePropertiesWord("CUDA-GET-DEVICE-PROPERTIES")));
