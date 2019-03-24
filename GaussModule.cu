@@ -15,8 +15,7 @@
 #define EPSILON 1E-6
 
 __global__ void pivot(int num_rows, int num_cols, float *A, int pivot_row, int pivot_col) {
-    // TODO: Use block IDs and thread IDs to determine idx
-    int idx = threadIdx.x;
+    unsigned int idx = threadIdx.x + blockIdx.x * blockDim.x;
     int row = idx / num_cols;
     int col = idx % num_cols;
 

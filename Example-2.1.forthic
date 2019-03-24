@@ -10,7 +10,7 @@
 [ "_A" "_x" ] VARIABLES
 : NUM-ROWS   3 ;
 : NUM-COLS   4 ;
-: NUM-X      3 ;
+: NUM-ELEMS  NUM-ROWS NUM-COLS * ;
 : A!   [ -1  1 -1 b1
           1  1  2 b2
           0  1  1 b3 ] NUM-ROWS NUM-COLS GPU-MATRIX  _A ! ;
@@ -18,20 +18,18 @@
 : A   NUM-ROWS NUM-COLS _A @ ;
 
 # Define kernel launch config
-: PIVOT-BLOCK   32 1 1 DIM3 ;
-: PIVOT-GRID   1 1 1 DIM3 ;
+: THREADS/BLOCK  1024 ;
+: BLOCKS/GRID    NUM-ELEMS THREADS/BLOCK + 1 - THREADS/BLOCK / ;
+: BLOCK          THREADS/BLOCK 1 1 DIM3 ;
+: GRID           BLOCKS/GRID   1 1 DIM3 ;
+
+[ "pivot_row" "pivot_col" ] VARIABLES
+: DO-PIVOT      GRID BLOCK A pivot_row @ pivot_col @ PIVOT ;
+: PRINT-PIVOT   [ "Pivot " pivot_row @ " " pivot_col @ ] CONCAT PRINT  A PRINT-MATRIX ;
+: PIVOT-A       (pivot_col ! pivot_row !) DO-PIVOT PRINT-PIVOT ;
 
 # Solve equations
 A!  A PRINT-MATRIX
-
-PIVOT-GRID PIVOT-BLOCK A 0 0 PIVOT
-"Pivot 0 0: " PRINT
-A PRINT-MATRIX
-
-PIVOT-GRID PIVOT-BLOCK A 1 1 PIVOT
-"Pivot 1 1: " PRINT
-A PRINT-MATRIX
-
-PIVOT-GRID PIVOT-BLOCK A 2 2 PIVOT
-"Pivot 2 2: " PRINT
-A PRINT-MATRIX
+0 0 PIVOT-A
+1 1 PIVOT-A
+2 2 PIVOT-A
