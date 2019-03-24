@@ -22,7 +22,7 @@ runtest:
 
 .PHONY: runapp
 runapp: app
-	./app Example-2.1.forthic
+	./app BHM-p.62.forthic
 
 test: $(TEST_APP_OBJECTS)
 	nvcc -o ./test/test $(TEST_APP_OBJECTS)

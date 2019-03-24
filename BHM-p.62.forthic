@@ -1,19 +1,19 @@
-# Ex 2.1: Solve simultaneous equations
+# Section 2.3: Simplex full example
 
 [ cuda gauss ] USE-MODULES
 
-# Set up problem
-: b1   2 ;
-: b2   3 ;
-: b3   3 ;
+: METAL-WORKING-DAYS   24 ;
+: WOOD-WORKING-DAYS    60 ;
 
-[ "_A" "_x" ] VARIABLES
 : NUM-ROWS   3 ;
-: NUM-COLS   4 ;
+: NUM-COLS   6 ;
 : NUM-ELEMS  NUM-ROWS NUM-COLS * ;
-: A!   [ -1  1 -1 b1
-          1  1  2 b2
-          0  1  1 b3 ] NUM-ROWS NUM-COLS GPU-MATRIX  _A ! ;
+[ "_A" "_x" ] VARIABLES
+: A!   [ 0                    6  14  13  0  0  # Objective
+         METAL-WORKING-DAYS 0.5   2   1  1  0
+         WOOD-WORKING-DAYS    1   2   4  0  1  ]
+       NUM-ROWS NUM-COLS GPU-MATRIX _A ! ;
+
 : A   NUM-ROWS NUM-COLS _A @ ;
 : FREE-A   _A @ CUDA-FREE ;
 
@@ -30,9 +30,9 @@
 
 # Solve equations
 A!  A PRINT-MATRIX
-0 0 PIVOT-A
+1 2 PIVOT-A
+2 3 PIVOT-A
 1 1 PIVOT-A
-2 2 PIVOT-A
 
 # Cleanup
 FREE-A
