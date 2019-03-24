@@ -40,3 +40,4 @@ dim3 AsDim3(shared_ptr<StackItem> item);
 float* AsFloatStar(shared_ptr<StackItem> item);
 int* AsIntStar(shared_ptr<StackItem> item);
 void* AsVoidStar(shared_ptr<StackItem> item);
+void checkCudaCall(const cudaError_t res, const char* file, int line);

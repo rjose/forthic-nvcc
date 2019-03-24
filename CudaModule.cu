@@ -132,7 +132,7 @@ protected:
 };
 
 
-static void checkCudaCall(const cudaError_t res, const char* file, int line) {
+void checkCudaCall(const cudaError_t res, const char* file, int line) {
     if (res != cudaSuccess) {
         stringstream builder;
         builder << cudaGetErrorString(res) << " " << file << ":" << line;

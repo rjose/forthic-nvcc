@@ -56,6 +56,10 @@ void Module::AddWord(shared_ptr<Word> word) {
     words.push_back(word);
 }
 
+void Module::AddWord(Word* word) {
+    words.push_back(shared_ptr<Word>(word));
+}
+
 
 void Module::EnsureVariable(string name) {
     if (variables.find(name) == variables.end()) {

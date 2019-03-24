@@ -15,7 +15,10 @@ public:
     Module(string name);
 
     shared_ptr<Word> FindWord(string name);
+
     void AddWord(shared_ptr<Word> word);
+    void AddWord(Word* word);
+
     void EnsureVariable(string name);
     void UseModule(shared_ptr<Module> mod);
     virtual string ForthicCode();
