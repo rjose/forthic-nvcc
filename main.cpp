@@ -7,6 +7,7 @@
 #include "CudaModule.h"
 #include "Ch2Module.h"
 #include "GaussModule.h"
+#include "LinearProgramModule.h"
 
 using namespace std;
 
@@ -29,6 +30,7 @@ int main(int c, char* argv[]) {
         interp.RegisterModule(shared_ptr<Module>(new CudaModule()));
         interp.RegisterModule(shared_ptr<Module>(new Ch2Module()));
         interp.RegisterModule(shared_ptr<Module>(new GaussModule()));
+        interp.RegisterModule(shared_ptr<Module>(new LinearProgramModule()));
         interp.Run(load_file(filename));
     }
     catch (const char *message) {

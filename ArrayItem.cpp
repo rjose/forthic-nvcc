@@ -5,8 +5,13 @@ vector<shared_ptr<StackItem>> ArrayItem::AsArray() {
     return items;
 }
 
-string ArrayItem::AsString() {
+string ArrayItem::StringRep() {
     stringstream builder;
     builder << "ArrayItem(" << items.size() << ")";
     return builder.str();
+}
+
+
+string ArrayItem::AsString() {
+    return StringRep();
 }

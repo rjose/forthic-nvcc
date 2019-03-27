@@ -3,8 +3,9 @@ LIB_OBJECTS       = Token.o Tokenizer.o Module.o Word.o StackItem.o \
                     StringItem.o StartArrayItem.o EndArrayWord.o \
                     GlobalModule.o IntItem.o FloatItem.o \
                     CudaModule.o Dim3Item.o AddressItem.o TimePointItem.o \
-                    CudaDevicePropItem.o \
-                    Ch2Module.o GaussModule.o \
+                    CudaDevicePropItem.o GaussModule.o LinearProgramModule.o \
+                    LPEquationItem.o LPItem.o \
+                    Ch2Module.o \
                     ArrayItem.o DefinitionWord.o ModuleItem.o Interpreter.o
 APP_OBJECTS       = main.o $(LIB_OBJECTS)
 TEST_OBJECTS      = ./test/Test.o ./test/TokenizerTest.o ./test/ModuleTest.o \
@@ -22,7 +23,7 @@ runtest:
 
 .PHONY: runapp
 runapp: app
-	./app BHM-p.62.forthic
+	./app BHM-p.62-LP.forthic
 
 test: $(TEST_APP_OBJECTS)
 	nvcc -o ./test/test $(TEST_APP_OBJECTS)
