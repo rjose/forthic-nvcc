@@ -9,7 +9,7 @@
 #include "Token.h"
 #include "Word.h"
 #include "Module.h"
-#include "DefinitionWord.h"
+#include "W_Definition.h"
 #include "./m_global/GlobalModule.h"
 
 using namespace std;
@@ -50,7 +50,7 @@ protected:
     void module_stack_push(shared_ptr<Module> mod);
     map<string, shared_ptr<Module>> registered_modules;
 
-    shared_ptr<DefinitionWord> cur_definition;
+    shared_ptr<W_Definition> cur_definition;
     shared_ptr<Word> find_word(string name);
     shared_ptr<Word> find_registered_module_word(string name);
 

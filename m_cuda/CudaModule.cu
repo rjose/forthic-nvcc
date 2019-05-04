@@ -31,10 +31,10 @@ __global__ void checkIndex() {
 // Words
 
 // ( x y z -- dim3 )
-class Dim3Word : public Word
+class W_Dim3 : public Word
 {
 public:
-    Dim3Word(string name) : Word(name) {};
+    W_Dim3(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         int z = AsInt(interp->StackPop());
@@ -48,10 +48,10 @@ public:
 
 
 // ( dim3 -- coord )
-class ToCoordWord : public Word
+class W_ToCoord : public Word
 {
 public:
-    ToCoordWord(string name, string coord) : Word(name), coord(coord) {};
+    W_ToCoord(string name, string coord) : Word(name), coord(coord) {};
 
     virtual void Execute(Interpreter *interp) {
         dim3 d = AsDim3(interp->StackPop());
@@ -71,10 +71,10 @@ protected:
 
 
 // ( grid block -- )
-class CheckIndexWord : public Word
+class W_CheckIndex : public Word
 {
 public:
-    CheckIndexWord(string name) : Word(name) {};
+    W_CheckIndex(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         dim3 block = AsDim3(interp->StackPop());
@@ -87,10 +87,10 @@ public:
 
 
 // ( type -- )
-class SizeofWord : public Word
+class W_Sizeof : public Word
 {
 public:
-    SizeofWord(string name) : Word(name) {};
+    W_Sizeof(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         string type = AsString(interp->StackPop());
@@ -103,10 +103,10 @@ public:
 
 
 // ( address offset num type -- )
-class PrintMemWord : public Word
+class W_PrintMem : public Word
 {
 public:
-    PrintMemWord(string name) : Word(name) {};
+    W_PrintMem(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         string type = AsString(interp->StackPop());
@@ -142,10 +142,10 @@ void checkCudaCall(const cudaError_t res, const char* file, int line) {
 }
 
 // ( index -- )
-class CudaSetDeviceWord : public Word
+class W_CudaSetDevice : public Word
 {
 public:
-    CudaSetDeviceWord(string name) : Word(name) {};
+    W_CudaSetDevice(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         int index = AsInt(interp->StackPop());
@@ -156,10 +156,10 @@ public:
 
 
 // ( -- )
-class CudaDeviceResetWord : public Word
+class W_CudaDeviceReset : public Word
 {
 public:
-    CudaDeviceResetWord(string name) : Word(name) {};
+    W_CudaDeviceReset(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         auto res = cudaDeviceReset();
@@ -169,10 +169,10 @@ public:
 
 
 // ( num-bytes -- addr )
-class CudaMallocWord : public Word
+class W_CudaMalloc : public Word
 {
 public:
-    CudaMallocWord(string name) : Word(name) {};
+    W_CudaMalloc(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         int num_bytes = AsInt(interp->StackPop());
@@ -186,10 +186,10 @@ public:
 
 
 // ( num-bytes -- addr )
-class CudaMallocManagedWord : public Word
+class W_CudaMallocManaged : public Word
 {
 public:
-    CudaMallocManagedWord(string name) : Word(name) {};
+    W_CudaMallocManaged(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         int num_bytes = AsInt(interp->StackPop());
@@ -203,10 +203,10 @@ public:
 
 
 // ( addr -- )
-class CudaFreeWord : public Word
+class W_CudaFree : public Word
 {
 public:
-    CudaFreeWord(string name) : Word(name) {};
+    W_CudaFree(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         void* addr = AsVoidStar(interp->StackPop());
@@ -217,10 +217,10 @@ public:
 
 
 // ( -- )
-class CudaDeviceSynchronizeWord : public Word
+class W_CudaDeviceSynchronize : public Word
 {
 public:
-    CudaDeviceSynchronizeWord(string name) : Word(name) {};
+    W_CudaDeviceSynchronize(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         auto res = cudaDeviceSynchronize();
@@ -230,10 +230,10 @@ public:
 
 
 // ( dst src num-bytes -- )
-class CudaMemcpyHtDWord : public Word
+class W_CudaMemcpyHtD : public Word
 {
 public:
-    CudaMemcpyHtDWord(string name) : Word(name) {};
+    W_CudaMemcpyHtD(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         int num_bytes = AsInt(interp->StackPop());
@@ -247,10 +247,10 @@ public:
 
 
 // ( dst src num-bytes -- )
-class CudaMemcpyDtHWord : public Word
+class W_CudaMemcpyDtH : public Word
 {
 public:
-    CudaMemcpyDtHWord(string name) : Word(name) {};
+    W_CudaMemcpyDtH(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         int num_bytes = AsInt(interp->StackPop());
@@ -264,10 +264,10 @@ public:
 
 
 // ( devIndex -- cudaDeviceProp )
-class CudaGetDevicePropertiesWord : public Word
+class W_CudaGetDeviceProperties : public Word
 {
 public:
-    CudaGetDevicePropertiesWord(string name) : Word(name) {};
+    W_CudaGetDeviceProperties(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         int devIndex = AsInt(interp->StackPop());
@@ -281,10 +281,10 @@ public:
 
 
 // ( cudaDeviceProp field -- value )
-class DevPropWord : public Word
+class W_DevProp : public Word
 {
 public:
-    DevPropWord(string name) : Word(name) {};
+    W_DevProp(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         string field = AsString(interp->StackPop());
@@ -312,23 +312,23 @@ public:
 
 CudaModule::CudaModule() : Module("cuda")
 {
-    AddWord(shared_ptr<Word>(new Dim3Word("DIM3")));
-    AddWord(shared_ptr<Word>(new ToCoordWord(">x", "x")));
-    AddWord(shared_ptr<Word>(new ToCoordWord(">y", "y")));
-    AddWord(shared_ptr<Word>(new ToCoordWord(">z", "z")));
-    AddWord(shared_ptr<Word>(new CheckIndexWord("GPU-CHECK-INDEX")));
-    AddWord(shared_ptr<Word>(new SizeofWord("SIZEOF")));
-    AddWord(shared_ptr<Word>(new PrintMemWord("PRINT-MEM")));
-    AddWord(shared_ptr<Word>(new CudaSetDeviceWord("CUDA-SET-DEVICE")));
-    AddWord(shared_ptr<Word>(new CudaDeviceResetWord("CUDA-DEVICE-RESET")));
-    AddWord(shared_ptr<Word>(new CudaMallocWord("CUDA-MALLOC")));
-    AddWord(shared_ptr<Word>(new CudaMallocManagedWord("CUDA-MALLOC-MANAGED")));
-    AddWord(shared_ptr<Word>(new CudaFreeWord("CUDA-FREE")));
-    AddWord(shared_ptr<Word>(new CudaDeviceSynchronizeWord("CUDA-DEVICE-SYNCHRONIZE")));
-    AddWord(shared_ptr<Word>(new CudaMemcpyHtDWord("CUDA-MEMCPY-HtD")));
-    AddWord(shared_ptr<Word>(new CudaMemcpyDtHWord("CUDA-MEMCPY-DtH")));
-    AddWord(shared_ptr<Word>(new CudaGetDevicePropertiesWord("CUDA-GET-DEVICE-PROPERTIES")));
-    AddWord(shared_ptr<Word>(new DevPropWord("DEV-PROP")));
+    AddWord(shared_ptr<Word>(new W_Dim3("DIM3")));
+    AddWord(shared_ptr<Word>(new W_ToCoord(">x", "x")));
+    AddWord(shared_ptr<Word>(new W_ToCoord(">y", "y")));
+    AddWord(shared_ptr<Word>(new W_ToCoord(">z", "z")));
+    AddWord(shared_ptr<Word>(new W_CheckIndex("GPU-CHECK-INDEX")));
+    AddWord(shared_ptr<Word>(new W_Sizeof("SIZEOF")));
+    AddWord(shared_ptr<Word>(new W_PrintMem("PRINT-MEM")));
+    AddWord(shared_ptr<Word>(new W_CudaSetDevice("CUDA-SET-DEVICE")));
+    AddWord(shared_ptr<Word>(new W_CudaDeviceReset("CUDA-DEVICE-RESET")));
+    AddWord(shared_ptr<Word>(new W_CudaMalloc("CUDA-MALLOC")));
+    AddWord(shared_ptr<Word>(new W_CudaMallocManaged("CUDA-MALLOC-MANAGED")));
+    AddWord(shared_ptr<Word>(new W_CudaFree("CUDA-FREE")));
+    AddWord(shared_ptr<Word>(new W_CudaDeviceSynchronize("CUDA-DEVICE-SYNCHRONIZE")));
+    AddWord(shared_ptr<Word>(new W_CudaMemcpyHtD("CUDA-MEMCPY-HtD")));
+    AddWord(shared_ptr<Word>(new W_CudaMemcpyDtH("CUDA-MEMCPY-DtH")));
+    AddWord(shared_ptr<Word>(new W_CudaGetDeviceProperties("CUDA-GET-DEVICE-PROPERTIES")));
+    AddWord(shared_ptr<Word>(new W_DevProp("DEV-PROP")));
 }
 
 string CudaModule::ForthicCode() {

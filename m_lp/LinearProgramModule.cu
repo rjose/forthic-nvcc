@@ -26,10 +26,10 @@
 
 
 // ( coeffs name  -- LPEquationItem )
-class LPEqnWord : public Word
+class W_LPEqn : public Word
 {
 public:
-    LPEqnWord(string name) : Word(name) {};
+    W_LPEqn(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         string name = AsString(interp->StackPop());
@@ -42,10 +42,10 @@ public:
 
 
 // ( varnames objective constraints  -- LinearProgram )
-class LPNewWord : public Word
+class W_LPNew : public Word
 {
 public:
-    LPNewWord(string name) : Word(name) {};
+    W_LPNew(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         interp->StackPush(shared_ptr<LPItem>(new LPItem(interp)));
@@ -55,10 +55,10 @@ public:
 
 
 // ( LinearProgram -- )
-class LPPrintMatrixWord : public Word
+class W_LPPrintMatrix : public Word
 {
 public:
-    LPPrintMatrixWord(string name) : Word(name) {};
+    W_LPPrintMatrix(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         auto linear_program = AsLPItem(interp->StackPop());
@@ -69,10 +69,10 @@ public:
 
 
 // ( LinearProgram -- )
-class LPFreeWord : public Word
+class W_LPFree : public Word
 {
 public:
-    LPFreeWord(string name) : Word(name) {};
+    W_LPFree(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         auto linear_program = AsLPItem(interp->StackPop());
@@ -85,10 +85,10 @@ public:
 // LinearProgramModule
 
 LinearProgramModule::LinearProgramModule() : Module("linear-program") {
-    AddWord(new LPNewWord("LP-NEW"));
-    AddWord(new LPFreeWord("LP-FREE"));
-    AddWord(new LPPrintMatrixWord("LP-PRINT-MATRIX"));
-    AddWord(new LPEqnWord("LP-EQN"));
+    AddWord(new W_LPNew("LP-NEW"));
+    AddWord(new W_LPFree("LP-FREE"));
+    AddWord(new W_LPPrintMatrix("LP-PRINT-MATRIX"));
+    AddWord(new W_LPEqn("LP-EQN"));
 }
 
 string LinearProgramModule::ForthicCode() {

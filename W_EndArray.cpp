@@ -1,20 +1,20 @@
 #include <algorithm>
-#include "EndArrayWord.h"
+#include "W_EndArray.h"
 #include "Interpreter.h"
 #include "./m_global/ArrayItem.h"
 #include "StartArrayItem.h"
 
 
-EndArrayWord::EndArrayWord(string word_name) : Word(word_name)
+W_EndArray::W_EndArray(string word_name) : Word(word_name)
 {
 }
 
 
-EndArrayWord::~EndArrayWord()
+W_EndArray::~W_EndArray()
 {
 }
 
-void EndArrayWord::Execute(Interpreter *interp)
+void W_EndArray::Execute(Interpreter *interp)
 {
 	vector<shared_ptr<StackItem>> result;
 

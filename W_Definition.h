@@ -1,7 +1,7 @@
 #pragma once
-
 #include <memory>
 #include <string>
+#include <vector>
 #include "StackItem.h"
 #include "Word.h"
 
@@ -9,12 +9,16 @@ using namespace std;
 
 class Interpreter;
 
-class PushItemWord : public Word
+class W_Definition : public Word
 {
 public:
-    PushItemWord(string name, shared_ptr<StackItem> item);
+    W_Definition(string name);
+    virtual ~W_Definition();
     virtual void Execute(Interpreter *interp);
 
+    void CompileWord(shared_ptr<Word> word);
+
 protected:
-    shared_ptr<StackItem> item;
+    vector<shared_ptr<Word>> words;
 };
+

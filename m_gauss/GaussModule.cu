@@ -56,10 +56,10 @@ __global__ void pivot(int num_rows, int num_cols, float *A, int pivot_row, int p
 
 
 // ( floats num_rows num_cols  -- addr )
-class GpuMatrixWord : public Word
+class W_GpuMatrix : public Word
 {
 public:
-    GpuMatrixWord(string name) : Word(name) {};
+    W_GpuMatrix(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         int num_cols = AsInt(interp->StackPop());
@@ -85,10 +85,10 @@ public:
 };
 
 // ( num_rows num_cols  addr -- )
-class PrintMatrixWord : public Word
+class W_PrintMatrix : public Word
 {
 public:
-    PrintMatrixWord(string name) : Word(name) {};
+    W_PrintMatrix(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         float* A = AsFloatStar(interp->StackPop());
@@ -109,10 +109,10 @@ public:
 
 
 // ( grid block num_rows num_cols addr pivot_row pivot_col -- )
-class PivotWord : public Word
+class W_Pivot : public Word
 {
 public:
-    PivotWord(string name) : Word(name) {};
+    W_Pivot(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         int pivot_col = AsInt(interp->StackPop());
@@ -132,7 +132,7 @@ public:
 // GaussModule
 
 GaussModule::GaussModule() : Module("gauss") {
-    AddWord(new GpuMatrixWord("GPU-MATRIX"));
-    AddWord(new PrintMatrixWord("PRINT-MATRIX"));
-    AddWord(new PivotWord("PIVOT"));
+    AddWord(new W_GpuMatrix("GPU-MATRIX"));
+    AddWord(new W_PrintMatrix("PRINT-MATRIX"));
+    AddWord(new W_Pivot("PIVOT"));
 }

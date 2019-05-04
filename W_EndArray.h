@@ -7,11 +7,11 @@ using namespace std;
 
 class Interpreter;
 
-class EndArrayWord : public Word
+class W_EndArray : public Word
 {
 public:
-	EndArrayWord(string name);
-	virtual ~EndArrayWord();
+	W_EndArray(string name);
+	virtual ~W_EndArray();
 	virtual void Execute(Interpreter *interp);
 };
 

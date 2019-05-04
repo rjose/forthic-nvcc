@@ -2,9 +2,9 @@
 #include "Interpreter.h"
 #include "Tokenizer.h"
 #include "StringItem.h"
-#include "PushItemWord.h"
+#include "W_PushItem.h"
 #include "StartArrayItem.h"
-#include "EndArrayWord.h"
+#include "W_EndArray.h"
 #include "m_global/ModuleItem.h"
 
 Interpreter::Interpreter() : is_compiling(false)
@@ -111,7 +111,7 @@ void Interpreter::handle_token(Token token)
 void Interpreter::handle_STRING(Token tok)
 {
     StringItem* item = new StringItem(tok.GetText());
-    auto word = shared_ptr<Word>(new PushItemWord("<string>", shared_ptr<StackItem>(item)));
+    auto word = shared_ptr<Word>(new W_PushItem("<string>", shared_ptr<StackItem>(item)));
     handle_Word(word);
 }
 
@@ -126,14 +126,14 @@ void Interpreter::handle_Word(shared_ptr<Word> word)
 void Interpreter::handle_START_ARRAY(Token token)
 {
     StartArrayItem* item = new StartArrayItem();
-    auto word = shared_ptr<Word>(new PushItemWord("[", shared_ptr<StackItem>(item)));
+    auto word = shared_ptr<Word>(new W_PushItem("[", shared_ptr<StackItem>(item)));
     handle_Word(word);
 }
 
 
 void Interpreter::handle_END_ARRAY(Token token)
 {
-    auto word = shared_ptr<Word>(new EndArrayWord("]"));
+    auto word = shared_ptr<Word>(new W_EndArray("]"));
     handle_Word(word);
 }
 
@@ -177,7 +177,7 @@ void Interpreter::module_stack_push(shared_ptr<Module> mod)
 void Interpreter::handle_START_DEFINITION(Token tok)
 {
     if (is_compiling) throw "Can't have nested definitions";
-    cur_definition = shared_ptr<DefinitionWord>(new DefinitionWord(tok.GetText()));
+    cur_definition = shared_ptr<W_Definition>(new W_Definition(tok.GetText()));
     is_compiling = true;
 }
 
@@ -222,5 +222,5 @@ shared_ptr<Word> Interpreter::find_registered_module_word(string name)
 {
     auto mod = find_module(name);
     if (mod == nullptr)  return nullptr;
-    else  return shared_ptr<Word>(new PushItemWord(mod->GetName(), shared_ptr<ModuleItem>(new ModuleItem(mod))));
+    else  return shared_ptr<Word>(new W_PushItem(mod->GetName(), shared_ptr<ModuleItem>(new ModuleItem(mod))));
 }

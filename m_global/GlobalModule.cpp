@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "../Interpreter.h"
-#include "../PushItemWord.h"
+#include "../W_PushItem.h"
 
 #include "I_AsArray.h"
 #include "I_AsModule.h"
@@ -19,10 +19,10 @@
 
 // ( a -- )
 // Pops word from stack
-class PopWord : public Word
+class W_Pop : public Word
 {
 public:
-    PopWord(string name) : Word(name) {};
+    W_Pop(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         interp->StackPop();
@@ -32,10 +32,10 @@ public:
 
 // ( a b -- b a )
 // Swaps top two items
-class SwapWord : public Word
+class W_Swap : public Word
 {
 public:
-    SwapWord(string name) : Word(name) {};
+    W_Swap(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         auto b = interp->StackPop();
@@ -48,10 +48,10 @@ public:
 
 // ( modules -- )
 // Adds modules to current module's using module list
-class UseModulesWord : public Word
+class W_UseModules : public Word
 {
 public:
-    UseModulesWord(string name) : Word(name) {};
+    W_UseModules(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         auto item = interp->StackPop();
@@ -66,10 +66,10 @@ public:
 
 // ( names -- )
 // Creates variables in current module
-class VariablesWord : public Word
+class W_Variables : public Word
 {
 public:
-    VariablesWord(string name) : Word(name) {};
+    W_Variables(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         auto names = AsArray(interp->StackPop());
@@ -84,10 +84,10 @@ public:
 
 // ( value variable -- )
 // Sets variable value
-class BangWord : public Word
+class W_Bang : public Word
 {
 public:
-    BangWord(string name) : Word(name) {};
+    W_Bang(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         auto variable_item = interp->StackPop();
@@ -100,10 +100,10 @@ public:
 
 // ( variable -- value )
 // Gets variable value
-class AtWord : public Word
+class W_At : public Word
 {
 public:
-    AtWord(string name) : Word(name) {};
+    W_At(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         auto variable_item = interp->StackPop();
@@ -115,10 +115,10 @@ public:
 
 // ( -- )
 // Prints param stack
-class DotSWord : public Word
+class W_DotS : public Word
 {
 public:
-    DotSWord(string name) : Word(name) {};
+    W_DotS(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         stack<shared_ptr<StackItem>> temp_stack;
@@ -147,10 +147,10 @@ public:
 
 
 // ( l r -- res )
-class ArithWord : public Word
+class W_Arith : public Word
 {
 public:
-    ArithWord(string name, string op) : Word(name), op(op) {};
+    W_Arith(string name, string op) : Word(name), op(op) {};
 
     virtual void Execute(Interpreter *interp) {
         float r = AsFloat(interp->StackPop());
@@ -178,10 +178,10 @@ protected:
 
 
 // ( item -- )
-class PrintWord : public Word
+class W_Print : public Word
 {
 public:
-    PrintWord(string name) : Word(name) {};
+    W_Print(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         auto item = interp->StackPop();
@@ -191,10 +191,10 @@ public:
 
 
 // ( item -- )
-class StopWord : public Word
+class W_Stop : public Word
 {
 public:
-    StopWord(string name) : Word(name) {};
+    W_Stop(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         throw "STOP";
@@ -203,10 +203,10 @@ public:
 
 
 // ( ms -- )
-class MSleepWord : public Word
+class W_MSleep : public Word
 {
 public:
-    MSleepWord(string name) : Word(name) {};
+    W_MSleep(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         int msec = AsInt(interp->StackPop());
@@ -215,10 +215,10 @@ public:
 };
 
 // ( strings -- string )
-class ConcatWord : public Word
+class W_Concat : public Word
 {
 public:
-    ConcatWord(string name) : Word(name) {};
+    W_Concat(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         auto strings = AsArray(interp->StackPop());
@@ -231,10 +231,10 @@ public:
 };
 
 // ( -- "\n" )
-class EndlWord : public Word
+class W_Endl : public Word
 {
 public:
-    EndlWord(string name) : Word(name) {};
+    W_Endl(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         interp->StackPush(StringItem::New("\n"));
@@ -243,10 +243,10 @@ public:
 
 
 // ( items str -- )
-class ForeachWord : public Word
+class W_Foreach : public Word
 {
 public:
-    ForeachWord(string name) : Word(name) {};
+    W_Foreach(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         string str = AsString(interp->StackPop());
@@ -261,10 +261,10 @@ public:
 
 
 // ( num-bytes -- address )
-class MallocWord : public Word
+class W_Malloc : public Word
 {
 public:
-    MallocWord(string name) : Word(name) {};
+    W_Malloc(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         int num_bytes = AsInt(interp->StackPop());
@@ -275,10 +275,10 @@ public:
 
 
 // ( address value num-bytes -- )
-class MemsetWord : public Word
+class W_Memset : public Word
 {
 public:
-    MemsetWord(string name) : Word(name) {};
+    W_Memset(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         int num_bytes = AsInt(interp->StackPop());
@@ -290,10 +290,10 @@ public:
 
 
 // ( address -- )
-class FreeWord : public Word
+class W_Free : public Word
 {
 public:
-    FreeWord(string name) : Word(name) {};
+    W_Free(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         void* address = AsVoidStar(interp->StackPop());
@@ -302,10 +302,10 @@ public:
 };
 
 // ( -- time_point )
-class NowWord : public Word
+class W_Now : public Word
 {
 public:
-    NowWord(string name) : Word(name) {};
+    W_Now(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         interp->StackPush(TimePointItem::New(high_resolution_clock::now()));
@@ -313,10 +313,10 @@ public:
 };
 
 // ( l_time_point r_time_point -- ms )
-class SinceWord : public Word
+class W_Since : public Word
 {
 public:
-    SinceWord(string name) : Word(name) {};
+    W_Since(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
         auto r_time_point = AsTimePoint(interp->StackPop());
@@ -332,30 +332,30 @@ public:
 
 GlobalModule::GlobalModule() : Module("Forthic.global")
 {
-    AddWord(shared_ptr<Word>(new PopWord("POP")));
-    AddWord(shared_ptr<Word>(new SwapWord("SWAP")));
-    AddWord(shared_ptr<Word>(new UseModulesWord("USE-MODULES")));
-    AddWord(shared_ptr<Word>(new VariablesWord("VARIABLES")));
-    AddWord(shared_ptr<Word>(new BangWord("!")));
-    AddWord(shared_ptr<Word>(new AtWord("@")));
-    AddWord(shared_ptr<Word>(new DotSWord(".s")));
-    AddWord(shared_ptr<Word>(new ArithWord("+", "+")));
-    AddWord(shared_ptr<Word>(new ArithWord("-", "-")));
-    AddWord(shared_ptr<Word>(new ArithWord("*", "*")));
-    AddWord(shared_ptr<Word>(new ArithWord("/", "/")));
-    AddWord(shared_ptr<Word>(new ArithWord("<<", "<<")));
-    AddWord(shared_ptr<Word>(new PrintWord("PRINT")));
-    AddWord(shared_ptr<Word>(new StopWord("STOP")));
-    AddWord(shared_ptr<Word>(new MSleepWord("MSLEEP")));
-    AddWord(shared_ptr<Word>(new ConcatWord("CONCAT")));
-    AddWord(shared_ptr<Word>(new EndlWord("ENDL")));
-    AddWord(shared_ptr<Word>(new ForeachWord("FOREACH")));
-    AddWord(shared_ptr<Word>(new MallocWord("MALLOC")));
-    AddWord(shared_ptr<Word>(new MemsetWord("MEMSET")));
-    AddWord(shared_ptr<Word>(new FreeWord("FREE")));
+    AddWord(shared_ptr<Word>(new W_Pop("POP")));
+    AddWord(shared_ptr<Word>(new W_Swap("SWAP")));
+    AddWord(shared_ptr<Word>(new W_UseModules("USE-MODULES")));
+    AddWord(shared_ptr<Word>(new W_Variables("VARIABLES")));
+    AddWord(shared_ptr<Word>(new W_Bang("!")));
+    AddWord(shared_ptr<Word>(new W_At("@")));
+    AddWord(shared_ptr<Word>(new W_DotS(".s")));
+    AddWord(shared_ptr<Word>(new W_Arith("+", "+")));
+    AddWord(shared_ptr<Word>(new W_Arith("-", "-")));
+    AddWord(shared_ptr<Word>(new W_Arith("*", "*")));
+    AddWord(shared_ptr<Word>(new W_Arith("/", "/")));
+    AddWord(shared_ptr<Word>(new W_Arith("<<", "<<")));
+    AddWord(shared_ptr<Word>(new W_Print("PRINT")));
+    AddWord(shared_ptr<Word>(new W_Stop("STOP")));
+    AddWord(shared_ptr<Word>(new W_MSleep("MSLEEP")));
+    AddWord(shared_ptr<Word>(new W_Concat("CONCAT")));
+    AddWord(shared_ptr<Word>(new W_Endl("ENDL")));
+    AddWord(shared_ptr<Word>(new W_Foreach("FOREACH")));
+    AddWord(shared_ptr<Word>(new W_Malloc("MALLOC")));
+    AddWord(shared_ptr<Word>(new W_Memset("MEMSET")));
+    AddWord(shared_ptr<Word>(new W_Free("FREE")));
 
-    AddWord(shared_ptr<Word>(new NowWord("NOW")));
-    AddWord(shared_ptr<Word>(new SinceWord("SINCE")));
+    AddWord(shared_ptr<Word>(new W_Now("NOW")));
+    AddWord(shared_ptr<Word>(new W_Since("SINCE")));
 }
 
 
@@ -363,7 +363,7 @@ shared_ptr<Word> GlobalModule::treat_as_float(string name)
 {
     try {
         float value = stof(name);
-        return shared_ptr<Word>(new PushItemWord(name, shared_ptr<StackItem>(new FloatItem(value))));
+        return shared_ptr<Word>(new W_PushItem(name, shared_ptr<StackItem>(new FloatItem(value))));
     }
     catch (...) {
         return nullptr;
@@ -378,7 +378,7 @@ shared_ptr<Word> GlobalModule::treat_as_int(string name)
         int value = stoi(name, &sz);
         char c = name[sz];
         if (c == '.' || c == 'e' || c == 'E') return nullptr;
-        else  return shared_ptr<Word>(new PushItemWord(name, shared_ptr<StackItem>(new IntItem(value))));
+        else  return shared_ptr<Word>(new W_PushItem(name, shared_ptr<StackItem>(new IntItem(value))));
     }
     catch (...) {
         return nullptr;

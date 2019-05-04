@@ -1,6 +1,6 @@
 #include <memory>
 #include "Module.h"
-#include "PushItemWord.h"
+#include "W_PushItem.h"
 
 
 Module::Module(string name) : name(name) {
@@ -37,7 +37,7 @@ shared_ptr<Word> Module::find_in_words(string name) {
 
 shared_ptr<Word> Module::find_variable(string name) {
     if (variables.find(name) == variables.end())  return nullptr;
-    else  return shared_ptr<Word>(new PushItemWord(name, variables[name]));
+    else  return shared_ptr<Word>(new W_PushItem(name, variables[name]));
 }
 
 
