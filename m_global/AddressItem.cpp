@@ -6,15 +6,15 @@ shared_ptr<AddressItem> AddressItem::New(void* address) {
     return shared_ptr<AddressItem>(new AddressItem(address));
 }
 
-float* AddressItem::GetFloatStar() {
+float* AddressItem::AsFloatStar() {
     return (float*)(address);
 }
 
-int* AddressItem::GetIntStar() {
+int* AddressItem::AsIntStar() {
     return (int*)(address);
 }
 
-void* AddressItem::GetVoidStar() {
+void* AddressItem::AsVoidStar() {
     return (address);
 }
 

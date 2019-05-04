@@ -2,7 +2,9 @@
 #include <cstdio>
 #include "../Interpreter.h"
 #include "../m_global/IntItem.h"
-#include "../m_global/IGetAddress.h"
+#include "../m_global/I_AsFloatStar.h"
+#include "../m_global/I_AsIntStar.h"
+#include "../m_global/I_AsVoidStar.h"
 
 #include "../m_cuda/CudaModule.h"
 #include "../m_cuda/Dim3Item.h"

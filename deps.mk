@@ -10,9 +10,11 @@
  m_global/FloatItem.o m_global/GlobalModule.o  : m_global/FloatItem.h
  m_global/GlobalModule.o test/GlobalModuleTest.o Interpreter.o m_global/FloatItem.o m_global/IntItem.o m_global/TimePointItem.o : m_global/GlobalModule.h
  m_global/GlobalModule.o m_global/I_AsArray.o test/InterpreterTest.o m_global/ArrayItem.o : m_global/I_AsArray.h
+ m_global/I_AsFloatStar.o m_global/AddressItem.o : m_global/I_AsFloatStar.h
+ m_global/I_AsIntStar.o m_global/AddressItem.o : m_global/I_AsIntStar.h
  m_global/GlobalModule.o m_global/I_AsModule.o m_global/ModuleItem.o : m_global/I_AsModule.h
  m_global/I_AsString.o test/InterpreterTest.o StringItem.o : m_global/I_AsString.h
- m_global/GlobalModule.o m_global/IGetAddress.o m_global/AddressItem.o : m_global/IGetAddress.h
+ m_global/I_AsVoidStar.o m_global/AddressItem.o : m_global/I_AsVoidStar.h
  m_global/GlobalModule.o m_global/IntItem.o  : m_global/IntItem.h
  Interpreter.o m_global/ModuleItem.o  : m_global/ModuleItem.h
  m_global/GlobalModule.o m_global/TimePointItem.o m_global/TimePointItem.o : m_global/TimePointItem.h
@@ -21,7 +23,7 @@
    : m_lp/LPItem.h
  Module.o m_global/GlobalModule.o m_global/GlobalModule.o m_global/I_AsModule.o examples/main.o examples/main.o examples/main.o examples/main.o examples/main.o test/GlobalModuleTest.o test/ModuleTest.o Interpreter.o Interpreter.o m_cuda/CudaModule.o m_cuda/Dim3Item.o m_gauss/GaussModule.o m_global/FloatItem.o m_global/GlobalModule.o m_global/IntItem.o m_global/ModuleItem.o m_global/ModuleItem.o m_global/TimePointItem.o m_lp/LPEquationItem.o m_lp/LPItem.o m_lp/LinearProgramModule.o examples/Ch2Module.o : Module.h
  Interpreter.o Module.o PushItemWord.o m_global/GlobalModule.o  : PushItemWord.h
- StackItem.o test/InterpreterTest.o DefinitionWord.o EndArrayWord.o Interpreter.o PushItemWord.o StartArrayItem.o StringItem.o VariableItem.o m_cuda/CudaDevicePropItem.o m_cuda/Dim3Item.o m_global/AddressItem.o m_global/ArrayItem.o m_global/FloatItem.o m_global/IGetAddress.o m_global/I_AsArray.o m_global/I_AsModule.o m_global/I_AsString.o m_global/IntItem.o m_global/ModuleItem.o m_global/TimePointItem.o m_lp/LPEquationItem.o m_lp/LPItem.o : StackItem.h
+ StackItem.o test/InterpreterTest.o DefinitionWord.o EndArrayWord.o Interpreter.o PushItemWord.o StartArrayItem.o StringItem.o VariableItem.o m_cuda/CudaDevicePropItem.o m_cuda/Dim3Item.o m_global/AddressItem.o m_global/ArrayItem.o m_global/FloatItem.o m_global/I_AsArray.o m_global/I_AsFloatStar.o m_global/I_AsIntStar.o m_global/I_AsModule.o m_global/I_AsString.o m_global/I_AsVoidStar.o m_global/IntItem.o m_global/ModuleItem.o m_global/TimePointItem.o m_lp/LPEquationItem.o m_lp/LPItem.o : StackItem.h
  EndArrayWord.o Interpreter.o StartArrayItem.o  : StartArrayItem.h
  Interpreter.o StringItem.o m_global/GlobalModule.o  : StringItem.h
  test/GlobalModuleTest.o test/main_test.o  : test/GlobalModuleTest.h

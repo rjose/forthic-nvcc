@@ -2,7 +2,7 @@ LIB_OBJECTS       = Token.o Tokenizer.o Module.o Word.o StackItem.o \
                     VariableItem.o PushItemWord.o \
                     StringItem.o StartArrayItem.o EndArrayWord.o \
                     DefinitionWord.o Interpreter.o \
-                    m_global/IGetAddress.o \
+                    m_global/I_AsFloatStar.o m_global/I_AsIntStar.o m_global/I_AsVoidStar.o \
                     m_global/GlobalModule.o m_global/IntItem.o m_global/FloatItem.o \
                     m_global/AddressItem.o m_global/TimePointItem.o \
                     m_global/ArrayItem.o m_global/ModuleItem.o \
