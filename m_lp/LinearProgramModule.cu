@@ -2,12 +2,15 @@
 #include <cstdio>
 #include <cmath>
 #include "../Interpreter.h"
+
+#include "../m_global/IntItem.h"
+#include "../m_global/ArrayItem.h"
+#include "../m_global/AddressItem.h"
+
 #include "../m_cuda/CudaModule.h"
-#include "LinearProgramModule.h"
-#include "../IntItem.h"
 #include "../m_cuda/Dim3Item.h"
-#include "../ArrayItem.h"
-#include "../AddressItem.h"
+
+#include "LinearProgramModule.h"
 #include "LPEquationItem.h"
 #include "LPItem.h"
 

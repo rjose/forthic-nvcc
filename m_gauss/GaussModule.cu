@@ -3,8 +3,9 @@
 #include <cmath>
 
 #include "../Interpreter.h"
-#include "../AddressItem.h"
-#include "../IntItem.h"
+
+#include "../m_global/IntItem.h"
+#include "../m_global/AddressItem.h"
 
 #include "../m_cuda/CudaModule.h"
 #include "../m_cuda/Dim3Item.h"

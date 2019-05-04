@@ -2,8 +2,8 @@
 #include <cstdio>
 #include "Interpreter.h"
 #include "Ch2Module.h"
-#include "IntItem.h"
-#include "IGetAddress.h"
+#include "./m_global/IntItem.h"
+#include "./m_global/IGetAddress.h"
 
 #include "./m_cuda/CudaModule.h"
 #include "./m_cuda/Dim3Item.h"

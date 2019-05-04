@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-#include "StackItem.h"
+#include "../StackItem.h"
 #include "IGetAddress.h"
 
 using namespace std;

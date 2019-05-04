@@ -5,7 +5,7 @@
 #include "PushItemWord.h"
 #include "StartArrayItem.h"
 #include "EndArrayWord.h"
-#include "ModuleItem.h"
+#include "m_global/ModuleItem.h"
 
 Interpreter::Interpreter() : is_compiling(false)
 {

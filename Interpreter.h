@@ -10,7 +10,7 @@
 #include "Word.h"
 #include "Module.h"
 #include "DefinitionWord.h"
-#include "GlobalModule.h"
+#include "./m_global/GlobalModule.h"
 
 using namespace std;
 

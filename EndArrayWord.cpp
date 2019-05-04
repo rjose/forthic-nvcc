@@ -1,7 +1,7 @@
 #include <algorithm>
 #include "EndArrayWord.h"
 #include "Interpreter.h"
-#include "ArrayItem.h"
+#include "./m_global/ArrayItem.h"
 #include "StartArrayItem.h"
 
 

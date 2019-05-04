@@ -3,8 +3,8 @@
 #include <string>
 
 #include "BasicConverters.h"
-#include "StackItem.h"
-#include "Module.h"
+#include "../StackItem.h"
+#include "../Module.h"
 
 using namespace std;
 

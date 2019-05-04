@@ -2,13 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../Interpreter.h"
+#include "../PushItemWord.h"
+
 #include "IGetAddress.h"
-#include "Interpreter.h"
 #include "GlobalModule.h"
-#include "PushItemWord.h"
 #include "FloatItem.h"
 #include "IntItem.h"
-#include "StringItem.h"
+#include "../StringItem.h"
 #include "AddressItem.h"
 #include "TimePointItem.h"
 

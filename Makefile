@@ -1,17 +1,19 @@
 LIB_OBJECTS       = Token.o Tokenizer.o Module.o Word.o StackItem.o \
-                    BasicConverters.o VariableItem.o PushItemWord.o \
+                    VariableItem.o PushItemWord.o \
                     StringItem.o StartArrayItem.o EndArrayWord.o \
-                    IGetAddress.o \
-                    GlobalModule.o IntItem.o FloatItem.o \
-                    ./m_cuda/CudaModule.o ./m_cuda/Dim3Item.o AddressItem.o TimePointItem.o \
-                    ./m_cuda/CudaDevicePropItem.o ./m_gauss/GaussModule.o ./m_lp/LinearProgramModule.o \
-                    ./m_lp/LPEquationItem.o ./m_lp/LPItem.o \
+                    m_global/BasicConverters.o m_global/IGetAddress.o \
+                    m_global/GlobalModule.o m_global/IntItem.o m_global/FloatItem.o \
+                    m_global/AddressItem.o m_global/TimePointItem.o \
+                    m_global/ArrayItem.o m_global/ModuleItem.o \
+                    m_cuda/CudaModule.o m_cuda/Dim3Item.o \
+                    m_cuda/CudaDevicePropItem.o m_gauss/GaussModule.o m_lp/LinearProgramModule.o \
+                    m_lp/LPEquationItem.o m_lp/LPItem.o \
                     Ch2Module.o \
-                    ArrayItem.o DefinitionWord.o ModuleItem.o Interpreter.o
+                    DefinitionWord.o Interpreter.o
 APP_OBJECTS       = main.o $(LIB_OBJECTS)
-TEST_OBJECTS      = ./test/Test.o ./test/TokenizerTest.o ./test/ModuleTest.o \
-                    ./test/InterpreterTest.o ./test/GlobalModuleTest.o
-TEST_APP_OBJECTS  = ./test/main_test.o $(TEST_OBJECTS) $(LIB_OBJECTS)
+TEST_OBJECTS      = test/Test.o test/TokenizerTest.o test/ModuleTest.o \
+                    test/InterpreterTest.o test/GlobalModuleTest.o
+TEST_APP_OBJECTS  = test/main_test.o $(TEST_OBJECTS) $(LIB_OBJECTS)
 
 all: app test runtest
 

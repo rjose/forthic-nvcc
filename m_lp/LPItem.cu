@@ -1,8 +1,9 @@
 #include <sstream>
-#include "../AddressItem.h"
 #include "../Interpreter.h"
-#include "../FloatItem.h"
-#include "../IntItem.h"
+
+#include "../m_global/AddressItem.h"
+#include "../m_global/FloatItem.h"
+#include "../m_global/IntItem.h"
 
 #include "../m_cuda/CudaModule.h"
 

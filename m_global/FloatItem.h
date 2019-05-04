@@ -2,7 +2,7 @@
 #include <string>
 
 #include "GlobalModule.h"
-#include "StackItem.h"
+#include "../StackItem.h"
 
 using namespace std;
 

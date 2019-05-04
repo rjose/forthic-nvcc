@@ -1,5 +1,5 @@
 #include "BasicConverters.h"
-#include "VariableItem.h"
+#include "../VariableItem.h"
 
 
 string AsString(shared_ptr<StackItem> item)

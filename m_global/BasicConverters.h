@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "StackItem.h"
+#include "../StackItem.h"
 
 using namespace std;
 

@@ -1,8 +1,8 @@
 #include <string>
 #include "GlobalModuleTest.h"
 #include "../Interpreter.h"
-#include "../BasicConverters.h"
-#include "../GlobalModule.h"
+#include "../m_global/BasicConverters.h"
+#include "../m_global/GlobalModule.h"
 
 
 using namespace std;

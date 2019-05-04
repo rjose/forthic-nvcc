@@ -2,10 +2,10 @@
 #include <sstream>
 
 #include "../Interpreter.h"
-#include "../IntItem.h"
-#include "../AddressItem.h"
+#include "../m_global/IntItem.h"
+#include "../m_global/AddressItem.h"
 #include "../StringItem.h"
-#include "../IGetAddress.h"
+#include "../m_global/IGetAddress.h"
 
 #include "Dim3Item.h"
 #include "CudaModule.h"
