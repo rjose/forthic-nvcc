@@ -7,15 +7,13 @@
 #include <vector>
 #include <map>
 
-#include "Module.h"
+#include "../Module.h"
 
 using namespace std;
 
 
-class LinearProgramModule : public Module
+class GaussModule : public Module
 {
 public:
-    LinearProgramModule();
-
-    virtual string ForthicCode();
+    GaussModule();
 };

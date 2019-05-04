@@ -1,9 +1,9 @@
 #pragma once
 #include <string>
 
-#include "CudaModule.h"
-#include "StackItem.h"
-#include "ArrayItem.h"
+#include "../m_cuda/CudaModule.h"
+#include "../StackItem.h"
+#include "../ArrayItem.h"
 
 using namespace std;
 

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "IGetAddress.h"
 #include "Interpreter.h"
 #include "GlobalModule.h"
 #include "PushItemWord.h"
@@ -350,6 +351,7 @@ GlobalModule::GlobalModule() : Module("Forthic.global")
     AddWord(shared_ptr<Word>(new MallocWord("MALLOC")));
     AddWord(shared_ptr<Word>(new MemsetWord("MEMSET")));
     AddWord(shared_ptr<Word>(new FreeWord("FREE")));
+
     AddWord(shared_ptr<Word>(new NowWord("NOW")));
     AddWord(shared_ptr<Word>(new SinceWord("SINCE")));
 }

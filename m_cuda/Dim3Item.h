@@ -2,7 +2,7 @@
 #include <string>
 
 #include "CudaModule.h"
-#include "StackItem.h"
+#include "../StackItem.h"
 
 using namespace std;
 

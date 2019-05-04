@@ -7,7 +7,7 @@
 #include <vector>
 #include <map>
 
-#include "Module.h"
+#include "../Module.h"
 
 using namespace std;
 
@@ -29,15 +29,5 @@ public:
 };
 
 
-class IGetAddress {
-public:
-    virtual float* GetFloatStar() = 0;
-    virtual int* GetIntStar() = 0;
-    virtual void* GetVoidStar() = 0;
-};
-
 dim3 AsDim3(shared_ptr<StackItem> item);
-float* AsFloatStar(shared_ptr<StackItem> item);
-int* AsIntStar(shared_ptr<StackItem> item);
-void* AsVoidStar(shared_ptr<StackItem> item);
 void checkCudaCall(const cudaError_t res, const char* file, int line);

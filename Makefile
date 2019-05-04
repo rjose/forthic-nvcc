@@ -1,10 +1,11 @@
 LIB_OBJECTS       = Token.o Tokenizer.o Module.o Word.o StackItem.o \
                     BasicConverters.o VariableItem.o PushItemWord.o \
                     StringItem.o StartArrayItem.o EndArrayWord.o \
+                    IGetAddress.o \
                     GlobalModule.o IntItem.o FloatItem.o \
-                    CudaModule.o Dim3Item.o AddressItem.o TimePointItem.o \
-                    CudaDevicePropItem.o GaussModule.o LinearProgramModule.o \
-                    LPEquationItem.o LPItem.o \
+                    ./m_cuda/CudaModule.o ./m_cuda/Dim3Item.o AddressItem.o TimePointItem.o \
+                    ./m_cuda/CudaDevicePropItem.o ./m_gauss/GaussModule.o ./m_lp/LinearProgramModule.o \
+                    ./m_lp/LPEquationItem.o ./m_lp/LPItem.o \
                     Ch2Module.o \
                     ArrayItem.o DefinitionWord.o ModuleItem.o Interpreter.o
 APP_OBJECTS       = main.o $(LIB_OBJECTS)
@@ -15,7 +16,7 @@ TEST_APP_OBJECTS  = ./test/main_test.o $(TEST_OBJECTS) $(LIB_OBJECTS)
 all: app test runtest
 
 app: $(APP_OBJECTS)
-	nvcc -o app $(APP_OBJECTS)
+	nvcc -o app $(APP_OBJECTS) -lncurses
 
 .PHONY: runtest
 runtest:
@@ -26,7 +27,7 @@ runapp: app
 	./app BHM-p.62-LP.forthic
 
 test: $(TEST_APP_OBJECTS)
-	nvcc -o ./test/test $(TEST_APP_OBJECTS)
+	nvcc -o ./test/test $(TEST_APP_OBJECTS) -lncurses
 
 .PHONY: clean
 clean:
@@ -44,7 +45,7 @@ main.o:main.cpp
 
 .PHONY: deps
 deps:
-	python3 deps.py > deps.mk
+	python3 deps.py > deps.mk 2>/dev/null
 
 # Dependencies (generate with python3 dep.py)
 include deps.mk

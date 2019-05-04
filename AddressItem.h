@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 
-#include "CudaModule.h"
 #include "StackItem.h"
+#include "IGetAddress.h"
 
 using namespace std;
 

@@ -3,7 +3,7 @@
 #include <memory>
 #include <cuda_runtime.h>
 
-#include "StackItem.h"
+#include "../StackItem.h"
 
 using namespace std;
 

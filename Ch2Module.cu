@@ -1,10 +1,12 @@
 #include <ctime>
 #include <cstdio>
 #include "Interpreter.h"
-#include "CudaModule.h"
 #include "Ch2Module.h"
 #include "IntItem.h"
-#include "Dim3Item.h"
+#include "IGetAddress.h"
+
+#include "./m_cuda/CudaModule.h"
+#include "./m_cuda/Dim3Item.h"
 
 
 // =============================================================================

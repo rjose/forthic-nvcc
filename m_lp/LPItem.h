@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 
-#include "CudaModule.h"
-#include "StackItem.h"
+#include "../m_cuda/CudaModule.h"
+#include "../StackItem.h"
 
 using namespace std;
 

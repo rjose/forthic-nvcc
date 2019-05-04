@@ -1,13 +1,13 @@
 #include <ctime>
 #include <cstdio>
 #include <cmath>
-#include "Interpreter.h"
-#include "CudaModule.h"
+#include "../Interpreter.h"
+#include "../m_cuda/CudaModule.h"
 #include "LinearProgramModule.h"
-#include "IntItem.h"
-#include "Dim3Item.h"
-#include "ArrayItem.h"
-#include "AddressItem.h"
+#include "../IntItem.h"
+#include "../m_cuda/Dim3Item.h"
+#include "../ArrayItem.h"
+#include "../AddressItem.h"
 #include "LPEquationItem.h"
 #include "LPItem.h"
 

@@ -1,11 +1,13 @@
 #include <sstream>
-#include "CudaModule.h"
+#include "../AddressItem.h"
+#include "../Interpreter.h"
+#include "../FloatItem.h"
+#include "../IntItem.h"
+
+#include "../m_cuda/CudaModule.h"
+
 #include "LPItem.h"
 #include "LPEquationItem.h"
-#include "Interpreter.h"
-#include "FloatItem.h"
-#include "IntItem.h"
-#include "AddressItem.h"
 #include "LPEquationItem.h"
 
 
