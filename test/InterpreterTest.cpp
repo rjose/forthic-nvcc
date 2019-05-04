@@ -2,6 +2,8 @@
 #include "InterpreterTest.h"
 #include "../Interpreter.h"
 #include "../StackItem.h"
+#include "../m_global/I_AsString.h"
+#include "../m_global/I_AsArray.h"
 
 using namespace std;
 

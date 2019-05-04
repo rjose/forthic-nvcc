@@ -6,6 +6,7 @@
 
 #include "../m_global/IntItem.h"
 #include "../m_global/AddressItem.h"
+#include "../m_global/I_AsArray.h"
 
 #include "../m_cuda/CudaModule.h"
 #include "../m_cuda/Dim3Item.h"

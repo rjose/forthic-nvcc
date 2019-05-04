@@ -4,12 +4,12 @@
 #include <vector>
 
 #include "../StackItem.h"
-#include "BasicConverters.h"
+#include "I_AsArray.h"
 
 using namespace std;
 
 
-class ArrayItem : public StackItem, public IAsArray
+class ArrayItem : public StackItem, public I_AsArray
 {
 public:
     ArrayItem(vector<shared_ptr<StackItem>> items) : items(items) {};

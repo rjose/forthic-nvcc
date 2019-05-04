@@ -2,14 +2,14 @@
 #include <memory>
 #include <string>
 
-#include "BasicConverters.h"
+#include "I_AsModule.h"
 #include "../StackItem.h"
 #include "../Module.h"
 
 using namespace std;
 
 
-class ModuleItem : public StackItem, public IAsModule
+class ModuleItem : public StackItem, public I_AsModule
 {
 public:
     ModuleItem(shared_ptr<Module> mod) : mod(mod) {};

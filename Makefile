@@ -2,10 +2,11 @@ LIB_OBJECTS       = Token.o Tokenizer.o Module.o Word.o StackItem.o \
                     VariableItem.o PushItemWord.o \
                     StringItem.o StartArrayItem.o EndArrayWord.o \
                     DefinitionWord.o Interpreter.o \
-                    m_global/BasicConverters.o m_global/IGetAddress.o \
+                    m_global/IGetAddress.o \
                     m_global/GlobalModule.o m_global/IntItem.o m_global/FloatItem.o \
                     m_global/AddressItem.o m_global/TimePointItem.o \
                     m_global/ArrayItem.o m_global/ModuleItem.o \
+                    m_global/I_AsArray.o m_global/I_AsModule.o m_global/I_AsString.o \
                     m_cuda/CudaModule.o m_cuda/Dim3Item.o \
                     m_cuda/CudaDevicePropItem.o m_gauss/GaussModule.o m_lp/LinearProgramModule.o \
                     m_lp/LPEquationItem.o m_lp/LPItem.o \

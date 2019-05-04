@@ -2,12 +2,12 @@
 #include <string>
 
 #include "StackItem.h"
-#include "./m_global/BasicConverters.h"
+#include "./m_global/I_AsString.h"
 
 using namespace std;
 
 
-class StringItem : public StackItem, public IAsString
+class StringItem : public StackItem, public I_AsString
 {
 public:
     StringItem(string s) : item_string(s) {};
