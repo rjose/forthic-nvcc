@@ -3,11 +3,11 @@
 #include <fstream>
 #include <ncurses.h>
 
-#include "Interpreter.h"
-#include "Module.h"
-#include "./m_cuda/CudaModule.h"
-#include "./m_gauss/GaussModule.h"
-#include "./m_lp/LinearProgramModule.h"
+#include "../Interpreter.h"
+#include "../Module.h"
+#include "../m_cuda/CudaModule.h"
+#include "../m_gauss/GaussModule.h"
+#include "../m_lp/LinearProgramModule.h"
 #include "Ch2Module.h"
 
 using namespace std;

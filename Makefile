@@ -1,6 +1,7 @@
 LIB_OBJECTS       = Token.o Tokenizer.o Module.o Word.o StackItem.o \
                     VariableItem.o PushItemWord.o \
                     StringItem.o StartArrayItem.o EndArrayWord.o \
+                    DefinitionWord.o Interpreter.o \
                     m_global/BasicConverters.o m_global/IGetAddress.o \
                     m_global/GlobalModule.o m_global/IntItem.o m_global/FloatItem.o \
                     m_global/AddressItem.o m_global/TimePointItem.o \
@@ -8,25 +9,24 @@ LIB_OBJECTS       = Token.o Tokenizer.o Module.o Word.o StackItem.o \
                     m_cuda/CudaModule.o m_cuda/Dim3Item.o \
                     m_cuda/CudaDevicePropItem.o m_gauss/GaussModule.o m_lp/LinearProgramModule.o \
                     m_lp/LPEquationItem.o m_lp/LPItem.o \
-                    Ch2Module.o \
-                    DefinitionWord.o Interpreter.o
-APP_OBJECTS       = main.o $(LIB_OBJECTS)
+                    examples/Ch2Module.o
+APP_OBJECTS       = examples/main.o $(LIB_OBJECTS)
 TEST_OBJECTS      = test/Test.o test/TokenizerTest.o test/ModuleTest.o \
                     test/InterpreterTest.o test/GlobalModuleTest.o
 TEST_APP_OBJECTS  = test/main_test.o $(TEST_OBJECTS) $(LIB_OBJECTS)
 
-all: app test runtest
+all: examples/app test runtest
 
-app: $(APP_OBJECTS)
-	nvcc -o app $(APP_OBJECTS) -lncurses
+examples/app: $(APP_OBJECTS)
+	nvcc -o examples/app $(APP_OBJECTS) -lncurses
 
 .PHONY: runtest
 runtest:
 	./test/test
 
 .PHONY: runapp
-runapp: app
-	./app BHM-p.62-LP.forthic
+runapp: examples/app
+	cd examples && ./app BHM-p.62-LP.forthic
 
 test: $(TEST_APP_OBJECTS)
 	nvcc -o ./test/test $(TEST_APP_OBJECTS) -lncurses
@@ -42,7 +42,7 @@ clean:
 %.o:%.cu %.h
 	nvcc -arch=sm_30 -std=c++11 -g -c -o $@ $<
 
-main.o:main.cpp
+examples/main.o:examples/main.cpp
 	nvcc -std=c++11 -g -c -o $@ $<
 
 .PHONY: deps
