@@ -2,7 +2,7 @@
 #include "Dim3Item.h"
 
 
-dim3 Dim3Item::GetDim3() {
+dim3 Dim3Item::AsDim3() {
     return value;
 }
 

@@ -5,8 +5,6 @@
 #include "../m_global/FloatItem.h"
 #include "../m_global/IntItem.h"
 
-#include "../m_cuda/CudaModule.h"
-
 #include "LPItem.h"
 #include "LPEquationItem.h"
 #include "LPEquationItem.h"

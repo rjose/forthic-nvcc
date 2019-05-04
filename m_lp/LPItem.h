@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-#include "../m_cuda/CudaModule.h"
+#include "../m_cuda/M_Cuda.h"
 #include "../StackItem.h"
 
 using namespace std;

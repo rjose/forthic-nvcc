@@ -8,7 +8,7 @@
 #include "../m_global/AddressItem.h"
 #include "../m_global/I_AsString.h"
 
-#include "../m_cuda/CudaModule.h"
+#include "../m_cuda/M_Cuda.h"
 #include "../m_cuda/Dim3Item.h"
 
 #include "LinearProgramModule.h"

@@ -7,7 +7,7 @@
 #include "../StringItem.h"
 
 #include "Dim3Item.h"
-#include "CudaModule.h"
+#include "M_Cuda.h"
 #include "CudaDevicePropItem.h"
 
 
@@ -308,9 +308,9 @@ public:
 
 
 // =============================================================================
-// CudaModule
+// M_Cuda
 
-CudaModule::CudaModule() : Module("cuda")
+M_Cuda::M_Cuda() : Module("cuda")
 {
     AddWord(shared_ptr<Word>(new W_Dim3("DIM3")));
     AddWord(shared_ptr<Word>(new W_ToCoord(">x", "x")));
@@ -331,25 +331,10 @@ CudaModule::CudaModule() : Module("cuda")
     AddWord(shared_ptr<Word>(new W_DevProp("DEV-PROP")));
 }
 
-string CudaModule::ForthicCode() {
+string M_Cuda::ForthicCode() {
     string result(
     ": FLOAT   'FLOAT' ; "
     ": INT     'INT' ; "
     );
     return result;
 }
-
-
-// =============================================================================
-// StackItem Converters
-
-
-dim3 AsDim3(shared_ptr<StackItem> item) {
-    if (auto i = dynamic_cast<IGetDim3*>(item.get())) {
-        return i->GetDim3();
-    }
-    else {
-        throw "Item does not implement IGetInt";
-    }
-}
-

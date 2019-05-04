@@ -7,7 +7,7 @@ LIB_OBJECTS       = Token.o Tokenizer.o Module.o Word.o StackItem.o \
                     m_global/AddressItem.o m_global/TimePointItem.o \
                     m_global/ArrayItem.o m_global/ModuleItem.o \
                     m_global/I_AsArray.o m_global/I_AsModule.o m_global/I_AsString.o \
-                    m_cuda/CudaModule.o m_cuda/Dim3Item.o \
+                    m_cuda/M_Cuda.o m_cuda/Dim3Item.o m_cuda/I_AsDim3.o \
                     m_cuda/CudaDevicePropItem.o m_gauss/GaussModule.o m_lp/LinearProgramModule.o \
                     m_lp/LPEquationItem.o m_lp/LPItem.o \
                     examples/Ch2Module.o

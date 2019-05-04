@@ -1,7 +1,8 @@
  Interpreter.o W_Definition.o W_EndArray.o W_PushItem.o m_global/GlobalModule.o examples/main.o test/GlobalModuleTest.o test/InterpreterTest.o  : Interpreter.h
    : m_cuda/CudaDevicePropItem.h
- examples/main.o m_cuda/Dim3Item.o m_lp/LPEquationItem.o m_lp/LPItem.o : m_cuda/CudaModule.h
    : m_cuda/Dim3Item.h
+  m_cuda/Dim3Item.o : m_cuda/I_AsDim3.h
+   : m_cuda/M_Cuda.h
  examples/main.o  : m_gauss/GaussModule.h
  m_global/AddressItem.o m_global/GlobalModule.o  : m_global/AddressItem.h
  Interpreter.o StartArrayItem.o W_EndArray.o W_EndArray.o m_global/ArrayItem.o m_lp/LPEquationItem.o : m_global/ArrayItem.h
@@ -19,7 +20,7 @@
  examples/main.o  : m_lp/LinearProgramModule.h
    : m_lp/LPEquationItem.h
    : m_lp/LPItem.h
- Module.o m_global/GlobalModule.o m_global/GlobalModule.o m_global/I_AsModule.o examples/main.o examples/main.o examples/main.o examples/main.o examples/main.o test/GlobalModuleTest.o test/ModuleTest.o Interpreter.o Interpreter.o m_cuda/CudaModule.o m_cuda/Dim3Item.o m_gauss/GaussModule.o m_global/FloatItem.o m_global/GlobalModule.o m_global/IntItem.o m_global/ModuleItem.o m_global/ModuleItem.o m_global/TimePointItem.o m_lp/LPEquationItem.o m_lp/LPItem.o m_lp/LinearProgramModule.o examples/Ch2Module.o : Module.h
+ Module.o m_global/GlobalModule.o m_global/GlobalModule.o m_global/I_AsModule.o examples/main.o examples/main.o examples/main.o examples/main.o examples/main.o test/GlobalModuleTest.o test/ModuleTest.o Interpreter.o Interpreter.o m_cuda/M_Cuda.o m_gauss/GaussModule.o m_global/FloatItem.o m_global/GlobalModule.o m_global/IntItem.o m_global/ModuleItem.o m_global/ModuleItem.o m_global/TimePointItem.o m_lp/LPEquationItem.o m_lp/LPItem.o m_lp/LinearProgramModule.o examples/Ch2Module.o : Module.h
  StackItem.o test/InterpreterTest.o Interpreter.o StartArrayItem.o StringItem.o VariableItem.o W_Definition.o W_EndArray.o W_PushItem.o m_cuda/CudaDevicePropItem.o m_cuda/Dim3Item.o m_global/AddressItem.o m_global/ArrayItem.o m_global/FloatItem.o m_global/I_AsArray.o m_global/I_AsFloatStar.o m_global/I_AsIntStar.o m_global/I_AsModule.o m_global/I_AsString.o m_global/I_AsVoidStar.o m_global/IntItem.o m_global/ModuleItem.o m_global/TimePointItem.o m_lp/LPEquationItem.o m_lp/LPItem.o : StackItem.h
  Interpreter.o StartArrayItem.o W_EndArray.o  : StartArrayItem.h
  Interpreter.o StringItem.o m_global/GlobalModule.o  : StringItem.h

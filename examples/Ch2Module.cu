@@ -6,7 +6,7 @@
 #include "../m_global/I_AsIntStar.h"
 #include "../m_global/I_AsVoidStar.h"
 
-#include "../m_cuda/CudaModule.h"
+#include "../m_cuda/M_Cuda.h"
 #include "../m_cuda/Dim3Item.h"
 
 #include "Ch2Module.h"

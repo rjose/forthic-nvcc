@@ -5,7 +5,7 @@
 
 #include "../m_global/ArrayItem.h"
 
-#include "../m_cuda/CudaModule.h"
+#include "../m_cuda/M_Cuda.h"
 
 using namespace std;
 

@@ -5,7 +5,7 @@
 
 #include "../Interpreter.h"
 #include "../Module.h"
-#include "../m_cuda/CudaModule.h"
+#include "../m_cuda/M_Cuda.h"
 #include "../m_gauss/GaussModule.h"
 #include "../m_lp/LinearProgramModule.h"
 #include "Ch2Module.h"
@@ -28,7 +28,7 @@ int main(int c, char* argv[]) {
         if (c >= 2)   filename = argv[1];
 
         Interpreter interp;
-        interp.RegisterModule(shared_ptr<Module>(new CudaModule()));
+        interp.RegisterModule(shared_ptr<Module>(new M_Cuda()));
         interp.RegisterModule(shared_ptr<Module>(new Ch2Module()));
         interp.RegisterModule(shared_ptr<Module>(new GaussModule()));
         interp.RegisterModule(shared_ptr<Module>(new LinearProgramModule()));
