@@ -12,8 +12,8 @@
 using namespace std;
 
 
-class GaussModule : public Module
+class M_Gauss : public Module
 {
 public:
-    GaussModule();
+    M_Gauss();
 };

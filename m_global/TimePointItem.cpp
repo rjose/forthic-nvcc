@@ -5,7 +5,7 @@ shared_ptr<TimePointItem> TimePointItem::New(high_resolution_clock::time_point v
     return shared_ptr<TimePointItem>(new TimePointItem(value));
 }
 
-high_resolution_clock::time_point TimePointItem::GetTimePoint() {
+high_resolution_clock::time_point TimePointItem::AsTimePoint() {
     return value;
 }
 

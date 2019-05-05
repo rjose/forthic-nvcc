@@ -1,5 +1,5 @@
 #include <sstream>
-#include "../m_global/GlobalModule.h"
+#include "../m_global/I_AsFloat.h"
 #include "LPEquationItem.h"
 
 LPEquationItem::LPEquationItem(vector<shared_ptr<StackItem>> coeff_vals, string name) : name(name) {

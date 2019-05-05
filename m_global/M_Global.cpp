@@ -7,7 +7,7 @@
 
 #include "I_AsArray.h"
 #include "I_AsModule.h"
-#include "GlobalModule.h"
+#include "M_Global.h"
 #include "FloatItem.h"
 #include "IntItem.h"
 #include "../StringItem.h"
@@ -328,9 +328,9 @@ public:
 };
 
 // =============================================================================
-// GlobalModule
+// M_Global
 
-GlobalModule::GlobalModule() : Module("Forthic.global")
+M_Global::M_Global() : Module("Forthic.global")
 {
     AddWord(shared_ptr<Word>(new W_Pop("POP")));
     AddWord(shared_ptr<Word>(new W_Swap("SWAP")));
@@ -359,7 +359,7 @@ GlobalModule::GlobalModule() : Module("Forthic.global")
 }
 
 
-shared_ptr<Word> GlobalModule::treat_as_float(string name)
+shared_ptr<Word> M_Global::treat_as_float(string name)
 {
     try {
         float value = stof(name);
@@ -371,7 +371,7 @@ shared_ptr<Word> GlobalModule::treat_as_float(string name)
 }
 
 
-shared_ptr<Word> GlobalModule::treat_as_int(string name)
+shared_ptr<Word> M_Global::treat_as_int(string name)
 {
     try {
         string::size_type sz;
@@ -386,40 +386,10 @@ shared_ptr<Word> GlobalModule::treat_as_int(string name)
 }
 
 
-shared_ptr<Word> GlobalModule::treat_as_literal(string name)
+shared_ptr<Word> M_Global::treat_as_literal(string name)
 {
     shared_ptr<Word> result = nullptr;
     if (result == nullptr)  result = treat_as_int(name);
     if (result == nullptr)  result = treat_as_float(name);
     return result;
-}
-
-// =============================================================================
-// StackItem Converters
-
-int AsInt(shared_ptr<StackItem> item) {
-    if (auto i = dynamic_cast<IGetInt*>(item.get())) {
-        return i->GetInt();
-    }
-    else {
-        throw item->StringRep() + " does not implement IGetInt";
-    }
-}
-
-float AsFloat(shared_ptr<StackItem> item) {
-    if (auto i = dynamic_cast<IGetFloat*>(item.get())) {
-        return i->GetFloat();
-    }
-    else {
-        throw item->StringRep() + " does not implement IGetFloat";
-    }
-}
-
-high_resolution_clock::time_point AsTimePoint(shared_ptr<StackItem> item) {
-    if (auto i = dynamic_cast<IGetTimePoint*>(item.get())) {
-        return i->GetTimePoint();
-    }
-    else {
-        throw item->StringRep() + " does not implement IGetTimePoint";
-    }
 }

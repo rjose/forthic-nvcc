@@ -3,12 +3,13 @@ LIB_OBJECTS       = Token.o Tokenizer.o Module.o Word.o StackItem.o \
                     StringItem.o StartArrayItem.o W_EndArray.o \
                     W_Definition.o Interpreter.o \
                     m_global/I_AsFloatStar.o m_global/I_AsIntStar.o m_global/I_AsVoidStar.o \
-                    m_global/GlobalModule.o m_global/IntItem.o m_global/FloatItem.o \
+                    m_global/M_Global.o m_global/IntItem.o m_global/FloatItem.o \
+                    m_global/I_AsFloat.o m_global/I_AsInt.o m_global/I_AsTimePoint.o \
                     m_global/AddressItem.o m_global/TimePointItem.o \
                     m_global/ArrayItem.o m_global/ModuleItem.o \
                     m_global/I_AsArray.o m_global/I_AsModule.o m_global/I_AsString.o \
                     m_cuda/M_Cuda.o m_cuda/Dim3Item.o m_cuda/I_AsDim3.o \
-                    m_cuda/CudaDevicePropItem.o m_gauss/GaussModule.o m_lp/LinearProgramModule.o \
+                    m_cuda/CudaDevicePropItem.o m_gauss/M_Gauss.o m_lp/M_LP.o \
                     m_lp/LPEquationItem.o m_lp/LPItem.o \
                     examples/Ch2Module.o
 APP_OBJECTS       = examples/main.o $(LIB_OBJECTS)

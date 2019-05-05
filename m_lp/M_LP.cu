@@ -11,7 +11,7 @@
 #include "../m_cuda/M_Cuda.h"
 #include "../m_cuda/Dim3Item.h"
 
-#include "LinearProgramModule.h"
+#include "M_LP.h"
 #include "LPEquationItem.h"
 #include "LPItem.h"
 
@@ -82,16 +82,16 @@ public:
 
 
 // =============================================================================
-// LinearProgramModule
+// M_LP
 
-LinearProgramModule::LinearProgramModule() : Module("linear-program") {
+M_LP::M_LP() : Module("linear-program") {
     AddWord(new W_LPNew("LP-NEW"));
     AddWord(new W_LPFree("LP-FREE"));
     AddWord(new W_LPPrintMatrix("LP-PRINT-MATRIX"));
     AddWord(new W_LPEqn("LP-EQN"));
 }
 
-string LinearProgramModule::ForthicCode() {
+string M_LP::ForthicCode() {
     string result("[ gauss ] USE-MODULES");
     return result;
 }

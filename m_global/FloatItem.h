@@ -1,20 +1,21 @@
 #pragma once
 #include <string>
 
-#include "GlobalModule.h"
 #include "../StackItem.h"
+#include "I_AsInt.h"
+#include "I_AsFloat.h"
 
 using namespace std;
 
 
-class FloatItem : public StackItem, public IGetFloat, public IGetInt
+class FloatItem : public StackItem, public I_AsFloat, public I_AsInt
 {
 public:
     FloatItem(float value);
     virtual ~FloatItem();
 
-    float GetFloat();
-    int GetInt();
+    float AsFloat();
+    int AsInt();
     virtual string StringRep();
     virtual string AsString();
 

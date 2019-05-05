@@ -6,11 +6,11 @@ shared_ptr<IntItem> IntItem::New(int value) {
     return shared_ptr<IntItem>(new IntItem(value));
 }
 
-int IntItem::GetInt() {
+int IntItem::AsInt() {
     return value;
 }
 
-float IntItem::GetFloat() {
+float IntItem::AsFloat() {
     return float(value);
 }
 

@@ -11,11 +11,11 @@ FloatItem::~FloatItem()
 {
 }
 
-float FloatItem::GetFloat() {
+float FloatItem::AsFloat() {
     return value;
 }
 
-int FloatItem::GetInt() {
+int FloatItem::AsInt() {
     return int(value);
 }
 

@@ -10,7 +10,7 @@
 #include "Word.h"
 #include "Module.h"
 #include "W_Definition.h"
-#include "./m_global/GlobalModule.h"
+#include "./m_global/M_Global.h"
 
 using namespace std;
 
@@ -54,6 +54,6 @@ protected:
     shared_ptr<Word> find_word(string name);
     shared_ptr<Word> find_registered_module_word(string name);
 
-    GlobalModule global_module;
+    M_Global global_module;
 };
 

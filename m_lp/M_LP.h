@@ -12,10 +12,10 @@
 using namespace std;
 
 
-class LinearProgramModule : public Module
+class M_LP : public Module
 {
 public:
-    LinearProgramModule();
+    M_LP();
 
     virtual string ForthicCode();
 };

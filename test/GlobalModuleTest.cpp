@@ -1,7 +1,9 @@
 #include <string>
 #include "GlobalModuleTest.h"
 #include "../Interpreter.h"
-#include "../m_global/GlobalModule.h"
+#include "../m_global/M_Global.h"
+#include "../m_global/I_AsInt.h"
+#include "../m_global/I_AsFloat.h"
 
 
 using namespace std;

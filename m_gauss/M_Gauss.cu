@@ -11,7 +11,7 @@
 #include "../m_cuda/M_Cuda.h"
 #include "../m_cuda/Dim3Item.h"
 
-#include "GaussModule.h"
+#include "M_Gauss.h"
 
 
 // =============================================================================
@@ -129,9 +129,9 @@ public:
 
 
 // =============================================================================
-// GaussModule
+// M_Gauss
 
-GaussModule::GaussModule() : Module("gauss") {
+M_Gauss::M_Gauss() : Module("gauss") {
     AddWord(new W_GpuMatrix("GPU-MATRIX"));
     AddWord(new W_PrintMatrix("PRINT-MATRIX"));
     AddWord(new W_Pivot("PIVOT"));

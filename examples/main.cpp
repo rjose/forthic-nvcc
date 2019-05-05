@@ -6,8 +6,8 @@
 #include "../Interpreter.h"
 #include "../Module.h"
 #include "../m_cuda/M_Cuda.h"
-#include "../m_gauss/GaussModule.h"
-#include "../m_lp/LinearProgramModule.h"
+#include "../m_gauss/M_Gauss.h"
+#include "../m_lp/M_LP.h"
 #include "Ch2Module.h"
 
 using namespace std;
@@ -30,8 +30,8 @@ int main(int c, char* argv[]) {
         Interpreter interp;
         interp.RegisterModule(shared_ptr<Module>(new M_Cuda()));
         interp.RegisterModule(shared_ptr<Module>(new Ch2Module()));
-        interp.RegisterModule(shared_ptr<Module>(new GaussModule()));
-        interp.RegisterModule(shared_ptr<Module>(new LinearProgramModule()));
+        interp.RegisterModule(shared_ptr<Module>(new M_Gauss()));
+        interp.RegisterModule(shared_ptr<Module>(new M_LP()));
         interp.Run(load_file(filename));
     }
     catch (const char *message) {
