@@ -25,14 +25,23 @@ public:
     shared_ptr<StackItem> StackPop();
     int StackSize();
 
+    void ContextPush(shared_ptr<Module> context);
+    shared_ptr<Module> ContextTop();
+    void ContextPop();
+    int ContextSize();
+
     shared_ptr<Module> CurModule();
+    shared_ptr<Module> ParentModule();
     void RegisterModule(shared_ptr<Module> mod);
+
+    shared_ptr<Word> FindWord(string name);
 
 protected:
     bool is_compiling;
 
     stack<shared_ptr<StackItem>> param_stack;
     vector<shared_ptr<Module>> module_stack;
+    stack<shared_ptr<Module>> context_stack;
 
     void handle_token(Token tok);
     void handle_STRING(Token tok);

@@ -8,11 +8,12 @@
 using namespace std;
 
 class Interpreter;
+class Module;
 
 class W_Definition : public Word
 {
 public:
-    W_Definition(string name);
+    W_Definition(string name, shared_ptr<Module> module);
     virtual ~W_Definition();
     virtual void Execute(Interpreter *interp);
 
@@ -20,5 +21,6 @@ public:
 
 protected:
     vector<shared_ptr<Word>> words;
+    shared_ptr<Module> module;
 };
 

@@ -1,4 +1,6 @@
 #include <sstream>
+#include <iostream>
+
 #include "Interpreter.h"
 #include "Tokenizer.h"
 #include "S_String.h"
@@ -24,6 +26,10 @@ shared_ptr<Module> Interpreter::CurModule()
     return module_stack.back();
 }
 
+shared_ptr<Module> Interpreter::ParentModule() {
+    if (module_stack.size() < 2)    return shared_ptr<Module>(&global_module);
+    else                            return module_stack[module_stack.size() - 2];
+}
 
 void Interpreter::Run(string input)
 {
@@ -55,10 +61,39 @@ int Interpreter::StackSize() {
     return param_stack.size();
 }
 
+
+void Interpreter::ContextPush(shared_ptr<Module> context) {
+    context_stack.push(context);
+}
+
+
+shared_ptr<Module> Interpreter::ContextTop() {
+    if (context_stack.size() == 0)   return nullptr;
+    else                             return context_stack.top();
+}
+
+
+void Interpreter::ContextPop() {
+    if (context_stack.size() == 0)   throw "Context Stack underflow";
+    context_stack.pop();
+}
+
+
+int Interpreter::ContextSize() {
+    return context_stack.size();
+}
+
+
 void Interpreter::RegisterModule(shared_ptr<Module> mod)
 {
     registered_modules[mod->GetName()] = mod;
     this->Run(mod->ForthicCode());
+}
+
+
+shared_ptr<Word> Interpreter::FindWord(string name)
+{
+    return find_word(name);
 }
 
 
@@ -177,7 +212,7 @@ void Interpreter::module_stack_push(shared_ptr<Module> mod)
 void Interpreter::handle_START_DEFINITION(Token tok)
 {
     if (is_compiling) throw "Can't have nested definitions";
-    cur_definition = shared_ptr<W_Definition>(new W_Definition(tok.GetText()));
+    cur_definition = shared_ptr<W_Definition>(new W_Definition(tok.GetText(), CurModule()));
     is_compiling = true;
 }
 
@@ -201,11 +236,19 @@ shared_ptr<Word> Interpreter::find_word(string name)
 {
     shared_ptr<Word> result = nullptr;
 
+    // Search current context
+    if (result == nullptr) {
+        shared_ptr<Module> context = ContextTop();
+        if (context != nullptr)    result = context->FindWord(name);
+    }
+
     // Search module stack
-    for (auto iter = module_stack.rbegin(); iter != module_stack.rend(); iter++)
-    {
-        result = (*iter)->FindWord(name);
-        if (result != nullptr) break;
+    if (result == nullptr) {
+        for (auto iter = module_stack.rbegin(); iter != module_stack.rend(); iter++)
+        {
+            result = (*iter)->FindWord(name);
+            if (result != nullptr) break;
+        }
     }
 
     // Treat as registered module

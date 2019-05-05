@@ -301,6 +301,48 @@ public:
     }
 };
 
+// ( forthic -- ? )
+class W_Interpret : public Word
+{
+public:
+    W_Interpret(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        auto forthic = AsString(interp->StackPop());
+        interp->Run(forthic);
+    }
+};
+
+// ( forthic -- ? )
+class W_SlashInterpret : public Word
+{
+public:
+    W_SlashInterpret(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        auto forthic = AsString(interp->StackPop());
+        interp->ContextPush(nullptr);
+        interp->Run(forthic);
+        interp->ContextPop();
+    }
+};
+
+// ( names -- )
+class W_Publish : public Word
+{
+public:
+    W_Publish(string name) : Word(name) {};
+
+    virtual void Execute(Interpreter *interp) {
+        auto names = AsArray(interp->StackPop());
+        auto parent_module = interp->ParentModule();
+        for (int i=0; i < names.size(); i++) {
+            auto w = interp->FindWord(AsString(names[i]));
+            parent_module->AddWord(w);
+        }
+    }
+};
+
 // ( -- time_point )
 class W_Now : public Word
 {
@@ -353,6 +395,9 @@ M_Global::M_Global() : Module("Forthic.global")
     AddWord(shared_ptr<Word>(new W_Malloc("MALLOC")));
     AddWord(shared_ptr<Word>(new W_Memset("MEMSET")));
     AddWord(shared_ptr<Word>(new W_Free("FREE")));
+    AddWord(shared_ptr<Word>(new W_Interpret("INTERPRET")));
+    AddWord(shared_ptr<Word>(new W_SlashInterpret("/INTERPRET")));
+    AddWord(shared_ptr<Word>(new W_Publish("PUBLISH")));
 
     AddWord(shared_ptr<Word>(new W_Now("NOW")));
     AddWord(shared_ptr<Word>(new W_Since("SINCE")));
