@@ -9,11 +9,11 @@
 using namespace std;
 
 
-class AddressItem : public StackItem, public I_AsFloatStar, public I_AsIntStar, public I_AsVoidStar
+class S_Address : public StackItem, public I_AsFloatStar, public I_AsIntStar, public I_AsVoidStar
 {
 public:
-    AddressItem(void* address) : address(address) {};
-    static shared_ptr<AddressItem> New(void* address);
+    S_Address(void* address) : address(address) {};
+    static shared_ptr<S_Address> New(void* address);
 
     float* AsFloatStar();
     int* AsIntStar();

@@ -2,23 +2,25 @@
 #include <string>
 
 #include "../StackItem.h"
+
 #include "I_AsInt.h"
 #include "I_AsFloat.h"
 
 using namespace std;
 
 
-class FloatItem : public StackItem, public I_AsFloat, public I_AsInt
+class S_Int : public StackItem, public I_AsInt, public I_AsFloat
 {
 public:
-    FloatItem(float value);
-    virtual ~FloatItem();
+    S_Int(int value) : value(value) {};
+    static shared_ptr<S_Int> New(int value);
 
-    float AsFloat();
     int AsInt();
+    float AsFloat();
+
     virtual string StringRep();
     virtual string AsString();
 
 protected:
-    float value;
+    int value;
 };

@@ -7,12 +7,12 @@
 using namespace std;
 
 
-class StringItem : public StackItem, public I_AsString
+class S_String : public StackItem, public I_AsString
 {
 public:
-    StringItem(string s) : item_string(s) {};
-    static shared_ptr<StringItem> New(string s);
-    virtual ~StringItem() {};
+    S_String(string s) : item_string(s) {};
+    static shared_ptr<S_String> New(string s);
+    virtual ~S_String() {};
     string AsString();
 
     virtual string StringRep();

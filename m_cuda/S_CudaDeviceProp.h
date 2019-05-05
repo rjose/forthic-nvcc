@@ -7,11 +7,11 @@
 
 using namespace std;
 
-class CudaDevicePropItem : public StackItem
+class S_CudaDeviceProp : public StackItem
 {
 public:
-    CudaDevicePropItem(cudaDeviceProp value) : value(value) {};
-    static shared_ptr<CudaDevicePropItem> New(cudaDeviceProp value);
+    S_CudaDeviceProp(cudaDeviceProp value) : value(value) {};
+    static shared_ptr<S_CudaDeviceProp> New(cudaDeviceProp value);
 
     const cudaDeviceProp& deviceProp();
 

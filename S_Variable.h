@@ -5,11 +5,11 @@
 
 using namespace std;
 
-class VariableItem : public StackItem
+class S_Variable : public StackItem
 {
 public:
-    VariableItem() : value(nullptr) {};
-    virtual ~VariableItem() {};
+    S_Variable() : value(nullptr) {};
+    virtual ~S_Variable() {};
 
     shared_ptr<StackItem> GetValue();
     void SetValue(shared_ptr<StackItem> new_value);

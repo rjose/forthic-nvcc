@@ -9,10 +9,10 @@
 using namespace std;
 
 
-class ArrayItem : public StackItem, public I_AsArray
+class S_Array : public StackItem, public I_AsArray
 {
 public:
-    ArrayItem(vector<shared_ptr<StackItem>> items) : items(items) {};
+    S_Array(vector<shared_ptr<StackItem>> items) : items(items) {};
     vector<shared_ptr<StackItem>> AsArray();
 
     virtual string AsString();

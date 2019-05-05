@@ -7,12 +7,12 @@
 using namespace std;
 
 
-class LPItem : public StackItem
+class S_LP : public StackItem
 {
 public:
-    LPItem(Interpreter* interp);
+    S_LP(Interpreter* interp);
 
-    virtual ~LPItem() {};
+    virtual ~S_LP() {};
     void Free();
 
     void PrintMatrix();
@@ -40,4 +40,4 @@ protected:
 };
 
 
-LPItem* AsLPItem(shared_ptr<StackItem> item);
+S_LP* AsLPItem(shared_ptr<StackItem> item);

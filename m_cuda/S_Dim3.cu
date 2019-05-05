@@ -1,18 +1,18 @@
 #include <sstream>
-#include "Dim3Item.h"
+#include "S_Dim3.h"
 
 
-dim3 Dim3Item::AsDim3() {
+dim3 S_Dim3::AsDim3() {
     return value;
 }
 
-string Dim3Item::StringRep() {
+string S_Dim3::StringRep() {
     stringstream builder;
-    builder << "Dim3Item: " << "(" << value.x << ", " << value.y << ", " << value.z << ")";
+    builder << "S_Dim3: " << "(" << value.x << ", " << value.y << ", " << value.z << ")";
     return builder.str();
 }
 
-string Dim3Item::AsString() {
+string S_Dim3::AsString() {
     stringstream builder;
     builder << "(" << value.x << ", " << value.y << ", " << value.z << ")";
     return builder.str();

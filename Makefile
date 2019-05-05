@@ -1,16 +1,16 @@
 LIB_OBJECTS       = Token.o Tokenizer.o Module.o Word.o StackItem.o \
-                    VariableItem.o W_PushItem.o \
-                    StringItem.o StartArrayItem.o W_EndArray.o \
+                    S_Variable.o W_PushItem.o \
+                    S_String.o S_StartArray.o W_EndArray.o \
                     W_Definition.o Interpreter.o \
                     m_global/I_AsFloatStar.o m_global/I_AsIntStar.o m_global/I_AsVoidStar.o \
-                    m_global/M_Global.o m_global/IntItem.o m_global/FloatItem.o \
+                    m_global/M_Global.o m_global/S_Int.o m_global/S_Float.o \
                     m_global/I_AsFloat.o m_global/I_AsInt.o m_global/I_AsTimePoint.o \
-                    m_global/AddressItem.o m_global/TimePointItem.o \
-                    m_global/ArrayItem.o m_global/ModuleItem.o \
+                    m_global/S_Address.o m_global/S_TimePoint.o \
+                    m_global/S_Array.o m_global/S_Module.o \
                     m_global/I_AsArray.o m_global/I_AsModule.o m_global/I_AsString.o \
-                    m_cuda/M_Cuda.o m_cuda/Dim3Item.o m_cuda/I_AsDim3.o \
-                    m_cuda/CudaDevicePropItem.o m_gauss/M_Gauss.o m_lp/M_LP.o \
-                    m_lp/LPEquationItem.o m_lp/LPItem.o \
+                    m_cuda/M_Cuda.o m_cuda/S_Dim3.o m_cuda/I_AsDim3.o \
+                    m_cuda/S_CudaDeviceProp.o m_gauss/M_Gauss.o m_lp/M_LP.o \
+                    m_lp/S_LPEquation.o m_lp/S_LP.o \
                     examples/Ch2Module.o
 APP_OBJECTS       = examples/main.o $(LIB_OBJECTS)
 TEST_OBJECTS      = test/Test.o test/TokenizerTest.o test/ModuleTest.o \

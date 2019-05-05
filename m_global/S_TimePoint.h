@@ -9,11 +9,11 @@ using namespace std;
 using namespace std::chrono;
 
 
-class TimePointItem : public StackItem, public I_AsTimePoint
+class S_TimePoint : public StackItem, public I_AsTimePoint
 {
 public:
-    TimePointItem(high_resolution_clock::time_point value) : value(value) {};
-    static shared_ptr<TimePointItem> New(high_resolution_clock::time_point value);
+    S_TimePoint(high_resolution_clock::time_point value) : value(value) {};
+    static shared_ptr<S_TimePoint> New(high_resolution_clock::time_point value);
 
     high_resolution_clock::time_point AsTimePoint();
 

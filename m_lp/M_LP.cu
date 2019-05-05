@@ -3,17 +3,17 @@
 #include <cmath>
 #include "../Interpreter.h"
 
-#include "../m_global/IntItem.h"
-#include "../m_global/ArrayItem.h"
-#include "../m_global/AddressItem.h"
+#include "../m_global/S_Int.h"
+#include "../m_global/S_Array.h"
+#include "../m_global/S_Address.h"
 #include "../m_global/I_AsString.h"
 
 #include "../m_cuda/M_Cuda.h"
-#include "../m_cuda/Dim3Item.h"
+#include "../m_cuda/S_Dim3.h"
 
 #include "M_LP.h"
-#include "LPEquationItem.h"
-#include "LPItem.h"
+#include "S_LPEquation.h"
+#include "S_LP.h"
 
 
 // =============================================================================
@@ -25,7 +25,7 @@
 // Words
 
 
-// ( coeffs name  -- LPEquationItem )
+// ( coeffs name  -- S_LPEquation )
 class W_LPEqn : public Word
 {
 public:
@@ -35,7 +35,7 @@ public:
         string name = AsString(interp->StackPop());
         auto coeffs = AsArray(interp->StackPop());
 
-        interp->StackPush(LPEquationItem::New(coeffs, name));
+        interp->StackPush(S_LPEquation::New(coeffs, name));
     }
 };
 
@@ -48,7 +48,7 @@ public:
     W_LPNew(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
-        interp->StackPush(shared_ptr<LPItem>(new LPItem(interp)));
+        interp->StackPush(shared_ptr<S_LP>(new S_LP(interp)));
     }
 
 };

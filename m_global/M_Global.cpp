@@ -8,11 +8,11 @@
 #include "I_AsArray.h"
 #include "I_AsModule.h"
 #include "M_Global.h"
-#include "FloatItem.h"
-#include "IntItem.h"
-#include "../StringItem.h"
-#include "AddressItem.h"
-#include "TimePointItem.h"
+#include "S_Float.h"
+#include "S_Int.h"
+#include "../S_String.h"
+#include "S_Address.h"
+#include "S_TimePoint.h"
 
 // =============================================================================
 // Words
@@ -91,7 +91,7 @@ public:
 
     virtual void Execute(Interpreter *interp) {
         auto variable_item = interp->StackPop();
-        VariableItem* variable = dynamic_cast<VariableItem*>(variable_item.get());
+        S_Variable* variable = dynamic_cast<S_Variable*>(variable_item.get());
         auto value = interp->StackPop();
         variable->SetValue(value);
     }
@@ -107,7 +107,7 @@ public:
 
     virtual void Execute(Interpreter *interp) {
         auto variable_item = interp->StackPop();
-        VariableItem* variable = dynamic_cast<VariableItem*>(variable_item.get());
+        S_Variable* variable = dynamic_cast<S_Variable*>(variable_item.get());
         interp->StackPush(variable->GetValue());
     }
 };
@@ -166,10 +166,10 @@ public:
         else                  throw string("Unknown operation: ") + op;
 
         if (op == "<<") {
-            interp->StackPush(shared_ptr<IntItem>(new IntItem(int_res)));
+            interp->StackPush(shared_ptr<S_Int>(new S_Int(int_res)));
         }
         else {
-            interp->StackPush(shared_ptr<FloatItem>(new FloatItem(res)));
+            interp->StackPush(shared_ptr<S_Float>(new S_Float(res)));
         }
     }
 protected:
@@ -226,7 +226,7 @@ public:
         for (int i=0; i < strings.size(); i++) {
             result += strings[i]->AsString();
         }
-        interp->StackPush(StringItem::New(result));
+        interp->StackPush(S_String::New(result));
     }
 };
 
@@ -237,7 +237,7 @@ public:
     W_Endl(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
-        interp->StackPush(StringItem::New("\n"));
+        interp->StackPush(S_String::New("\n"));
     }
 };
 
@@ -269,7 +269,7 @@ public:
     virtual void Execute(Interpreter *interp) {
         int num_bytes = AsInt(interp->StackPop());
         void* ref = malloc(num_bytes);
-        interp->StackPush(shared_ptr<AddressItem>(new AddressItem(ref)));
+        interp->StackPush(shared_ptr<S_Address>(new S_Address(ref)));
     }
 };
 
@@ -308,7 +308,7 @@ public:
     W_Now(string name) : Word(name) {};
 
     virtual void Execute(Interpreter *interp) {
-        interp->StackPush(TimePointItem::New(high_resolution_clock::now()));
+        interp->StackPush(S_TimePoint::New(high_resolution_clock::now()));
     }
 };
 
@@ -323,7 +323,7 @@ public:
         auto l_time_point = AsTimePoint(interp->StackPop());
         auto duration = r_time_point - l_time_point;
         long long result = duration_cast<milliseconds>(duration).count();
-        interp->StackPush(IntItem::New(result));
+        interp->StackPush(S_Int::New(result));
     }
 };
 
@@ -363,7 +363,7 @@ shared_ptr<Word> M_Global::treat_as_float(string name)
 {
     try {
         float value = stof(name);
-        return shared_ptr<Word>(new W_PushItem(name, shared_ptr<StackItem>(new FloatItem(value))));
+        return shared_ptr<Word>(new W_PushItem(name, shared_ptr<StackItem>(new S_Float(value))));
     }
     catch (...) {
         return nullptr;
@@ -378,7 +378,7 @@ shared_ptr<Word> M_Global::treat_as_int(string name)
         int value = stoi(name, &sz);
         char c = name[sz];
         if (c == '.' || c == 'e' || c == 'E') return nullptr;
-        else  return shared_ptr<Word>(new W_PushItem(name, shared_ptr<StackItem>(new IntItem(value))));
+        else  return shared_ptr<Word>(new W_PushItem(name, shared_ptr<StackItem>(new S_Int(value))));
     }
     catch (...) {
         return nullptr;

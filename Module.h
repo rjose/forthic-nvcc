@@ -6,7 +6,7 @@
 #include <map>
 
 #include "Word.h"
-#include "VariableItem.h"
+#include "S_Variable.h"
 
 using namespace std;
 
@@ -28,7 +28,7 @@ public:
 protected:
     string name;
     vector<shared_ptr<Word>> words;
-    map<string, shared_ptr<VariableItem>> variables;
+    map<string, shared_ptr<S_Variable>> variables;
 
 protected:
     shared_ptr<Word> find_in_words(string name);

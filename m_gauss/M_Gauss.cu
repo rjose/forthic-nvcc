@@ -4,12 +4,12 @@
 
 #include "../Interpreter.h"
 
-#include "../m_global/IntItem.h"
-#include "../m_global/AddressItem.h"
+#include "../m_global/S_Int.h"
+#include "../m_global/S_Address.h"
 #include "../m_global/I_AsArray.h"
 
 #include "../m_cuda/M_Cuda.h"
-#include "../m_cuda/Dim3Item.h"
+#include "../m_cuda/S_Dim3.h"
 
 #include "M_Gauss.h"
 
@@ -80,7 +80,7 @@ public:
             dst[i] = AsFloat(numbers[i]);
         }
 
-        interp->StackPush(AddressItem::New(result));
+        interp->StackPush(S_Address::New(result));
     }
 };
 

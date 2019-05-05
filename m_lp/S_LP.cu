@@ -1,17 +1,16 @@
 #include <sstream>
 #include "../Interpreter.h"
 
-#include "../m_global/AddressItem.h"
-#include "../m_global/FloatItem.h"
-#include "../m_global/IntItem.h"
+#include "../m_global/S_Address.h"
+#include "../m_global/S_Float.h"
+#include "../m_global/S_Int.h"
 
-#include "LPItem.h"
-#include "LPEquationItem.h"
-#include "LPEquationItem.h"
+#include "S_LP.h"
+#include "S_LPEquation.h"
 
 
 // ( varnames objective constraints  )
-LPItem::LPItem(Interpreter* interp) : interp(interp) {
+S_LP::S_LP(Interpreter* interp) : interp(interp) {
     constraints = AsArray(interp->StackPop());
     objective = interp->StackPop();
     varnames = AsArray(interp->StackPop());
@@ -32,32 +31,32 @@ LPItem::LPItem(Interpreter* interp) : interp(interp) {
 }
 
 
-void LPItem::Free() {
-    interp->StackPush(AddressItem::New((void*)matrix));
+void S_LP::Free() {
+    interp->StackPush(S_Address::New((void*)matrix));
     interp->Run("CUDA-FREE");
 
     // TODO: Free ratio memory
 }
 
 
-void LPItem::PrintMatrix() {
-    interp->StackPush(shared_ptr<IntItem>(new IntItem(num_rows)));
-    interp->StackPush(shared_ptr<IntItem>(new IntItem(num_cols)));
-    interp->StackPush(AddressItem::New((void*) matrix));
+void S_LP::PrintMatrix() {
+    interp->StackPush(shared_ptr<S_Int>(new S_Int(num_rows)));
+    interp->StackPush(shared_ptr<S_Int>(new S_Int(num_cols)));
+    interp->StackPush(S_Address::New((void*) matrix));
     interp->Run("PRINT-MATRIX");
 }
 
 
-void LPItem::allocateMatrixMemory() {
+void S_LP::allocateMatrixMemory() {
     int num_bytes = num_elems * sizeof(float);
-    interp->StackPush(shared_ptr<IntItem>(new IntItem(num_bytes)));
+    interp->StackPush(shared_ptr<S_Int>(new S_Int(num_bytes)));
     interp->Run("CUDA-MALLOC-MANAGED");
     matrix = AsFloatStar(interp->StackPop());
     for (int i=0; i < num_elems; i++)   matrix[i] = 0.0;
 }
 
 
-void LPItem::fillMatrixMemory() {
+void S_LP::fillMatrixMemory() {
     int col = 0;
 
     // Objective
@@ -71,7 +70,7 @@ void LPItem::fillMatrixMemory() {
 }
 
 
-void LPItem::fillConstraint(int constraintIndex) {
+void S_LP::fillConstraint(int constraintIndex) {
     int col=0;
     int offset = (constraintIndex + 1) * num_cols;  // Objective is in the first row
     auto constraint_eq = AsLPEquationItem(constraints[constraintIndex]);
@@ -86,23 +85,23 @@ void LPItem::fillConstraint(int constraintIndex) {
 }
 
 
-string LPItem::StringRep() {
+string S_LP::StringRep() {
     stringstream builder;
-    builder << "LPItem";
+    builder << "S_LP";
     return builder.str();
 }
 
-string LPItem::AsString() {
+string S_LP::AsString() {
     return StringRep();
 }
 
 
 
-LPItem* AsLPItem(shared_ptr<StackItem> item) {
-    if (auto i = dynamic_cast<LPItem*>(item.get())) {
+S_LP* AsLPItem(shared_ptr<StackItem> item) {
+    if (auto i = dynamic_cast<S_LP*>(item.get())) {
         return i;
     }
     else {
-        throw item->StringRep() + " is not an LPItem";
+        throw item->StringRep() + " is not an S_LP";
     }
 }

@@ -1,11 +1,11 @@
 #include <sstream>
 #include "Interpreter.h"
 #include "Tokenizer.h"
-#include "StringItem.h"
+#include "S_String.h"
 #include "W_PushItem.h"
-#include "StartArrayItem.h"
+#include "S_StartArray.h"
 #include "W_EndArray.h"
-#include "m_global/ModuleItem.h"
+#include "m_global/S_Module.h"
 
 Interpreter::Interpreter() : is_compiling(false)
 {
@@ -110,7 +110,7 @@ void Interpreter::handle_token(Token token)
 
 void Interpreter::handle_STRING(Token tok)
 {
-    StringItem* item = new StringItem(tok.GetText());
+    S_String* item = new S_String(tok.GetText());
     auto word = shared_ptr<Word>(new W_PushItem("<string>", shared_ptr<StackItem>(item)));
     handle_Word(word);
 }
@@ -125,7 +125,7 @@ void Interpreter::handle_Word(shared_ptr<Word> word)
 
 void Interpreter::handle_START_ARRAY(Token token)
 {
-    StartArrayItem* item = new StartArrayItem();
+    S_StartArray* item = new S_StartArray();
     auto word = shared_ptr<Word>(new W_PushItem("[", shared_ptr<StackItem>(item)));
     handle_Word(word);
 }
@@ -222,5 +222,5 @@ shared_ptr<Word> Interpreter::find_registered_module_word(string name)
 {
     auto mod = find_module(name);
     if (mod == nullptr)  return nullptr;
-    else  return shared_ptr<Word>(new W_PushItem(mod->GetName(), shared_ptr<ModuleItem>(new ModuleItem(mod))));
+    else  return shared_ptr<Word>(new W_PushItem(mod->GetName(), shared_ptr<S_Module>(new S_Module(mod))));
 }

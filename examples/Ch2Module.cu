@@ -1,13 +1,13 @@
 #include <ctime>
 #include <cstdio>
 #include "../Interpreter.h"
-#include "../m_global/IntItem.h"
+#include "../m_global/S_Int.h"
 #include "../m_global/I_AsFloatStar.h"
 #include "../m_global/I_AsIntStar.h"
 #include "../m_global/I_AsVoidStar.h"
 
 #include "../m_cuda/M_Cuda.h"
-#include "../m_cuda/Dim3Item.h"
+#include "../m_cuda/S_Dim3.h"
 
 #include "Ch2Module.h"
 
@@ -80,7 +80,7 @@ public:
                 break;
             }
         }
-        interp->StackPush(shared_ptr<IntItem>(new IntItem(match)));
+        interp->StackPush(shared_ptr<S_Int>(new S_Int(match)));
     }
 };
 

@@ -3,10 +3,10 @@
 
 using namespace std;
 
-class StartArrayItem : public StackItem
+class S_StartArray : public StackItem
 {
 public:
-    StartArrayItem();
-    virtual ~StartArrayItem();
+    S_StartArray();
+    virtual ~S_StartArray();
     virtual string AsString();
 };

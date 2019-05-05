@@ -2,13 +2,13 @@
 #include <sstream>
 
 #include "../Interpreter.h"
-#include "../m_global/IntItem.h"
-#include "../m_global/AddressItem.h"
-#include "../StringItem.h"
+#include "../m_global/S_Int.h"
+#include "../m_global/S_Address.h"
+#include "../S_String.h"
 
-#include "Dim3Item.h"
+#include "S_Dim3.h"
 #include "M_Cuda.h"
-#include "CudaDevicePropItem.h"
+#include "S_CudaDeviceProp.h"
 
 
 // =============================================================================
@@ -42,7 +42,7 @@ public:
         int x = AsInt(interp->StackPop());
         dim3 res(x, y, z);
 
-        interp->StackPush(shared_ptr<Dim3Item>(new Dim3Item(res)));
+        interp->StackPush(shared_ptr<S_Dim3>(new S_Dim3(res)));
     }
 };
 
@@ -62,7 +62,7 @@ public:
         else if (coord == "z")   res = d.z;
         else                     throw string("Unknown coord: ") + coord;
 
-        interp->StackPush(shared_ptr<IntItem>(new IntItem(res)));
+        interp->StackPush(shared_ptr<S_Int>(new S_Int(res)));
     }
 
 protected:
@@ -97,7 +97,7 @@ public:
         int result = 1;
         if      (type == "FLOAT")    result = sizeof(float);
         else if (type == "INT")      result = sizeof(int);
-        interp->StackPush(shared_ptr<IntItem>(new IntItem(result)));
+        interp->StackPush(shared_ptr<S_Int>(new S_Int(result)));
     }
 };
 
@@ -180,7 +180,7 @@ public:
         void *result;
         auto res = cudaMalloc((void**)&result, num_bytes);
         checkCudaCall(res, __FILE__, __LINE__);
-        interp->StackPush(AddressItem::New(result));
+        interp->StackPush(S_Address::New(result));
     }
 };
 
@@ -197,7 +197,7 @@ public:
         void *result;
         auto res = cudaMallocManaged((void**)&result, num_bytes);
         checkCudaCall(res, __FILE__, __LINE__);
-        interp->StackPush(AddressItem::New(result));
+        interp->StackPush(S_Address::New(result));
     }
 };
 
@@ -275,7 +275,7 @@ public:
         cudaDeviceProp deviceProp;
         auto res = cudaGetDeviceProperties(&deviceProp, devIndex);
         checkCudaCall(res, __FILE__, __LINE__);
-        interp->StackPush(CudaDevicePropItem::New(deviceProp));
+        interp->StackPush(S_CudaDeviceProp::New(deviceProp));
     }
 };
 
@@ -290,17 +290,17 @@ public:
         string field = AsString(interp->StackPop());
         shared_ptr<StackItem> item = interp->StackPop();
 
-        if (auto devPropItem = dynamic_cast<CudaDevicePropItem*>(item.get())) {
+        if (auto devPropItem = dynamic_cast<S_CudaDeviceProp*>(item.get())) {
             const cudaDeviceProp& deviceProp = devPropItem->deviceProp();
             if (field == "name") {
-                interp->StackPush(StringItem::New(string(deviceProp.name)));
+                interp->StackPush(S_String::New(string(deviceProp.name)));
             }
             else {
                 throw string("Unknown dev prop field: ") + field;
             }
         }
         else {
-            throw "Item was not a CudaDevicePropItem";
+            throw "Item was not a S_CudaDeviceProp";
         }
     }
 };

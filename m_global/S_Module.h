@@ -9,11 +9,11 @@
 using namespace std;
 
 
-class ModuleItem : public StackItem, public I_AsModule
+class S_Module : public StackItem, public I_AsModule
 {
 public:
-    ModuleItem(shared_ptr<Module> mod) : mod(mod) {};
-    virtual ~ModuleItem() {};
+    S_Module(shared_ptr<Module> mod) : mod(mod) {};
+    virtual ~S_Module() {};
     shared_ptr<Module> AsModule();
     virtual string AsString();
 

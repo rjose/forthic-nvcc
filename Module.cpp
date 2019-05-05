@@ -63,7 +63,7 @@ void Module::AddWord(Word* word) {
 
 void Module::EnsureVariable(string name) {
     if (variables.find(name) == variables.end()) {
-        variables[name] = shared_ptr<VariableItem>(new VariableItem());
+        variables[name] = shared_ptr<S_Variable>(new S_Variable());
     }
 }
 
